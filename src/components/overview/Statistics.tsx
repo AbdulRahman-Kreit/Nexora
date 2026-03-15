@@ -9,7 +9,6 @@ const statisData = [
 ];
 
 
-
 export default function Statistics() {
     return (
         <div className={`flex flex-row justify-between font-grotesk max-w-2/3
