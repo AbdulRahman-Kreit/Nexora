@@ -1,0 +1,79 @@
+"use client";
+import React from 'react';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { callback } from 'chart.js/helpers';
+
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+
+const chartData = [
+    { label: "Gym", percentage: 8.46 },
+    { label: "Supplement Store", percentage: 43.49 },
+    { label: "Warehouse", percentage: 48.04 },
+];
+
+export default function RevenueByBusinessTypeChart() {
+    const data = {
+        labels: chartData.map(item => item.label),
+        datasets: [
+            {
+                data: chartData.map(item => item.percentage),
+                backgroundColor: ['#e1ffff', '#69b4ff', '#006fff'],
+                borderWidth: 0,
+                cutout: '55%',
+            }
+        ]
+    };
+
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom', 
+                labels: {
+                    color: '#cbd5e1',
+                    padding: 20,
+                    usePointStyle: true, 
+                    font: { size: 12, weight: '600' }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: (context: any) => {
+                        const label = context.label || '';
+                        const value = context.formattedValue;
+                        return ` ${label}: ${value}%`;
+                    }
+                }
+            },
+            datalabels: {
+                display: true,
+                color: '#161616',
+                font: { weight: 'bold', size: 12 },
+                formatter: (value: unknown) => `${value}%`,
+                anchor: 'center',
+                align: 'center',
+            },
+        },
+        layout: {
+            padding: {
+                top: 10,
+                bottom: 10,
+            }
+        }
+    };
+
+    return (
+        <div className="bg-[#151a21] p-6 h-96 border-l-3 border-[#4a7fce] rounded-r-lg">
+            <h2 className="text-gray-500 font-semibold mb-4">
+                Business by Business Type
+            </h2>
+            <div className="h-[280px] w-full">
+                <Doughnut data={data} options={options} />
+            </div>
+        </div>
+    );
+}
