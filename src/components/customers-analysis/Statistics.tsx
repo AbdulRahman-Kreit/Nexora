@@ -2,12 +2,11 @@ import React from "react";
 import AnimatedNumbers from '@/components/general-components/AnimatedNumbers'
 
 const statisData = [
-    { id: 1, title: "Revenue", value: "$78.26M" },
-    { id: 2, title: "Profit", value: "$54.15M" },
-    { id: 3, title: "Cost", value: "$24.45M" },
-    { id: 4, title: "QTY", value: "214K" },
+    { id: 1, title: "Customers", value: "734" },
+    { id: 2, title: "AOV", value: "$54.15M" },
+    { id: 3, title: "Orders", value: "6389" },
+    { id: 4, title: "Customer No Sales", value: "64" },
 ];
-
 
 
 export default function Statistics() {
@@ -17,7 +16,7 @@ export default function Statistics() {
             {statisData.map((data) => {
                 return (
                     <div key={data.id} className={`flex flex-col justify-start 
-                    w-[110px] pl-3 border-l-3 border-[#4a7fce]`}>
+                    w-[150px] pl-3 border-l-3 border-[#4a7fce]`}>
                         <h3 className='text-md font-mideum text-gray-500'>
                             {data.title}
                         </h3>

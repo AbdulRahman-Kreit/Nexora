@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import "../../globals.css";
 import Sidebar from "@/components/general-components/Sidebar";
 import PageHeading from "@/components/general-components/PageHeading";
 import TimelineFilter from "@/components/overview/TimelineFilter";
-import RevenueAndGMSkeleton from "@/components/overview/skeletal-loading/RevenueAndGMSkeleton";
-import RevenueByBusinessSkeleton from "@/components/overview/skeletal-loading/RevenueByBusinessSkeleton";
-import RevenueByCategorySkeleton from "@/components/overview/skeletal-loading/RevenueByCategorySkeleton";
-import RevenueByCountrySkeleton from "@/components/overview/skeletal-loading/RevenueByCountrySkeleton";
 
 export const metadata: Metadata = {
   title: "Nexora",
@@ -42,28 +37,19 @@ export default function OverviewLayout(props: {
               border-[#1a1a1a] w-full`}>
               <div className="col-span-8 flex flex-col gap-4">
                 <div>
-                  <Suspense fallback={<RevenueAndGMSkeleton />}>
-                    {revenueAndGm}
-                  </Suspense>
-                  
+                  {revenueAndGm}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="col-span-1">
-                      <Suspense fallback={<RevenueByCategorySkeleton />}>
                         {revenueByCategory}
-                      </Suspense>
                     </div>
                     <div className="col-span-1">
-                      <Suspense fallback={<RevenueByBusinessSkeleton />}>
                         {revenueByBusinessType}
-                      </Suspense>
                     </div>
                 </div>
               </div>
               <div className="col-span-4">
-                <Suspense fallback={<RevenueByCountrySkeleton/>}>
                   {revenueByCountry}
-                </Suspense>
               </div>
             </section>
             

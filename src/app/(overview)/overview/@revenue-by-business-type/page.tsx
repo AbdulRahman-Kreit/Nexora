@@ -1,10 +1,14 @@
-import React from 'react';
-import RevenueByBusinessTypeChart from '@/components/overview/charts/RevenueByBusinessTypeChart';
+"use client";
+import dynamic from 'next/dynamic';
+import RevenueByBusinessSkeleton from '@/components/overview/skeletal-loading/RevenueByBusinessSkeleton';
+
+const RevenueByBusinessTypeChart = dynamic(() => import('@/components/overview/charts/RevenueByBusinessTypeChart'),{
+    loading: () => <RevenueByBusinessSkeleton />,
+    ssr: false,
+});
 
 export default function RevenueByBusinessType() {
     return (
-        <div>
-            <RevenueByBusinessTypeChart />
-        </div>
+        <RevenueByBusinessTypeChart />
     )
 }

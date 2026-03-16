@@ -1,10 +1,14 @@
-import React from 'react';
-import RevenueAndGMChart from '@/components/overview/charts/RevenueAndGMChart';
+"use client";
+import dynamic from 'next/dynamic';
+import RevenueAndGMSkeleton from '@/components/overview/skeletal-loading/RevenueAndGMSkeleton';
+
+const RevenueAndGMChart = dynamic(() => import('@/components/overview/charts/RevenueAndGMChart'), {
+    loading: () => <RevenueAndGMSkeleton />,
+    ssr: false,
+});
 
 export default function Default() {
     return (
-        <div>
-            <RevenueAndGMChart />
-        </div>
+        <RevenueAndGMChart />
     )
 };
