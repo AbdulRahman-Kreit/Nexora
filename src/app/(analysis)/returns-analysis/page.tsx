@@ -1,5 +1,5 @@
 import React from 'react';
-import Statistics from '@/components/return-analysis/Statistics';
+import Statistics from '@/components/returns-analysis/Statistics';
 
 export default function ReturnsAnalysis() {
     return (

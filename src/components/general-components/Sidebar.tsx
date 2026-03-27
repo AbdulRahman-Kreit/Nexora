@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { faChevronRight, faClockRotateLeft, faUser, faChartPie, faDollarSign, faUserClock, faBoxesStacked } from '@fortawesome/free-solid-svg-icons';
+import { faChevronRight, faClockRotateLeft, faUser, faChartPie, faDollarSign, faUserClock, faBoxesStacked, faAddressCard } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Header from './Header';
 
@@ -52,6 +52,11 @@ const Sidebar = memo(function Sidebar()  {
                     href="/time-analysis">
                     <FontAwesomeIcon icon={faClockRotateLeft} className='mr-[15px]' />
                     <span>Time Analysis</span>
+                </Link>
+                <Link className={`${pathname === '/employee-analysis' ? activeLinkStyle : passiveLinkStyle}`} 
+                    href="/employee-analysis">
+                    <FontAwesomeIcon icon={faAddressCard} className='mr-[15px]' />
+                    <span>Employee Analysis</span>
                 </Link>
                 <button className={`${passiveLinkStyle}`}>
                     <FontAwesomeIcon icon={faChevronRight} 

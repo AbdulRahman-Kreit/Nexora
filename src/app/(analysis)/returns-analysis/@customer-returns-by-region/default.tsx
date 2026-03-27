@@ -1,8 +1,8 @@
 "use client";
 import dynamic from 'next/dynamic';
-import CustomerReturnsByRegionSkeleton from '@/components/return-analysis/skeletal-loading/CustomerReturnsByRegionSkeleton';
+import CustomerReturnsByRegionSkeleton from '@/components/returns-analysis/skeletal-loading/CustomerReturnsByRegionSkeleton';
 
-const CustomerReturnsByRegionChart = dynamic(() => import('@/components/return-analysis/chart/CustomerReturnsByRegionChart'), {
+const CustomerReturnsByRegionChart = dynamic(() => import('@/components/returns-analysis/chart/CustomerReturnsByRegionChart'), {
     loading: () => <CustomerReturnsByRegionSkeleton />,
     ssr: false,
 })

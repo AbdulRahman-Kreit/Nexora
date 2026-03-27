@@ -1,8 +1,8 @@
 "use client";
 import dynamic from 'next/dynamic';
-import OrderReturnsByMonthSkeleton from '@/components/return-analysis/skeletal-loading/OrderReturnsByMonthSkeleton';
+import OrderReturnsByMonthSkeleton from '@/components/returns-analysis/skeletal-loading/OrderReturnsByMonthSkeleton';
 
-const OrderReturnsByMonthChart = dynamic(() => import('@/components/return-analysis/chart/OrderReturnsByMonthChart'), {
+const OrderReturnsByMonthChart = dynamic(() => import('@/components/returns-analysis/chart/OrderReturnsByMonthChart'), {
     loading: () => <OrderReturnsByMonthSkeleton />,
     ssr: false
 });
