@@ -1,0 +1,676 @@
+{
+  "info": {
+    "_postman_id": "2a2791fd-cdfc-4b75-b875-124d5147e09d",
+    "name": "Ananlysis Admin API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32708350",
+    "_collection_link": "https://go.postman.co/collection/32708350-2a2791fd-cdfc-4b75-b875-124d5147e09d?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Dashboard Overview",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/dashboard/summary",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "7",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue Over Time",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/dashboard/revenue-over-time?days",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard",
+                "revenue-over-time"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": null,
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue Over Time product",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/dashboard/gm-by-product",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard",
+                "gm-by-product"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue By Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/dashboard/revenue-by-category",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard",
+                "revenue-by-category"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GM By Business Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/dashboard/gm-by-business-type",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard",
+                "gm-by-business-type"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customer Analysis",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/customer-analysis/summary",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "customer-analysis",
+                "summary"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Order Frequency",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/customer-analysis/order-frequency",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "customer-analysis",
+                "order-frequency"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Churn Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/customer-analysis/churn",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "customer-analysis",
+                "churn"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Region Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/customer-analysis/region-stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "customer-analysis",
+                "region-stats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "No Sales By Region",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/customer-analysis/no-sales-by-region",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "customer-analysis",
+                "no-sales-by-region"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Returns Analysis",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/summary",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "summary"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "By Region",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/by-region",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "by-region"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "By SubCategory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/by-subcategory",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "by-subcategory"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "By Month",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/by-month",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "by-month"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product Analysis",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/summary",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "360",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cost & GM By Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/cost-gm-by-category",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "cost-gm-by-category"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Revenue & Profit By Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/revenue-profit-by-category",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "revenue-profit-by-category"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Orders Return By Subcategory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/orders-return-by-subcategory",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "orders-return-by-subcategory"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Top Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/top-products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "top-products"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Time Analysis",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/time-analysis/summary",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "time-analysis",
+                "summary"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Orders Returns By Month",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/time-analysis/orders-returns-by-month",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "time-analysis",
+                "orders-returns-by-month"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Table",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/time-analysis/table",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "time-analysis",
+                "table"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Employee Analysis",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/employee-analysis/summary",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "employee-analysis",
+                "summary"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Top Employees",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/employee-analysis/top-employees",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "employee-analysis",
+                "top-employees"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "returns-by-employee",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/employee-analysis/returns-by-employee",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "employee-analysis",
+                "returns-by-employee"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "table",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/employee-analysis/table",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "employee-analysis",
+                "table"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "disabled": true
+    },
+    {
+      "key": "base_url",
+      "value": ""
+    }
+  ]
+}
