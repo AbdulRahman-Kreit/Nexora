@@ -19,19 +19,9 @@ export default function PageHeading() {
             <div className={`ml-auto flex items-center justify-end gap-4 
             font-grotesk font-medium h-full`}>
 
-                <button className={`group flex items-center p-1.5 
-                    hover:bg-[#1e1e1e] rounded-md transition-colors`}>
-                    <span className="text-white text-lg">Slice</span>
-                    <FontAwesomeIcon 
-                        icon={faChevronDown} 
-                        className={`ml-3 text-md text-gray-500 
-                            group-hover:text-white transition-colors`} 
-                    />
-                </button>
-
                 <button className={`flex items-center justify-center 
                     bg-transparent border-2 border-[#2d2d2d] mx-3
-                    hover:bg-[#2d2d2d] py-1.5 px-3 rounded-lg text-white 
+                    hover:border-[#006fff] hover:bg-[#132741] py-1.5 px-3 rounded-lg text-white 
                     transition-all group`}>
                     <FontAwesomeIcon 
                         icon={faFileCirclePlus} 
