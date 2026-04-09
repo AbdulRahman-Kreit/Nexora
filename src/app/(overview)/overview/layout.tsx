@@ -55,7 +55,7 @@ export default function OverviewLayout(props: {
             
         </section>
         <div className="absolute bottom-0 left-0 w-full z-50">
-            <TimelineFilter />
+          <TimelineFilter />
         </div>
       </div>
     </main>

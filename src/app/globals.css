@@ -7,6 +7,9 @@
 }
 
 /* Start Global Styles */
+* {
+  box-sizing: border-box;
+}
 body {
   background-color: var(--main-bg-color-dark);
   color: var(--main-text-color-dark);
@@ -15,7 +18,4 @@ body {
 button {
   cursor: pointer;
 }
-
-
-
 /* End Global Styles */

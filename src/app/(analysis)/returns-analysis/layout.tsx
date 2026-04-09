@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "../../globals.css";
 
+import TimelineFilter from "@/components/returns-analysis/TimelineFilter";
+
 export const metadata: Metadata = {
   title: "Nexora",
   description: "The next generation of business analytics & data visualization",
@@ -22,28 +24,22 @@ export default function ReturnsAnalysisLayout(props: {
   } = props;
 
   return (
-    <section className="flex-1 flex flex-col overflow-y-auto pb-20">
-      {children}
+    <section className="flex flex-col h-screen overflow-hidden"> 
       
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-px w-full">
+      <div className="flex-1 overflow-y-auto p-4 pb-10">
+        {children}
         
-        <div className="p-4 min-h-[400px]">
-          {customerReturnsByRegion}
-        </div>
-
-        <div className="p-4 min-h-[400px]">
-          {orderReturnsBySubcategory}
-        </div>
-
-        <div className="p-4 min-h-[400px]">
-          {customerReturnsByMonth}
-        </div>
-
-        <div className="p-4 min-h-[400px]">
-          {OrderReturnsByMonth}
-        </div>
-
-      </section>
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+          <div className="min-h-[400px]">{customerReturnsByRegion}</div>
+          <div className="min-h-[400px]">{orderReturnsBySubcategory}</div>
+          <div className="min-h-[400px]">{customerReturnsByMonth}</div>
+          <div className="min-h-[400px]">{OrderReturnsByMonth}</div>
+        </section>
+      </div>
+    
+      <div className="w-full z-50">
+        <TimelineFilter />
+      </div>
     </section>
   );
 }
