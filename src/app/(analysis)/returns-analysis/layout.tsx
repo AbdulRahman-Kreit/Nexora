@@ -29,7 +29,7 @@ export default function ReturnsAnalysisLayout(props: {
       <div className="flex-1 overflow-y-auto p-4 pb-10">
         {children}
         
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full py-10 pl-4">
           <div className="min-h-[400px]">{customerReturnsByRegion}</div>
           <div className="min-h-[400px]">{orderReturnsBySubcategory}</div>
           <div className="min-h-[400px]">{customerReturnsByMonth}</div>

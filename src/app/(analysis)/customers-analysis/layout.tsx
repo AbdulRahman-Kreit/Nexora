@@ -29,11 +29,11 @@ export default function CustomersAnalysisLayout(props: {
       <div className="flex-1 overflow-y-auto p-4 pb-10">
         {children}
         
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="min-h-[400px]">{orderFrequency}</div>
-          <div className="min-h-[400px]">{churnAnalysis}</div>
-          <div className="min-h-[400px]">{profitAndCustomers}</div>
-          <div className="min-h-[400px]">{customersWithoutOrders}</div>
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full py-10 pl-4">
+          <div className="min-h-[400px] gap-4">{orderFrequency}</div>
+          <div className="min-h-[400px] gap-4">{churnAnalysis}</div>
+          <div className="min-h-[400px] gap-4">{profitAndCustomers}</div>
+          <div className="min-h-[400px] gap-4">{customersWithoutOrders}</div>
         </section>
       </div>
 
