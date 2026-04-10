@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -25,6 +25,17 @@ const chartData = [
 
 export default function RevenueByCountryChart() {
     const bgMaxValue = 80000000;
+
+    const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    
+    useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
 
     const data = {
         labels: chartData.map(item => item.country),
@@ -105,7 +116,12 @@ export default function RevenueByCountryChart() {
             <h2 className="text-gray-500 font-semibold mb-4">
                 Revenue by Country
             </h2>
-            <Bar data={data} options={options} />
+            <div className="h-full w-full">
+                <Bar 
+                    key="revenue-by-country-bar-chart" 
+                    data={data} 
+                    options={options} />
+            </div>
         </div>
     )
 }

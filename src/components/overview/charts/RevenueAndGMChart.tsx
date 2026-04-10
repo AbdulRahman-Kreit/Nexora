@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
@@ -9,7 +9,8 @@ ChartJS.register(
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    
 );
 
 const chartData = [
@@ -22,6 +23,17 @@ const chartData = [
 ];
 
 export default function RevenueAndGMChart() {
+    const chartRef = useRef<ChartJS<'bar'> | null>(null);
+
+    useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
+
     const data = {
         labels: chartData.map(item => item.date),
         datasets: [
@@ -52,7 +64,7 @@ export default function RevenueAndGMChart() {
                 easing: 'easeOutQuart',
                 type: 'number',
                 from: (context: any) => {
-                    if (context.type === 'data') {
+                    if (context.type === 'data' && context.chart?.scales?.y) {
                         return context.chart.scales.y.getPixelForValue(0);
                     }
                 }
@@ -109,7 +121,9 @@ export default function RevenueAndGMChart() {
             <h2 className="text-gray-500 font-semibold mb-4">
                 Revenue and GM% Over Time
             </h2>
-            <Bar data={data} options={options} />
+            <div className="h-full w-full">
+                <Bar key="revenue-gm-bar-chart" data={data} options={options} />
+            </div>
         </div>
     );
 }

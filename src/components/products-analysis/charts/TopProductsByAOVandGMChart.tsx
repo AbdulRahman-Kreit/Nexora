@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend, plugins } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -39,6 +39,17 @@ const handleChageBarColors = aovData.map(() => {
 });
 
 export default function TopProductByAOVandGMChart() {
+    const chartRef = useRef<ChartJS<'bar'> | null>(null);
+        
+    useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
+
     const data = {
         labels: aovData.map(item => item.product),
         datasets: [
@@ -148,7 +159,9 @@ export default function TopProductByAOVandGMChart() {
             <h2 className="text-gray-500 font-semibold mb-4">
                 Top 10 Products by AOV & GM%
             </h2>
-            <Bar data={data} options={options} />
+            <div className="h-full w-full">
+                <Bar key="top-products-aov-gm-chart" data={data} options={options} />
+            </div>
         </div>
     )
 }

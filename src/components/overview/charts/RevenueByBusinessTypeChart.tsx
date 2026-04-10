@@ -1,9 +1,8 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { callback } from 'chart.js/helpers';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -14,6 +13,17 @@ const chartData = [
 ];
 
 export default function RevenueByBusinessTypeChart() {
+    const chartRef = useRef<ChartJS<'doughnut'> | null>(null);
+        
+        useEffect(() => {
+            const chart = chartRef.current;
+            return () => {
+                if (chart) {
+                    chart.destroy();
+                }
+            };
+        }, []);
+
     const data = {
         labels: chartData.map(item => item.label),
         datasets: [
@@ -72,7 +82,10 @@ export default function RevenueByBusinessTypeChart() {
                 Business by Business Type
             </h2>
             <div className="h-[280px] w-full">
-                <Doughnut data={data} options={options} />
+                <Doughnut 
+                    key="revenue-by-business-type-doughnut-chart"
+                    data={data} 
+                    options={options} />
             </div>
         </div>
     );

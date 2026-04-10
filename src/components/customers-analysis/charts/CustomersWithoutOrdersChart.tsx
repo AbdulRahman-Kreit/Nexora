@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -34,6 +34,17 @@ const handleChageBarColors = chartData.map(() => {
 });
 
 export default function CustomersWithoutOrdersChart() {
+    const chartRef = useRef<ChartJS<'bar'> | null>(null);
+        
+    useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
+
     const data = {
         labels: chartData.map(item => item.region),
         datasets: [
@@ -96,7 +107,9 @@ export default function CustomersWithoutOrdersChart() {
             <h2 className="text-gray-500 font-semibold mb-4">
                 Customers without Orders by Region
             </h2>
-            <Bar data={data} options={options} />
+            <div className="h-full w-full">
+                <Bar key="customers-without-orders-chart" data={data} options={options} />
+            </div>
         </div>
     )
 }

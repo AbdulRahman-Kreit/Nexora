@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -32,11 +32,18 @@ const chartDataValues = [
 ];
 
 export default function CustomerReturnsByMonthChart() {
-    const [isMounted, setIsMounted] = useState(false);
-
+    const chartRef = useRef<ChartJS<'line'> | null>(null);
+        
     useEffect(() => {
-        setIsMounted(true);
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
     }, []);
+
+    
 
     const data = {
         labels: chartDataValues.map((item) => item.month),
@@ -114,13 +121,11 @@ export default function CustomerReturnsByMonthChart() {
         },
     };
 
-    if (!isMounted) return <div className="h-96 w-full bg-[#151a21] animate-pulse" />;
-
     return (
         <div className="bg-linear-to-r from-[#151a21] to-[#161616] p-6 h-96 border-l-3 border-[#4a7fce]">
         <h2 className="text-gray-500 font-semibold mb-4">Customer Returns by Month</h2>
-        <div className="h-[280px] w-full">
-            <Line data={data} options={options} />
+        <div className="min-h-[300px] w-full">
+            <Line key="customer-returns-by-month-chart" data={data} options={options} />
         </div>
         </div>
     );

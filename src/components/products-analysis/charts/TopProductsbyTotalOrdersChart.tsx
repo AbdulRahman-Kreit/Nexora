@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -28,6 +28,17 @@ const chartData = [
 ];
 
 export default function TopProductsbyTotalOrdersChart() {
+    const chartRef = useRef<ChartJS<'bar'> | null>(null);
+        
+    useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
+
     const bgMaxValue = 5000;
 
     const data = {
@@ -107,9 +118,11 @@ export default function TopProductsbyTotalOrdersChart() {
         <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
         p-6 h-96 border-l-3 border-[#4a7fce]`}>
             <h2 className="text-gray-500 font-semibold mb-4">
-                Top 10 Orders by Total Orders
+                Top 10 Products by Total Orders
             </h2>
-            <Bar data={data} options={options} />
+            <div className="min-h-[340px] w-full py-4">
+                <Bar key="top-products-chart" data={data} options={options} />
+            </div>
         </div>
     )
 }

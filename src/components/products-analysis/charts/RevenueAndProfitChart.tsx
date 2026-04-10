@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend, plugins } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -26,6 +26,17 @@ const costData = [
 const gmData = [24000000, 22000000, 8000000];
 
 export default function RevenueAndProfitChart() {
+    const chartRef = useRef<ChartJS<'bar'> | null>(null);
+        
+    useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
+
     const data = {
         labels: costData.map(item => item.label),
         datasets: [
@@ -134,9 +145,11 @@ export default function RevenueAndProfitChart() {
         <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
         p-4 h-96 border-l-3 border-[#4a7fce]`}>
             <h2 className="text-gray-500 font-semibold mb-4">
-                Reveue & Profit by Price Category 
+                Revenue & Profit by Price Category 
             </h2>
-            <Bar data={data} options={options} />
+            <div className="h-full w-full">
+                <Bar key="revenue-profit-chart" data={data} options={options} />
+            </div>
         </div>
     )
 }
