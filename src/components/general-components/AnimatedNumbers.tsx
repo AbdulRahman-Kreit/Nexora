@@ -2,38 +2,37 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 
-export default function AnimatedNumbers({ value } : { value: string }) {
+export default function AnimatedNumbers({ value }: { value: string | number }) {
     const [mounted, setMounted] = useState(false);
 
-    const numericValue = parseFloat(value.toString().replace(/[^0-9.-]+/g,""));
+    // تحويل القيمة إلى نص فوراً لضمان عمل includes و replace
+    const stringValue = String(value ?? "0");
+    
+    // استخراج الرقم فقط للعمليات الحسابية
+    const numericValue = parseFloat(stringValue.replace(/[^0-9.-]+/g, "")) || 0;
+    
     const count = useMotionValue(0);
-    const hasDecimals = value.includes(".");
+    const hasDecimals = stringValue.includes(".");
 
     const displayValue = useTransform(count, (latest) => {
-        const formattedValue = hasDecimals ? latest.toFixed(2) : 
-        Math.round(latest);
+        const formattedValue = hasDecimals 
+            ? latest.toFixed(2) 
+            : Math.round(latest).toLocaleString();
 
-        return value.replace(/[0-9.,]+/, formattedValue.toLocaleString());
+        return stringValue.replace(/[0-9.,]+/, formattedValue);
     });
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            setMounted(true);
-        }, 0);
-        
-
+        setMounted(true);
         const animation = animate(count, numericValue, {
             duration: 2,
             ease: "easeInOut",
         });
 
-        return () => {
-            clearTimeout(timeout);
-            animation.stop()
-        };
+        return () => animation.stop();
     }, [numericValue, count]);
 
-    if (!mounted) return <span>{value}</span>;
+    if (!mounted) return <span>{stringValue}</span>;
 
     return <motion.span>{displayValue}</motion.span>;
 }

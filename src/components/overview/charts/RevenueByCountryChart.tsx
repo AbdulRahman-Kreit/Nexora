@@ -1,8 +1,11 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import RevenueByCountrySkeleton from '../skeletal-loading/RevenueByCountrySkeleton';
+import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 ChartJS.register(
     CategoryScale, 
@@ -14,19 +17,13 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartData = [
-    { country: "United States", revenue: 52000000 },
-    { country: "Canada", revenue: 14000000 },
-    { country: "France", revenue: 5000000 },
-    { country: "United Kingdom", revenue: 4000000 },
-    { country: "Germany", revenue: 2000000 },
-    { country: "Brazil", revenue: 2000000 },
-];
 
 export default function RevenueByCountryChart() {
-    const bgMaxValue = 80000000;
+    const bgMaxValue = 5000;
 
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
     
     useEffect(() => {
         const chart = chartRef.current;
@@ -37,12 +34,24 @@ export default function RevenueByCountryChart() {
         };
     }, []);
 
+    useEffect(() => {
+        fetchFromAPI('revenue-by-region').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+
+    if (loading) return <RevenueByCountrySkeleton />;
+
     const data = {
-        labels: chartData.map(item => item.country),
+        labels: chartData.map(item => item.region),
         datasets: [
             {
                 label: 'Revenue',
-                data: chartData.map(item => item.revenue),
+                data: chartData.map(item => parseFloat(item.revenue)),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
                 barThickness: 25,
@@ -89,7 +98,11 @@ export default function RevenueByCountryChart() {
                 align: 'right',
                 color: '#006fff',
                 font: { weight: 600 },
-                formatter: (value) => `${value / 1000000}M`,
+                formatter: (value: number) => {
+                    if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
+                    if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
+                    return value;
+                },
                 offset: 5,
             }
         },

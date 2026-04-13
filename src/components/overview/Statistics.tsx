@@ -1,15 +1,30 @@
-import React from "react";
-import AnimatedNumbers from '@/components/general-components/AnimatedNumbers'
+"use client";
+import React, { useState, useEffect } from "react";
+import AnimatedNumbers from '@/components/general-components/AnimatedNumbers';
+import { fetchFromAPI } from '@/data/fetchFromAPI';
 
-const statisData = [
-    { id: 1, title: "Revenue", value: "$78.26M" },
-    { id: 2, title: "Profit", value: "$54.15M" },
-    { id: 3, title: "Cost", value: "$24.45M" },
-    { id: 4, title: "QTY", value: "214K" },
-];
+
 
 
 export default function Statistics() {
+    const [stats, setStats] = useState<any>({});
+
+    useEffect(() => {
+        fetchFromAPI('Summary').then(data => {
+            
+            setStats(data || {});
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+        })
+    }, []);
+
+    const statisData = [
+    { id: 1, title: "Revenue", value: stats?.revenue || "0" },
+    { id: 2, title: "Profit", value: stats?.profit || "0" },
+    { id: 3, title: "Cost", value: stats?.cost || "0" },
+    { id: 4, title: "QTY", value: stats?.quantity || "0" },
+    ];
+
     return (
         <div className={`flex flex-row justify-between font-grotesk max-w-2/3
         h-fit`}>

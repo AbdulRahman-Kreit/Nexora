@@ -1,7 +1,10 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
+
+import RevenueAndGMSkeleton from "../skeletal-loading/RevenueAndGMSkeleton";
+import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 ChartJS.register(
     CategoryScale,
@@ -13,17 +16,12 @@ ChartJS.register(
     
 );
 
-const chartData = [
-    { date: "Q1 2023", revenue: 100000 }, { date: "Q2 2023", revenue: 300000 },
-    { date: "Q3 2023", revenue: 350000 }, { date: "Q4 2023", revenue: 400000 },
-    { date: "Q1 2024", revenue: 100000 }, { date: "Q2 2024", revenue: 300000 },
-    { date: "Q3 2024", revenue: 350000 }, { date: "Q4 2024", revenue: 400000 },
-    { date: "Q1 2025", revenue: 100000 }, { date: "Q2 2025", revenue: 300000 },
-    { date: "Q3 2025", revenue: 350000 }, { date: "Q4 2025", revenue: 400000 },
-];
+
 
 export default function RevenueAndGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const chart = chartRef.current;
@@ -34,17 +32,32 @@ export default function RevenueAndGMChart() {
         };
     }, []);
 
+    useEffect(() => {
+        fetchFromAPI('Revenue Over Time').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+
+    
+
+    if (loading) return <RevenueAndGMSkeleton />;
+
     const data = {
-        labels: chartData.map(item => item.date),
+        labels: chartData.map(item => item.period),
         datasets: [
             {
                 label: 'Revenue',
-                data: chartData.map(item => item.revenue),
+                data: chartData.map(item => parseFloat(item.revenue)),
                 backgroundColor: chartData.map(item => {
-                    if (item.date.includes("Q1")) return '#69b4ff';
-                    else if (item.date.includes("Q2")) return '#0085ff';
-                    else if (item.date.includes("Q3")) return '#006fff';
-                    else if (item.date.includes("Q4")) return '#006fff';
+                    const period = item.period || "";
+                    if (period.includes("Q1")) return '#69b4ff';
+                    else if (period.includes("Q2")) return '#0085ff';
+                    else if (period.includes("Q3")) return '#006fff';
+                    return '#006fff';
                 }),
                 borderRadius: 5,
             }
@@ -87,7 +100,7 @@ export default function RevenueAndGMChart() {
                     font: {
                         weight: 600,
                     },
-                    callback: (value: any) => `${value / 1000}K`,
+                    // callback: (value: any) => `${value / 1000}K`,
                     padding: 10,
                 },
             },

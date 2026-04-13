@@ -1,19 +1,20 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+import RevenueByBusinessSkeleton from '../skeletal-loading/RevenueByBusinessSkeleton';
+import { fetchFromAPI } from '@/data/fetchFromAPI';
+
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const chartData = [
-    { label: "Gym", percentage: 8.46 },
-    { label: "Supplement Store", percentage: 43.49 },
-    { label: "Warehouse", percentage: 48.04 },
-];
+
 
 export default function RevenueByBusinessTypeChart() {
     const chartRef = useRef<ChartJS<'doughnut'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
         
         useEffect(() => {
             const chart = chartRef.current;
@@ -24,11 +25,24 @@ export default function RevenueByBusinessTypeChart() {
             };
         }, []);
 
+    useEffect(() => {
+            fetchFromAPI('GM By Business Type').then(data => {
+                const result = Array.isArray(data) ? data : (data?.data || []);
+                setchartData(result);
+                setLoading(false);
+            }).catch(error => {
+                console.error(`API Error: ${error}`);
+                setLoading(false);
+            })
+        }, []);
+
+    if (loading) return <RevenueByBusinessSkeleton />;
+
     const data = {
-        labels: chartData.map(item => item.label),
+        labels: chartData.map(item => item.business_type),
         datasets: [
             {
-                data: chartData.map(item => item.percentage),
+                data: chartData.map(item => parseInt(item.gm_percent)),
                 backgroundColor: ['#e1ffff', '#69b4ff', '#006fff'],
                 borderWidth: 0,
                 cutout: '55%',
@@ -53,7 +67,7 @@ export default function RevenueByBusinessTypeChart() {
             tooltip: {
                 callbacks: {
                     label: (context: any) => {
-                        const label = context.label || '';
+                        const label = context.business_type || '';
                         const value = context.formattedValue;
                         return ` ${label}: ${value}%`;
                     }

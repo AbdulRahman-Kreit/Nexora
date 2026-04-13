@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import RevenueByCategorySkeleton from '../skeletal-loading/RevenueByCategorySkeleton';
+import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -14,25 +18,41 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartData = [
-    { category: "Protien", revenue: 369000 },
-    { category: "Carbs", revenue: 124000 },
-    { category: "Clothing", revenue: 201000 },
-    { category: "Amino Acids", revenue: 112000 },
-    { category: "Vitamins", revenue: 50000 },
-]
+// const chartData = [
+//     { category: "Protien", revenue: 369000 },
+//     { category: "Carbs", revenue: 124000 },
+//     { category: "Clothing", revenue: 201000 },
+//     { category: "Amino Acids", revenue: 112000 },
+//     { category: "Vitamins", revenue: 50000 },
+// ]
 
 export default function RevenueByCategoryChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+        const [loading, setLoading] = useState<boolean>(true);
+        
+        useEffect(() => {
+            const chart = chartRef.current;
+            return () => {
+                if (chart) {
+                    chart.destroy();
+                }
+            };
+        }, []);
 
-    useEffect(() => {
-        const chart = chartRef.current;
-        return () => {
-            if (chart) {
-                chart.destroy();
-            }
-        };
-    }, []);
+        
+    
+        useEffect(() => {
+            fetchFromAPI('Revenue By Category').then(data => {
+                setchartData(data);
+                setLoading(false);
+            }).catch(error => {
+                console.error(`API Error: ${error}`);
+                setLoading(false);
+            })
+        }, []);
+
+    if (loading) return <RevenueByCategorySkeleton />;
     
     const data = {
         labels: chartData.map(item => item.category),
@@ -75,7 +95,10 @@ export default function RevenueByCategoryChart() {
                 align: 'top',
                 color: '#006fff',
                 font: { weight: 600 },
-                formatter: (value: any) => `${value / 1000}K`,
+                formatter: (value: any) => {
+                    const num = parseFloat(value);
+                    return num >= 10000 ? `${num / 1000}K` : num;
+                },
                 offset: 1,
             },
         },

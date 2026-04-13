@@ -48,7 +48,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/dashboard/revenue-over-time?days",
+              "raw": "{{base_url}}/admin/dashboard/revenue-over-time",
               "host": [
                 "{{base_url}}"
               ],
@@ -61,7 +61,7 @@
                 {
                   "key": "days",
                   "value": null,
-                  "type": "text"
+                  "disabled": true
                 }
               ]
             }
@@ -69,7 +69,7 @@
           "response": []
         },
         {
-          "name": "Revenue Over Time product",
+          "name": "revenue-by-region",
           "request": {
             "method": "GET",
             "header": [
@@ -80,14 +80,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/dashboard/gm-by-product",
+              "raw": "{{base_url}}/admin/dashboard/revenue-by-region",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "admin",
                 "dashboard",
-                "gm-by-product"
+                "revenue-by-region"
               ]
             }
           },
@@ -345,9 +345,15 @@
           "name": "Summary",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
-              "raw": "{{base_url}}/admin/product-analysis/summary",
+              "raw": "{{base_url}}/admin/product-analysis/summary?days=500&region=France&category=Health",
               "host": [
                 "{{base_url}}"
               ],
@@ -359,9 +365,16 @@
               "query": [
                 {
                   "key": "days",
-                  "value": "360",
-                  "type": "text",
-                  "disabled": true
+                  "value": "500",
+                  "description": "اخر سنه مثلا "
+                },
+                {
+                  "key": "region",
+                  "value": "France"
+                },
+                {
+                  "key": "category",
+                  "value": "Health"
                 }
               ]
             }
@@ -388,6 +401,23 @@
                 "admin",
                 "product-analysis",
                 "cost-gm-by-category"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "800",
+                  "disabled": true
+                },
+                {
+                  "key": "region",
+                  "value": "Germany",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Beauty",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -413,6 +443,23 @@
                 "admin",
                 "product-analysis",
                 "revenue-profit-by-category"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "500",
+                  "disabled": true
+                },
+                {
+                  "key": "origin",
+                  "value": "France",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Health",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -422,7 +469,13 @@
           "name": "Orders Return By Subcategory",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/admin/product-analysis/orders-return-by-subcategory",
               "host": [
@@ -432,6 +485,23 @@
                 "admin",
                 "product-analysis",
                 "orders-return-by-subcategory"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "900",
+                  "disabled": true
+                },
+                {
+                  "key": "origin",
+                  "value": "France",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Thermometer",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -443,7 +513,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/admin/product-analysis/top-products",
+              "raw": "{{base_url}}/admin/product-analysis/top-products?days=900&origin=France&category=Health",
               "host": [
                 "{{base_url}}"
               ],
@@ -451,6 +521,20 @@
                 "admin",
                 "product-analysis",
                 "top-products"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "900"
+                },
+                {
+                  "key": "origin",
+                  "value": "France"
+                },
+                {
+                  "key": "category",
+                  "value": "Health"
+                }
               ]
             }
           },
