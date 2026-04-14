@@ -7,37 +7,38 @@ export async function fetchFromAPI(requestName: string) {
 
     if (requestName.includes('/')) {
         const [folderName, reqName] = requestName.split('/');
-        
-        const folder = postmanData.item.find(
-            (f: any) => f.name.toLowerCase() === folderName.toLowerCase()
-        );
-        
-        if (folder && folder.item) {
-            requestItem = folder.item.find(
-                (req: any) => req.name.toLowerCase() === reqName.toLowerCase()
-            );
-        }
-    }
-
-    if (!requestItem) {
+        const folder = postmanData.item.find(f => f.name.toLowerCase() === folderName.toLowerCase());
+        requestItem = folder?.item?.find((req: any) => req.name.toLowerCase() === reqName.toLowerCase());
+    } else {
         for (const folder of postmanData.item) {
             if (folder.item) {
-                requestItem = folder.item.find((req: any) => req.name === requestName);
+                requestItem = folder.item.find((req: any) => req.name.toLowerCase() === requestName.toLowerCase());
+                if (requestItem) break;
             }
-            if (requestItem) break;
         }
     }
 
-    if (!requestItem) {
-        requestItem = postmanData.item.find((req: any) => req.name === requestName);
-    }
-
-    if (!requestItem) throw new Error(`Request "${requestName}" not found in Postman collection.`);
+    if (!requestItem) throw new Error(`Request "${requestName}" not found.`);
 
     const path = requestItem.request.url.path.join('/');
-    
-    const response = await fetch(`${BASE_URL}/${path}`);
-    if (!response.ok) throw new Error('Network response is not ok');
+
+    const queryParams = requestItem.request.url.query
+        ?.filter((q: any) => q.value !== null && !q.disabled)
+        .map((q: any) => `${q.key}=${encodeURIComponent(q.value)}`)
+        .join('&');
+
+    const finalUrl = `${BASE_URL}/${path}${queryParams ? `?${queryParams}` : ''}`;
+
+    console.log("🚀 Requesting:", finalUrl);
+
+    const response = await fetch(finalUrl, {
+        method: requestItem.request.method,
+        headers: {
+            'Accept': 'application/json',
+        }
+    });
+
+    if (!response.ok) throw new Error(`API Error: ${response.status}`);
 
     return response.json();
 }

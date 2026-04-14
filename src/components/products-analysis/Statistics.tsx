@@ -1,14 +1,9 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedNumbers from '../general-components/AnimatedNumbers';
+import { fetchFromAPI } from "@/data/fetchFromAPI";
 
-const statisData = [
-    { title: 'Growth Margin', progress: 67.8 }, 
-    { title: 'Cost', progress: 31.32 },
-    { title: 'Returns Amount', progress: 8.1 },
-    { title: 'Returns Orders', progress: 40.7 },
-];
 
 export default function Statistics() {
     const radius = 80;
@@ -16,10 +11,30 @@ export default function Statistics() {
     const normalizedRadius = radius - stroke; 
     const circumference = normalizedRadius * 2 * Math.PI;
     const arcLength = circumference / 2; 
+
+    const [stats, setStats] = useState<any>({});
+        
+        useEffect(() => {
+            fetchFromAPI('Product Analysis/Summary').then(data => {
+                
+                setStats(data || {});
+            }).catch(error => {
+                console.error(`API Error: ${error}`);
+            })
+        }, []);
+
+    const statisData = [
+        { title: 'Growth Margin', progress: stats.gm_percent }, 
+        { title: 'Cost', progress: stats.cost_percent },
+        { title: 'Returns Amount', progress: stats.return_amount_percentage }, 
+        { title: 'Returns Orders', progress: stats.returns_orders_percentage },
+    ];
+
     return (
         <div className="flex flex-row justify-between p-8 font-grotesk">
             {statisData.map((data, index) => {
-                const progressPercentage = data.progress / 100;
+                const progressValue = Number(data.progress || 0); 
+                const progressPercentage = progressValue / 100;
                 const progressOffset = arcLength - (progressPercentage * arcLength);
 
                 return (

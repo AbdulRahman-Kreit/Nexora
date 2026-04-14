@@ -1,8 +1,11 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend, plugins } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import CostAndGMSkeleton from '../skeletal-loading/CostAndGMSkeleton';
+import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -17,16 +20,11 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const costData = [
-    { label: '0 - 1000', value: 110600000 },
-    { label: '1000 - 2000', value: 10000000 },
-    { label: '> 2000', value: 3100000 },
-];
-
-const gmData = [67.8, 68.8, 71.3];
 
 export default function CostAndGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -37,13 +35,25 @@ export default function CostAndGMChart() {
         };
     }, []);
 
+    useEffect(() => {
+        fetchFromAPI('Cost & GM By Category').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+
+    if (loading) return <CostAndGMSkeleton />;
+
     const data = {
-        labels: costData.map(item => item.label),
+        labels: chartData.map(item => item.category),
         datasets: [
             {
                 type: 'line' as const,
                 label: 'GM%',
-                data: gmData.map(item => item),
+                data: chartData.map(item => item.gm_percent),
                 borderColor: '#ffffff',
                 borderWidth: 2,
                 pointRadius: 4, 
@@ -57,7 +67,10 @@ export default function CostAndGMChart() {
                     align: 'bottom',
                     anchor: 'end',
                     color: '#ffffff',
-                    formatter: (value: any) => (value + '%'),
+                    formatter: (value: any) => {
+                        const num = Number(value);
+                        return num >= 1000 ? (num / 1000).toFixed(1) + 'K' : num.toFixed(0);
+                    },
                     font: { weight: 600, size: 14 },
                     offset: 6,
                 }
@@ -65,7 +78,7 @@ export default function CostAndGMChart() {
             {
                 type: 'bar' as const, 
                 label: 'Customers',
-                data: costData.map(item => item.value),
+                data: chartData.map(item => item.total_cost),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
                 barThickness: 25,
@@ -75,7 +88,10 @@ export default function CostAndGMChart() {
                     align: 'top',
                     anchor: 'end',
                     color: '#ffffff',
-                    formatter: (value: any) => (value / 1000000) + 'M',
+                    formatter: (value: any) => {
+                        const num = Number(value);
+                        return num >= 1000 ? (num / 1000).toFixed(1) + 'K' : num.toFixed(0);
+                    },
                     font: { weight: 600, size: 14 },
                 }
             },

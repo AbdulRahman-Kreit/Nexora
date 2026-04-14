@@ -21,8 +21,6 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const profitData = [ 12000000, 10000000, 8000000, 5000000, 5000000, 3000000, 3000000, 1000000, 3000000, 1000000 ];
-
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function ProfitAndCustomersChart() {
