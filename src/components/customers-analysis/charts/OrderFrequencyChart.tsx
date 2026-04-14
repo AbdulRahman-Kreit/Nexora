@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/purity */
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import OrderFrequencySkeleton from '../skeletal-loading/OrderFrequencySkeleton';
+import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 ChartJS.register(
     CategoryScale,
@@ -14,29 +18,12 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartData = [
-    { numberOfOrders: 1, customers: 30 },
-    { numberOfOrders: 2, customers: 20 },
-    { numberOfOrders: 3, customers: 38 },
-    { numberOfOrders: 4, customers: 235 },
-    { numberOfOrders: 5, customers: 20 },
-    { numberOfOrders: 6, customers: 21 },
-    { numberOfOrders: 7, customers: 34 },
-    { numberOfOrders: 8, customers: 145 },
-    { numberOfOrders: 9, customers: 10 },
-    { numberOfOrders: 10, customers: 8 },
-    { numberOfOrders: 11, customers: 10 },
-    { numberOfOrders: 12, customers: 64 },
-];
-
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
-
-const handleChageBarColors = chartData.map(() => {
-    return barColors[Math.floor(Math.random() * barColors.length)];
-});
 
 export default function OrderFrequencyChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
     
     useEffect(() => {
         const chart = chartRef.current;
@@ -47,8 +34,24 @@ export default function OrderFrequencyChart() {
         };
     }, []);
 
+    useEffect(() => {
+            fetchFromAPI('Order Frequency').then(data => {
+                setchartData(data);
+                setLoading(false);
+            }).catch(error => {
+                console.error(`API Error: ${error}`);
+                setLoading(false);
+            })
+        }, []);
+    
+    if (loading) return <OrderFrequencySkeleton />;
+
+        const handleChageBarColors = chartData.map(() => {
+            return barColors[Math.floor(Math.random() * barColors.length)];
+        });
+
     const data = {
-        labels: chartData.map(item => item.numberOfOrders),
+        labels: chartData.map(item => item.month),
         datasets: [
             {
                 label: 'Order Frequency',

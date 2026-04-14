@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/purity */
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend, plugins } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import ProfitAndCustomersSkeleton from '../skeletal-loading/ProfitAndCustomersSkeleton';
+import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 ChartJS.register(
     CategoryScale,
@@ -17,29 +21,14 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const customersData = [
-    { region: 'Southwest', customers: 116 },
-    { region: 'Canada', customers: 106 },
-    { region: 'Northwest', customers: 87 },
-    { region: 'Southeast', customers: 79 },
-    { region: 'Central', customers: 61 },
-    { region: 'Northeast', customers: 49 },
-    { region: 'United Kingdom', customers: 38 },
-    { region: 'Brazil', customers: 34 },
-    { region: 'France', customers: 34 },
-    { region: 'Germany', customers: 32 },
-];
-
 const profitData = [ 12000000, 10000000, 8000000, 5000000, 5000000, 3000000, 3000000, 1000000, 3000000, 1000000 ];
 
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
-const handleChageBarColors = customersData.map(() => {
-    return barColors[Math.floor(Math.random() * barColors.length)];
-});
-
 export default function ProfitAndCustomersChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -50,13 +39,29 @@ export default function ProfitAndCustomersChart() {
         };
     }, []);
 
+    useEffect(() => {
+        fetchFromAPI('Region Stats').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+        
+    if (loading) return <ProfitAndCustomersSkeleton />;
+
+    const handleChageBarColors = chartData.map(() => {
+        return barColors[Math.floor(Math.random() * barColors.length)];
+    });
+
     const data = {
-        labels: customersData.map(item => item.region),
+        labels: chartData.map(item => item.region),
         datasets: [
             {
                 type: 'line' as const,
                 label: 'Profit',
-                data: profitData.map(item => item),
+                data: chartData.map(item => Number(item.profit || 0)),
                 borderColor: '#ffffff',
                 borderWidth: 2,
                 pointRadius: 4, 
@@ -69,8 +74,10 @@ export default function ProfitAndCustomersChart() {
                 datalabels: {
                     align: 'bottom',
                     anchor: 'end',
-                    color: '#161616',
-                    formatter: (value: any) => (value / 1000000) + 'M',
+                    color: '#fff0f0',
+                    formatter: (value: any) => {
+                        return value >= 1000000 ? (value / 1000000) + 'M' : value;
+                    },
                     font: { weight: 600, size: 14 },
                     offset: 6,
                 }
@@ -78,7 +85,7 @@ export default function ProfitAndCustomersChart() {
             {
                 type: 'bar' as const, 
                 label: 'Customers',
-                data: customersData.map(item => item.customers),
+                data: chartData.map(item => item.customer_count),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 25,

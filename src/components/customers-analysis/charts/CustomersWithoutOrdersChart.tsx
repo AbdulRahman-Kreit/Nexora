@@ -1,8 +1,12 @@
+/* eslint-disable react-hooks/purity */
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import CustomersWithoutOrdersSkeleton from '../skeletal-loading/CustomersWithoutOrdersSkeleton';
+import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 ChartJS.register(
     CategoryScale,
@@ -14,27 +18,13 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartData = [
-    { region: 'Southwest', customers: 31 },
-    { region: 'Canada', customers: 30 },
-    { region: 'Northwest', customers: 32 },
-    { region: 'Southeast', customers: 20 },
-    { region: 'Central', customers: 21 },
-    { region: 'Northeast', customers: 31 },
-    { region: 'United Kingdom', customers: 24 },
-    { region: 'Brazil', customers: 27 },
-    { region: 'France', customers: 22 },
-    { region: 'Germany', customers: 18 },
-];
 
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
-const handleChageBarColors = chartData.map(() => {
-    return barColors[Math.floor(Math.random() * barColors.length)];
-});
-
 export default function CustomersWithoutOrdersChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -45,12 +35,29 @@ export default function CustomersWithoutOrdersChart() {
         };
     }, []);
 
+    useEffect(() => {
+        fetchFromAPI('No Sales By Region').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+        
+    if (loading) return <CustomersWithoutOrdersSkeleton />;
+    
+
+    const handleChageBarColors = chartData.map(() => {
+        return barColors[Math.floor(Math.random() * barColors.length)];
+    });
+
     const data = {
         labels: chartData.map(item => item.region),
         datasets: [
             {
                 label: 'Order Frequency',
-                data: chartData.map(item => item.customers),
+                data: chartData.map(item => item.customers_without_orders),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 25,

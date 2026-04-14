@@ -3,14 +3,11 @@ import React, { useState, useEffect } from "react";
 import AnimatedNumbers from '@/components/general-components/AnimatedNumbers';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
-
-
-
 export default function Statistics() {
     const [stats, setStats] = useState<any>({});
 
     useEffect(() => {
-        fetchFromAPI('Summary').then(data => {
+        fetchFromAPI('Dashboard Overview/Summary').then(data => {
             
             setStats(data || {});
         }).catch(error => {

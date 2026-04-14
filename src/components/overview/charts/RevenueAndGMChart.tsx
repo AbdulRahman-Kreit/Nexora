@@ -16,8 +16,6 @@ ChartJS.register(
     
 );
 
-
-
 export default function RevenueAndGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);

@@ -18,14 +18,6 @@ ChartJS.register(
     ChartDataLabels
 );
 
-// const chartData = [
-//     { category: "Protien", revenue: 369000 },
-//     { category: "Carbs", revenue: 124000 },
-//     { category: "Clothing", revenue: 201000 },
-//     { category: "Amino Acids", revenue: 112000 },
-//     { category: "Vitamins", revenue: 50000 },
-// ]
-
 export default function RevenueByCategoryChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);

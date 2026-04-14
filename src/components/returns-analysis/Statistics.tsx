@@ -1,15 +1,27 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import AnimatedNumbers from '@/components/general-components/AnimatedNumbers'
-
-const statisData = [
-    { id: 1, title: "Returns Amount", value: "$6.39M", percentage: "8.1%" },
-    { id: 2, title: "QTV Returns", value: "14442", percentage: "6.7%"  },
-    { id: 3, title: "Order Returns", value: "1546", percentage: "40.7%"  },
-    { id: 4, title: "Customer Returns", value: "336", percentage: "57.17%"  },
-];
-
+import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 export default function Statistics() {
+    const [stats, setStats] = useState<any>({});
+        
+        useEffect(() => {
+            fetchFromAPI('Returns Analysis/Summary').then(data => {
+                
+                setStats(data || {});
+            }).catch(error => {
+                console.error(`API Error: ${error}`);
+            })
+        }, []);
+
+    const statisData = [
+        { id: 1, title: "Returns Amount", value: stats.returns_amount, percentage: stats.returns_amount_percent },
+        { id: 2, title: "QTV Returns", value: stats.qty_returns, percentage: stats.qty_returns_percent  },
+        { id: 3, title: "Order Returns", value: stats.order_returns, percentage: stats.order_returns_percent  },
+        { id: 4, title: "Customer Returns", value: stats.customer_returns, percentage: stats.customer_returns_percent  },
+    ];
+
     return (
         <div className={`flex flex-row justify-between font-grotesk max-w-2/3
         h-fit`}>
