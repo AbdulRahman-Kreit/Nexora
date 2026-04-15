@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CustomerReturnsByMonthSkeleton() {
+export default function YTDrevenueSkeleton() {
     return (
         <div className="bg-linear-to-r from-[#151a21] to-[#161616] p-6 h-96 border-l-3 border-[#4a7fce] animate-pulse">
             <div className="h-4 w-48 bg-gray-700 rounded mb-8"></div>

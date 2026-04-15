@@ -56,13 +56,13 @@ export default function CustomerReturnsByMonthChart() {
             borderColor: '#006fff',
             borderWidth: 2,
             backgroundColor: (context: any) => {
-            const chart = context.chart;
-            const { ctx, chartArea } = chart;
-            if (!chartArea) return 'transparent';
-            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-            gradient.addColorStop(0, 'rgba(0, 111, 255, 0.4)');
-            gradient.addColorStop(1, 'rgba(0, 111, 255, 0)');
-            return gradient;
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+                if (!chartArea) return 'transparent';
+                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                gradient.addColorStop(0, 'rgba(0, 111, 255, 0.4)');
+                gradient.addColorStop(1, 'rgba(0, 111, 255, 0)');
+                return gradient;
             },
             pointRadius: 6,
             pointBackgroundColor: '#006fff',
@@ -123,10 +123,10 @@ export default function CustomerReturnsByMonthChart() {
 
     return (
         <div className="bg-linear-to-r from-[#151a21] to-[#161616] p-6 h-96 border-l-3 border-[#4a7fce]">
-        <h2 className="text-gray-500 font-semibold mb-4">Customer Returns by Month</h2>
-        <div className="min-h-[300px] w-full">
-            <Line key="customer-returns-by-month-chart" data={data} options={options} />
-        </div>
+            <h2 className="text-gray-500 font-semibold mb-4">Customer Returns by Month</h2>
+            <div className="min-h-[300px] w-full">
+                <Line key="customer-returns-by-month-chart" data={data} options={options} />
+            </div>
         </div>
     );
 }

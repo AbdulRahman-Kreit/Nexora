@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import Statistics from '@/components/time-analysis/Statistics';
 
 export default function TimeAnalysis() {
     return (
@@ -9,6 +10,7 @@ export default function TimeAnalysis() {
             <p className="text-[16px] text-gray-500 mb-5 font-grotesk">
                 Aug 6, 2024
             </p>
+            <Statistics />
         </div>
     )
 }
