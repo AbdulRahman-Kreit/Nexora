@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../../globals.css";
 
-import TimelineFilter from "@/components/time-analysis/TimelineFilter";
+import TimelineFilter from "@/components/employee-analysis/TimelineFilter";
 
 export const metadata: Metadata = {
   title: "Nexora",
@@ -10,15 +10,15 @@ export const metadata: Metadata = {
 
 export default function TimeAnalysisLayout(props: { 
   children: React.ReactNode,
-  "ytd-revenue": React.ReactNode,
-  "revenue-by-month": React.ReactNode,
-  "revenue-over-time": React.ReactNode,
+  "top-employees": React.ReactNode,
+  "employee-returns": React.ReactNode,
+  "employee-statistics": React.ReactNode,
 }) {
   const { 
     children, 
-    "ytd-revenue": ytdRevenue, 
-    "revenue-by-month": revenueByMonth, 
-    "revenue-over-time": revenueOverTime, 
+    "top-employees": topEmployees, 
+    "employee-returns": employeeReturns, 
+    "employee-statistics": employeeStatistics, 
   } = props;
 
   return (
@@ -30,12 +30,12 @@ export default function TimeAnalysisLayout(props: {
         <section className="grid grid-cols-2 gap-4 w-full py-10 pl-4">
           
           <div className="flex flex-col gap-4">
-            <div className="min-h-[400px]">{ytdRevenue}</div>
-            <div className="min-h-[400px]">{revenueByMonth}</div>
+            <div className="min-h-[400px]">{topEmployees}</div>
+            <div className="min-h-[400px]">{employeeReturns}</div>
           </div>
           
           <div className="h-full">
-            <div className="h-full min-h-[816px]">{revenueOverTime}</div>
+            <div className="h-full min-h-[816px]">{employeeStatistics}</div>
           </div>
 
         </section>
