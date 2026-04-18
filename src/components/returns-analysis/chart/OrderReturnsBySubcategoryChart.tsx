@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/purity */
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+import OrderReturnsBySubcategorySkeleton from '../skeletal-loading/OrderReturnsBySubcategorySkeleton';
+import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -15,36 +18,12 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartData = [
-    { product: 'Whey Protein', value: 441 },
-    { product: 'Egg Protein', value: 373 },
-    { product: 'Meal Replacement', value: 239 },
-    { product: 'BCAA', value: 198 },
-    { product: 'Gainer', value: 194 },
-    { product: 'Casein Protein', value: 192 },
-    { product: 'Vitamins', value: 178 },
-    { product: 'Jerseys', value: 155 },
-    { product: 'Gloves', value: 95 },
-    { product: 'Vests', value: 94 },
-    { product: 'Blended Protein', value: 82 },
-    { product: 'Shorts', value: 69 },
-    { product: 'Beef Protein', value: 56 },
-    { product: 'Vegan Protein', value: 34 },
-    { product: 'Socks', value: 33 },
-    { product: 'Jackets', value: 30 },
-    { product: 'Tights', value: 30 },
-    { product: 'Glutamine', value: 21 }
-];
-
-
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
-
-const handleChageBarColors = chartData.map(() => {
-    return barColors[Math.floor(Math.random() * barColors.length)];
-});
 
 export default function OrderReturnsBySubcategoryChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -55,19 +34,35 @@ export default function OrderReturnsBySubcategoryChart() {
         };
     }, []);
 
+    useEffect(() => {
+        fetchFromAPI('By Subcategory').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+    
+    const handleChageBarColors = chartData.map(() => {
+        return barColors[Math.floor(Math.random() * barColors.length)];
+    });
+
+    if (loading) return <OrderReturnsBySubcategorySkeleton />;
+
     const data = {
-        labels: chartData.map(item => item.product),
+        labels: chartData.map(item => item.subcategory),
         datasets: [
             {
                 label: 'Order Frequency',
-                data: chartData.map(item => item.value),
+                data: chartData.map(item => item.returns),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 20,
             }
         ]
     };
-    
+
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -116,10 +111,10 @@ export default function OrderReturnsBySubcategoryChart() {
     return (
         <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
         p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+            <h2 className="text-gray-500 font-semibold">
                 Order Returns by Subcategory
             </h2>
-            <div className="min-h-full w-full">
+            <div className="min-h-full w-full py-5">
                 <Bar key="order-returns-by-subcategory-chart" data={data} options={options} />
             </div>
         </div>

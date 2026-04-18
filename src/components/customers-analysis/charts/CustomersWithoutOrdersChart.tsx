@@ -36,14 +36,17 @@ export default function CustomersWithoutOrdersChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('No Sales By Region').then(data => {
-            setchartData(data);
-            setLoading(false);
-        }).catch(error => {
-            console.error(`API Error: ${error}`);
-            setLoading(false);
-        })
-    }, []);
+            fetchFromAPI('No Sales By Region')
+                .then(data => {
+                    setchartData(data.regionsWithoutSales);
+                    setLoading(false);
+                })
+                .catch(error => {
+                    console.error(`API Error: ${error}`);
+                    setLoading(false);
+                });
+        }, []);
+
         
     if (loading) return <CustomersWithoutOrdersSkeleton />;
     
@@ -56,8 +59,8 @@ export default function CustomersWithoutOrdersChart() {
         labels: chartData.map(item => item.region),
         datasets: [
             {
-                label: 'Order Frequency',
-                data: chartData.map(item => item.customers_without_orders),
+                label: 'Customers without Orders',
+                data: chartData.map(() => 1),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 25,
@@ -111,10 +114,10 @@ export default function CustomersWithoutOrdersChart() {
     return (
         <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
         p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+            <h2 className="text-gray-500 font-semibold">
                 Customers without Orders by Region
             </h2>
-            <div className="h-full w-full">
+            <div className="h-full w-full py-5">
                 <Bar key="customers-without-orders-chart" data={data} options={options} />
             </div>
         </div>

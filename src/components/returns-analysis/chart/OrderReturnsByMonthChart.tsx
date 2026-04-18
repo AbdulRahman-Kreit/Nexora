@@ -1,8 +1,11 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import OrderReturnsByMonthSkeleton from '../skeletal-loading/OrderReturnsByMonthSkeleton';
+import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -16,40 +19,38 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartDataValues = [
-    { month: "Jan", value: 22 },
-    { month: "Feb", value: 80 },
-    { month: "Mar", value: 72 },
-    { month: "Apr", value: 89 },
-    { month: "May", value: 118 },
-    { month: "Jun", value: 47 },
-    { month: "Jul", value: 93 },
-    { month: "Aug", value: 100 },
-    { month: "Sep", value: 59 },
-    { month: "Oct", value: 104 },
-    { month: "Nov", value: 94 },
-    { month: "Dec", value: 50 },
-];
-
 export default function OrderReturnsByMonthChart() {
     const chartRef = useRef<ChartJS<'line'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
         
-        useEffect(() => {
-            const chart = chartRef.current;
-            return () => {
-                if (chart) {
-                    chart.destroy();
-                }
-            };
-        }, []);
+    useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
 
+    useEffect(() => {
+        fetchFromAPI('By Month').then(data => {
+            setchartData(data.orders_per_month);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+    
+    if (loading) return <OrderReturnsByMonthSkeleton />;
     
     const data = {
-        labels: chartDataValues.map((item) => item.month),
+        labels: chartData.map((item) => item.month),
         datasets: [
         {
-            label: 'Customer Returns',
-            data: chartDataValues.map((item) => item.value),
+            label: 'Order Returns',
+            data: chartData.map((item) => item.orders),
             fill: true,
             tension: 0.4,
             borderColor: '#006fff',
@@ -122,10 +123,10 @@ export default function OrderReturnsByMonthChart() {
         
     return (
         <div className="bg-linear-to-r from-[#151a21] to-[#161616] p-6 h-96 border-l-3 border-[#4a7fce]">
-        <h2 className="text-gray-500 font-semibold mb-4">Order Returns by Month</h2>
-        <div className="min-h-[300px] w-full">
-            <Line key="order-returns-by-month-chart" data={data} options={options} />
-        </div>
+            <h2 className="text-gray-500 font-semibold">Order Returns by Month</h2>
+            <div className="min-h-[300px] w-full py-5">
+                <Line key="order-returns-by-month-chart" data={data} options={options} />
+            </div>
         </div>
     );
 }

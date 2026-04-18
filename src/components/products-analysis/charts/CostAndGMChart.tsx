@@ -160,10 +160,10 @@ export default function CostAndGMChart() {
     return (
         <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
         p-4 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+            <h2 className="text-gray-500 font-semibold">
                 Cost & GM by Price Category
             </h2>
-            <div className="h-full w-full">
+            <div className="h-full w-full py-5">
                 <Bar key="cost-gm-chart" data={data} options={options} />
             </div>
         </div>

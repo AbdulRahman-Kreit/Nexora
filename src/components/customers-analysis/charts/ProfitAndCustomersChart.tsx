@@ -159,10 +159,10 @@ export default function ProfitAndCustomersChart() {
     return (
         <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
         p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+            <h2 className="text-gray-500 font-semibold">
                 Profit & Customers by Region
             </h2>
-            <div className="h-full w-full">
+            <div className="h-full w-full py-5">
                 <Bar key="profit-customers-chart" data={data} options={options} />
             </div>
         </div>

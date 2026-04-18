@@ -40,8 +40,6 @@ export default function RevenueAndGMChart() {
         })
     }, []);
 
-    
-
     if (loading) return <RevenueAndGMSkeleton />;
 
     const data = {
@@ -132,7 +130,7 @@ export default function RevenueAndGMChart() {
             <h2 className="text-gray-500 font-semibold mb-4">
                 Revenue and GM% Over Time
             </h2>
-            <div className="h-full w-full">
+            <div className="h-full w-full py-5">
                 <Bar key="revenue-gm-bar-chart" data={data} options={options} />
             </div>
         </div>

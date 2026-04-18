@@ -1,24 +1,24 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import AnimatedNumbers from '@/components/general-components/AnimatedNumbers'
-// import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 export default function Statistics() {
-    // const [stats, setStats] = useState<any>({});
+    const [stats, setStats] = useState<any>({});
     
-    // useEffect(() => {
-    //     fetchFromAPI('Time Analysis/Summary').then(data => {
+    useEffect(() => {
+        fetchFromAPI('Time Analysis/Summary').then(data => {
             
-    //         setStats(data || {});
-    //     }).catch(error => {
-    //         console.error(`API Error: ${error}`);
-    //     })
-    // }, []);
+            setStats(data || {});
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+        })
+    }, []);
     
     const statisData = [
-        { id: 1, title: "Revenue", value: 78870000 },
-        { id: 2, title: "Profit", value: 54170000  },
-        { id: 3, title: "Cost", value: 24700000 },
+        { id: 1, title: "Revenue", value: `$${78870000}` },
+        { id: 2, title: "Profit", value: `$${54170000}`  },
+        { id: 3, title: "Cost", value: `$${24700000}` },
     ];
     
     return (

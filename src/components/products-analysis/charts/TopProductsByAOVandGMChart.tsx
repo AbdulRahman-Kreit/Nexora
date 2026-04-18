@@ -156,10 +156,10 @@ export default function TopProductByAOVandGMChart() {
     return (
         <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
         p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+            <h2 className="text-gray-500 font-semibold">
                 Top 10 Products by AOV & GM%
             </h2>
-            <div className="h-full w-full">
+            <div className="h-full w-full py-5">
                 <Bar key="top-products-aov-gm-chart" data={data} options={options} />
             </div>
         </div>

@@ -21,7 +21,7 @@ export default function Filter() {
         { id: 'southwest', label: 'Southwest' },
     ];
 
-    const cardStyle = `flex flex-col w-[250px] bg-[#006fff] mb-5 mx-0 
+    const cardStyle = `flex flex-col w-[230px] bg-[#006fff] mb-5 mx-0 
     rounded-2xl text-center relative`;
     const headingStyle = `w-full text-[#006fff] font-semibold py-2 text-lg
     my-0 mx-auto rounded-t-2xl`;

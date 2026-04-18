@@ -45,9 +45,12 @@ export default function RevenueOverTimeTable() {
                 .custom-scrollbar {
                     scrollbar-width: thin !important;
                     scrollbar-color: rgba(255, 255, 255, 0.4) transparent !important;
-                    overflow-y: auto !important;
+                    overflow: auto !important; 
                 }
-                .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+                .custom-scrollbar::-webkit-scrollbar { 
+                    width: 5px; 
+                    height: 5px; 
+                }
                 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
                 .custom-scrollbar::-webkit-scrollbar-thumb {
                     background: rgba(255, 255, 255, 0.4);
@@ -55,8 +58,8 @@ export default function RevenueOverTimeTable() {
                 }
             `}} />
 
-            <div className="scroll-container custom-scrollbar">
-                <table className="w-full text-center border-collapse">
+            <div className="scroll-container custom-scrollbar overflow-x-auto w-full">
+                <table className="w-full text-center border-collapse min-w-[800px]">
                     <thead className="sticky top-0 z-20 bg-[#006fff]">
                         <tr className="text-sm font-bold">
                             <th className="pb-4 px-4 w-[25%] border-b-2 border-white/30 text-left bg-[#006fff]">Year</th>

@@ -184,7 +184,13 @@
           "name": "Churn Analysis",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/admin/customer-analysis/churn",
               "host": [
@@ -513,7 +519,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{base_url}}/admin/product-analysis/top-products?days=900&origin=France&category=Health",
+              "raw": "{{base_url}}/admin/product-analysis/top-products",
               "host": [
                 "{{base_url}}"
               ],
@@ -525,15 +531,18 @@
               "query": [
                 {
                   "key": "days",
-                  "value": "900"
+                  "value": "900",
+                  "disabled": true
                 },
                 {
                   "key": "origin",
-                  "value": "France"
+                  "value": "France",
+                  "disabled": true
                 },
                 {
                   "key": "category",
-                  "value": "Health"
+                  "value": "Health",
+                  "disabled": true
                 }
               ]
             }

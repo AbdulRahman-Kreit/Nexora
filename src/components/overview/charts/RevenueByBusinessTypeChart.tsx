@@ -93,7 +93,7 @@ export default function RevenueByBusinessTypeChart() {
     return (
         <div className="bg-[#151a21] p-6 h-96 border-l-3 border-[#4a7fce] rounded-r-lg">
             <h2 className="text-gray-500 font-semibold mb-4">
-                Business by Business Type
+                Revenue by Business Type
             </h2>
             <div className="h-[280px] w-full">
                 <Doughnut 

@@ -20,9 +20,7 @@ const Sidebar = memo(function Sidebar()  {
         <nav className='bg-[#1f1f1f] text-white'>
             <Header />
             <div className="p-4 flex flex-col gap-4">
-                <span className="font-semibold text-gray-400 ml-3">
-                    Reports
-                </span>
+                
                 <Link className={`${pathname === '/reports' ? activeLinkStyle : passiveLinkStyle}`} 
                     href="/reports">
                     <FontAwesomeIcon icon={faUser} className='mr-[15px]' />

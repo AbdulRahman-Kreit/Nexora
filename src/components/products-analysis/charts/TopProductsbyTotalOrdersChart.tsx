@@ -49,7 +49,7 @@ export default function TopProductsbyTotalOrdersChart() {
                 data: chartData.map(item => item.value),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
-                barThickness: 25,
+                barThickness: 18,
                 order: 1,
                 animations: {
                     x: {
@@ -70,7 +70,7 @@ export default function TopProductsbyTotalOrdersChart() {
                 data: chartData.map(() => bgMaxValue),
                 backgroundColor: '#12243c',
                 borderRadius: 5,
-                barThickness: 25,
+                barThickness: 18,
                 order: 2, 
                 datalabels: { display: false } 
             }
@@ -117,10 +117,10 @@ export default function TopProductsbyTotalOrdersChart() {
     return (
         <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
         p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+            <h2 className="text-gray-500 font-semibold mb-0">
                 Top 10 Products by Total Orders
             </h2>
-            <div className="min-h-[340px] w-full py-4">
+            <div className="min-h-[340px] w-full py-5 mt-0">
                 <Bar key="top-products-chart" data={data} options={options} />
             </div>
         </div>

@@ -5,6 +5,8 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 config.autoAddCss = false;
 import "./globals.css";
 
+import { FilterProvider } from "@/contexts/FilterProvider";
+
 const clashDisplay = localFont({
   src: [
     {
@@ -43,7 +45,9 @@ export default function RootLayout({
         className={`${clashDisplay.variable} ${clashGrotesk.variable} antialiased`}
         suppressHydrationWarning={true}
       >
+        <FilterProvider>
         {children}
+        </FilterProvider>
       </body>
     </html>
   );

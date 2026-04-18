@@ -1,8 +1,11 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import CustomerReturnsByMonthSkeleton from '../skeletal-loading/CustomerReturnsByMonthSkeleton';
+import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -16,23 +19,10 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartDataValues = [
-    { month: "Jan", value: 122 },
-    { month: "Feb", value: 89 },
-    { month: "Mar", value: 72 },
-    { month: "Apr", value: 89 },
-    { month: "May", value: 138 },
-    { month: "Jun", value: 47 },
-    { month: "Jul", value: 93 },
-    { month: "Aug", value: 118 },
-    { month: "Sep", value: 59 },
-    { month: "Oct", value: 104 },
-    { month: "Nov", value: 94 },
-    { month: "Dec", value: 59 },
-];
-
 export default function CustomerReturnsByMonthChart() {
     const chartRef = useRef<ChartJS<'line'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -43,14 +33,24 @@ export default function CustomerReturnsByMonthChart() {
         };
     }, []);
 
-    
+    useEffect(() => {
+        fetchFromAPI('By Month').then(data => {
+            setchartData(data.customers_per_month);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+
+    if (loading) return <CustomerReturnsByMonthSkeleton />;
 
     const data = {
-        labels: chartDataValues.map((item) => item.month),
+        labels: chartData.map((item) => item.month),
         datasets: [
         {
             label: 'Customer Returns',
-            data: chartDataValues.map((item) => item.value),
+            data: chartData.map((item) => item.customers),
             fill: true,
             tension: 0.4,
             borderColor: '#006fff',
@@ -123,8 +123,8 @@ export default function CustomerReturnsByMonthChart() {
 
     return (
         <div className="bg-linear-to-r from-[#151a21] to-[#161616] p-6 h-96 border-l-3 border-[#4a7fce]">
-            <h2 className="text-gray-500 font-semibold mb-4">Customer Returns by Month</h2>
-            <div className="min-h-[300px] w-full">
+            <h2 className="text-gray-500 font-semibold">Customer Returns by Month</h2>
+            <div className="min-h-[300px] w-full py-5">
                 <Line key="customer-returns-by-month-chart" data={data} options={options} />
             </div>
         </div>

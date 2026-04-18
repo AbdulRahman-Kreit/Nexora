@@ -5,21 +5,20 @@ import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 export default function AnimatedNumbers({ value }: { value: string | number }) {
     const [mounted, setMounted] = useState(false);
 
-    // تحويل القيمة إلى نص فوراً لضمان عمل includes و replace
-    const stringValue = String(value ?? "0");
-    
-    // استخراج الرقم فقط للعمليات الحسابية
-    const numericValue = parseFloat(stringValue.replace(/[^0-9.-]+/g, "")) || 0;
+    const rawString = String(value ?? "0");
+    const numericValue = parseFloat(rawString.replace(/[^0-9.-]+/g, "")) || 0;
     
     const count = useMotionValue(0);
-    const hasDecimals = stringValue.includes(".");
+
+    const formatNumber = (num: number) => {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+        if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+        return num.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    };
 
     const displayValue = useTransform(count, (latest) => {
-        const formattedValue = hasDecimals 
-            ? latest.toFixed(2) 
-            : Math.round(latest).toLocaleString();
-
-        return stringValue.replace(/[0-9.,]+/, formattedValue);
+        const formatted = formatNumber(latest);
+        return rawString.replace(/[0-9.,]+/, formatted);
     });
 
     useEffect(() => {
@@ -32,7 +31,7 @@ export default function AnimatedNumbers({ value }: { value: string | number }) {
         return () => animation.stop();
     }, [numericValue, count]);
 
-    if (!mounted) return <span>{stringValue}</span>;
+    if (!mounted) return <span>{rawString}</span>;
 
     return <motion.span>{displayValue}</motion.span>;
 }

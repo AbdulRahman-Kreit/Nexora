@@ -16,10 +16,10 @@ export default function Statistics() {
         }, []);
 
     const statisData = [
-        { id: 1, title: "Returns Amount", value: stats.returns_amount, percentage: stats.returns_amount_percent },
-        { id: 2, title: "QTV Returns", value: stats.qty_returns, percentage: stats.qty_returns_percent  },
-        { id: 3, title: "Order Returns", value: stats.order_returns, percentage: stats.order_returns_percent  },
-        { id: 4, title: "Customer Returns", value: stats.customer_returns, percentage: stats.customer_returns_percent  },
+        { id: 1, title: "Returns Amount", value: stats.returns_amount, percentage: `${stats.returns_amount_percent}%` },
+        { id: 2, title: "QTV Returns", value: stats.qty_returns, percentage: `${stats.qty_returns_percent}%` },
+        { id: 3, title: "Order Returns", value: stats.order_returns, percentage: `${stats.order_returns_percent}%` },
+        { id: 4, title: "Customer Returns", value: stats.customer_returns, percentage: `${stats.customer_returns_percent}%` },
     ];
 
     return (

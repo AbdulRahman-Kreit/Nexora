@@ -36,17 +36,16 @@ export default function CustomerReturnsByRegionChart() {
     }, []);
 
     useEffect(() => {
-            fetchFromAPI('By Region').then(data => {
-                setchartData(data);
-                setLoading(false);
-            }).catch(error => {
-                console.error(`API Error: ${error}`);
-                setLoading(false);
-            })
-        }, []);
-        
+        fetchFromAPI('By Region').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+    
     if (loading) return <CustomerReturnsByRegionSkeleton />;
-
 
     const handleChageBarColors = chartData.map(() => {
         return barColors[Math.floor(Math.random() * barColors.length)];
@@ -113,10 +112,10 @@ export default function CustomerReturnsByRegionChart() {
         return (
             <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
             p-6 h-96 border-l-3 border-[#4a7fce]`}>
-                <h2 className="text-gray-500 font-semibold mb-4">
+                <h2 className="text-gray-500 font-semibold">
                     Customer Returns by Region
                 </h2>
-                <div className="min-h-[320px] w-full">
+                <div className="min-h-[320px] w-full py-5">
                     <Bar key="customer-returns-by-region-chart" data={data} options={options} />
                 </div>
             </div>

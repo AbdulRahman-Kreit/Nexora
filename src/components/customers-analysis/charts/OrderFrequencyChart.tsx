@@ -138,7 +138,7 @@ export default function OrderFrequencyChart() {
             <h2 className="text-gray-500 font-semibold mb-4">
                 Order Frequency
             </h2>
-            <div className="h-full w-full">
+            <div className="h-full w-full py-5">
                 <Bar key="order-frequency-chart" data={data} options={options} />
             </div>
         </div>

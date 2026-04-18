@@ -129,7 +129,7 @@ export default function RevenueByCountryChart() {
             <h2 className="text-gray-500 font-semibold mb-4">
                 Revenue by Country
             </h2>
-            <div className="h-full w-full">
+            <div className="h-full w-full py-5">
                 <Bar 
                     key="revenue-by-country-bar-chart" 
                     data={data} 

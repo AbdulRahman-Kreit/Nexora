@@ -26,7 +26,21 @@ export default function SectionSwitcher() {
     const activeStyle = `border-[#006fff] bg-[#132741] text-[#006fff]`;
 
     return (
-        <div className='flex flex-col items-end justify-start mt-4 relative'>
+        <div className='flex flex-col items-end justify-start mt-4 absolute right-3'>
+            <style dangerouslySetInnerHTML={{ __html: `
+                .custom-scrollbar {
+                    scrollbar-width: thin !important;
+                    scrollbar-color: #006fff transparent !important;
+                    overflow-y: auto !important;
+                }
+                .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: #006fff;
+                    border-radius: 10px;
+                }
+            `}} />
+
             <button 
                 onClick={() => setShowContent(!showContent)}
                 className="p-3 bg-[#006fff] text-white rounded-full shadow-lg hover:scale-110 transition-transform mb-4"
@@ -35,7 +49,8 @@ export default function SectionSwitcher() {
             </button>
 
             {showContent && (
-                <div className="bg-[#151a21] p-6 rounded-2xl border border-gray-800 shadow-2xl animate-in fade-in zoom-in duration-300">
+            <div className={`bg-[#151a21] p-8 rounded-2xl border border-gray-800 
+            shadow-2xl animate-in fade-in zoom-in duration-300`}>
                     <div className="flex gap-2 mb-6 justify-center">
                         <button onClick={() => setIsFilter(true)}
                             className={`${baseStyle} ${isFilter ? activeStyle : inactiveStyle}`}>
@@ -47,7 +62,7 @@ export default function SectionSwitcher() {
                         </button>
                     </div>
 
-                    <div className="max-h-[500px] overflow-y-auto w-64">
+                    <div className="max-h-[500px] overflow-y-auto w-64 custom-scrollbar">
                         {isFilter ? <Filter /> : <TopProducts />}
                     </div>
                 </div>

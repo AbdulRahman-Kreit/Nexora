@@ -17,26 +17,12 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartData = [
-    { employee: 'Alice Johnson', totalSales: 120000 },
-    { employee: 'Bob Smith', totalSales: 110000 },
-    { employee: 'Charlie Brown', totalSales: 100000 },
-    { employee: 'Diana Prince', totalSales: 90000 },
-    { employee: 'Eve Adams', totalSales: 80000 },
-    { employee: 'Alice Johnson', totalSales: 120000 },
-    { employee: 'Bob Smith', totalSales: 110000 },
-    { employee: 'Charlie Brown', totalSales: 100000 },
-    { employee: 'Diana Prince', totalSales: 90000 },
-    { employee: 'Eve Adams', totalSales: 80000 }
-];
-
-
 export default function TopEmployeesChart() {
-    const bgMaxValue = 300000;
+    const bgMaxValue = 5000;
     
         const chartRef = useRef<ChartJS<'bar'> | null>(null);
-        // const [chartData, setchartData] = useState<any[]>([]);
-        // const [loading, setLoading] = useState<boolean>(true);
+        const [chartData, setchartData] = useState<any[]>([]);
+        const [loading, setLoading] = useState<boolean>(true);
         
         useEffect(() => {
             const chart = chartRef.current;
@@ -47,24 +33,24 @@ export default function TopEmployeesChart() {
             };
         }, []);
     
-        // useEffect(() => {
-        //     fetchFromAPI('revenue-by-region').then(data => {
-        //         setchartData(data);
-        //         setLoading(false);
-        //     }).catch(error => {
-        //         console.error(`API Error: ${error}`);
-        //         setLoading(false);
-        //     })
-        // }, []);
+        useEffect(() => {
+            fetchFromAPI('Top Employees').then(data => {
+                setchartData(data);
+                setLoading(false);
+            }).catch(error => {
+                console.error(`API Error: ${error}`);
+                setLoading(false);
+            })
+        }, []);
     
-        // if (loading) return <TopEmployeesSkeleton />;
+        if (loading) return <TopEmployeesSkeleton />;
     
         const data = {
             labels: chartData.map(item => item.employee),
             datasets: [
                 {
                     label: 'Sales',
-                    data: chartData.map(item => item.totalSales),
+                    data: chartData.map(item => item.total_sales),
                     backgroundColor: '#006fff',
                     borderRadius: 5,
                     barThickness: 20,

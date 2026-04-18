@@ -18,7 +18,7 @@ export default function Statistics() {
 
     const statisData = [
         { id: 1, title: "Customers", value: stats?.customer || "0" },
-        { id: 2, title: "AOV", value: stats?.aov || "$0" },
+        { id: 2, title: "AOV", value: `$${stats?.aov}` || "$0" },
         { id: 3, title: "Orders", value: stats?.orders || "0" },
         { id: 4, title: "Customer No Sales", value: stats?.customer_no_sales || "0" },
     ];

@@ -1,22 +1,18 @@
-"use client";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
-export default function EmployeeStatisticsChart() {
-    const [tableData, setTableData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+export default async function EmployeeStatisticsChart() {
+    let tableData = [];
+    try {
+        tableData = await fetchFromAPI('Employee Analysis/table');
+    } catch (error) {
+        console.error(`Server-side API Error: ${error}`);
+        return <div className="p-10 text-red-500">Failed to load statistics.</div>;
+    }
 
-    useEffect(() => {
-        fetchFromAPI('Employee Analysis/table').then(data => {
-            setTableData(data || []);
-            setIsLoading(false);
-        }).catch(error => {
-            console.error(`API Error: ${error}`);
-            setIsLoading(false);
-        });
-    }, []);
-
-    if (isLoading) return <div className="p-10 text-white">Loading Statistics...</div>;
+    if (!tableData || tableData.length === 0) {
+        return <div className="p-10 text-white text-center">No statistics available.</div>;
+    }
 
     return (
         <div className="bg-[#006fff] p-6 max-h-[500px] flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
@@ -51,7 +47,7 @@ export default function EmployeeStatisticsChart() {
                     </thead>
 
                     <tbody className="text-[13px]">
-                        {tableData.map((row, index) => (
+                        {tableData.map((row: any, index: number) => (
                             <tr 
                                 key={index} 
                                 className={`${index % 2 === 0 ? 'bg-transparent' : 'bg-white/10'} transition-colors hover:bg-white/20`}

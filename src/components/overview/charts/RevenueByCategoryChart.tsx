@@ -120,7 +120,7 @@ export default function RevenueByCategoryChart() {
             <h2 className="text-gray-500 font-semibold mb-4">
                 Revenue by Category
             </h2>
-            <div className="h-full w-full">
+            <div className="h-full w-full py-5">
                 <Bar 
                     key="revenue-by-category-bar-chart"
                     data={data} 
