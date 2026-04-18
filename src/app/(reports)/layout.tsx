@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "The next generation of business analytics & data visualization",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function ReportLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className="antialiased grid grid-cols-[250px_1fr] h-screen w-full bg-[#161616] overflow-hidden" suppressHydrationWarning>
       <Sidebar />

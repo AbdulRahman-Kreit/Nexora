@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronDown, faFileCirclePlus, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faFileCirclePlus, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 
 export default function PageHeading() {
