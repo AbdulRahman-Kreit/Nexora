@@ -28,7 +28,7 @@ export default function ProductsAnalysisLayout(props: {
   return (
     <section className="flex flex-col h-screen overflow-hidden relative">
       
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto pb-10">
         {children}
         
         <div className="flex flex-col lg:flex-row w-full gap-4 relative">

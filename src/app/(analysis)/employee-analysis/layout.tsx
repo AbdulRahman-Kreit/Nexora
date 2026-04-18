@@ -24,10 +24,10 @@ export default function TimeAnalysisLayout(props: {
   return (
     <section className="flex flex-col h-screen overflow-hidden"> 
       
-      <div className="flex-1 overflow-y-auto p-4 pb-10">
+      <div className="flex-1 overflow-y-auto pb-10">
         {children}
         
-        <section className="grid grid-cols-2 gap-4 w-full py-10 pl-4">
+        <section className="grid grid-cols-2 gap-4 w-full py-4 pl-4">
           
           <div className="flex flex-col gap-4">
             <div className="min-h-[400px]">{topEmployees}</div>

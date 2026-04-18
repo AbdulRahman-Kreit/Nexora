@@ -1,5 +1,6 @@
 import React from 'react';
 import Statistics from '@/components/overview/Statistics';
+import RealTimeDate from '@/components/general-components/RealTimeDate';
 
 export default function Overview() {
     return (
@@ -7,9 +8,7 @@ export default function Overview() {
             <h2 className="text-2xl font-semibold mb-1 font-clash">
                 Overview
             </h2>
-            <p className="text-[16px] text-gray-500 mb-5 font-grotesk">
-                Aug 6, 2024
-            </p>
+            <RealTimeDate />
             <Statistics />
         </div>
     )

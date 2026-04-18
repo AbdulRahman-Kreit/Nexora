@@ -1,4 +1,5 @@
 import React from 'react'
+import RealTimeDate from '@/components/general-components/RealTimeDate';
 
 export default function ProductsAnalysis() {
     return (
@@ -6,9 +7,7 @@ export default function ProductsAnalysis() {
             <h2 className="text-2xl font-semibold mb-1 font-clash">
                 Products Analysis
             </h2>
-            <p className="text-[16px] text-gray-500 mb-5 font-grotesk">
-                Aug 6, 2024
-            </p>
+            <RealTimeDate />
         </div>
     )
 }
