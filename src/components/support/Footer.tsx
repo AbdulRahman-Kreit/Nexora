@@ -4,7 +4,7 @@ import { faPhone, faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg
 
 export default function Footer() {
     return (
-        <footer className="w-full bg-[#161616] text-white py-12 px-4 border-t border-gray-800 font-medium font-grotesk">
+        <footer className="w-full bg-[#161616] text-white py-8 px-4 border-t border-gray-800 font-medium font-grotesk">
             <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
                 
                 <h3 className="text-md text-gray-200 font-semibold">
