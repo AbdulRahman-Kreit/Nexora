@@ -1,14 +1,15 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { faFilter, faRankingStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TopProducts from './TopProducts';
-
 import Filter from './Filter';
 
-
-
 export default function SectionSwitcher() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    
     const [isFilter, setIsFilter] = useState<boolean>(false);
     const [isMounted, setIsMounted] = useState<boolean>(false);
     const [showContent, setShowContent] = useState<boolean>(false); 
@@ -18,6 +19,17 @@ export default function SectionSwitcher() {
         if (saved !== null) setIsFilter(JSON.parse(saved));
         setIsMounted(true);
     }, [])
+
+    // وظيفة تحديث الرابط عند تغيير الفئة
+    const handleCategoryChange = (category: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (category) {
+            params.set('category', category);
+        } else {
+            params.delete('category');
+        }
+        router.push(`?${params.toString()}`);
+    };
 
     if (!isMounted) return null;
 
@@ -49,21 +61,25 @@ export default function SectionSwitcher() {
             </button>
 
             {showContent && (
-            <div className={`bg-[#151a21] p-8 rounded-2xl border border-gray-800 
-            shadow-2xl animate-in fade-in zoom-in duration-300`}>
+                <div className={`bg-[#151a21] p-8 rounded-2xl border border-gray-800 
+                shadow-2xl animate-in fade-in zoom-in duration-300`}>
                     <div className="flex gap-2 mb-6 justify-center">
-                        <button onClick={() => setIsFilter(true)}
+                        <button onClick={() => { setIsFilter(true); localStorage.setItem('isFilterActive', 'true'); }}
                             className={`${baseStyle} ${isFilter ? activeStyle : inactiveStyle}`}>
                             <FontAwesomeIcon icon={faFilter} />
                         </button>
-                        <button onClick={() => setIsFilter(false)}
+                        <button onClick={() => { setIsFilter(false); localStorage.setItem('isFilterActive', 'false'); }}
                             className={`${baseStyle} ${!isFilter ? activeStyle : inactiveStyle}`}>
                             <FontAwesomeIcon icon={faRankingStar} />
                         </button>
                     </div>
 
                     <div className="max-h-[500px] overflow-y-auto w-64 custom-scrollbar">
-                        {isFilter ? <Filter /> : <TopProducts />}
+                        {isFilter ? (
+                            <Filter onCategoryChange={handleCategoryChange} />
+                        ) : (
+                            <TopProducts />
+                        )}
                     </div>
                 </div>
             )}

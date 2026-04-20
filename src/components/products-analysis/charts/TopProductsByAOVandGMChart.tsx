@@ -1,8 +1,11 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend, plugins } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import TopProductsbyAOVandGMSkeleton from '../skeletal-loading/TopProductsbyAOVandGMSkeleton';
+import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -17,29 +20,15 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const aovData = [
-    { product: "Hydrolyzed Whey", value: 11300 },
-    { product: "Concentrated Whey", value: 10400 },
-    { product: "Pure Casein", value: 8900 },
-    { product: "Isolate Whey", value: 8300 },
-    { product: "100% Egg Protein", value: 6500 },
-    { product: "Blended Protein", value: 5500 },
-    { product: "100% Vegan Protein", value: 3600 },
-    { product: "STEAK in Powder", value: 3300 },
-    { product: "PRO Weight lose", value: 2200 },
-    { product: "Serious MASS Gainer", value: 1600 }
-];
-
 const gmData = [68.1, 68.4 ,68.8 ,69.0 ,68.9 ,68.9 ,69.1 ,69.1 ,68.3 ,68.9];
 
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
-const handleChageBarColors = aovData.map(() => {
-    return barColors[Math.floor(Math.random() * barColors.length)];
-});
 
 export default function TopProductByAOVandGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
+    const [chartData, setchartData] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -50,13 +39,34 @@ export default function TopProductByAOVandGMChart() {
         };
     }, []);
 
+    useEffect(() => {
+        fetchFromAPI('Top Products').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
+    
+    if (loading) return <TopProductsbyAOVandGMSkeleton />;
+
+    const handleChageBarColors = chartData.map(() => {
+        return barColors[Math.floor(Math.random() * barColors.length)];
+    });
+
     const data = {
-        labels: aovData.map(item => item.product),
+        labels: chartData.map(item => item.product),
         datasets: [
             {
                 type: 'line' as const,
                 label: 'GM%',
-                data: gmData.map(item => item),
+                data: chartData.map(item => { 
+                    if (item.gm_percent != 0) {
+                        return parseFloat(item.gm_percent).toFixed(1);
+                    }
+                    return 0;
+                }),
                 borderColor: '#ffffff',
                 borderWidth: 2,
                 pointRadius: 4, 
@@ -78,7 +88,7 @@ export default function TopProductByAOVandGMChart() {
             {
                 type: 'bar' as const, 
                 label: 'AOV',
-                data: aovData.map(item => item.value),
+                data: chartData.map(item => item.aov),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 25,
@@ -88,7 +98,15 @@ export default function TopProductByAOVandGMChart() {
                     align: 'top',
                     anchor: 'end',
                     color: '#ffffff',
-                    formatter: (value: any) => (value / 1000) + 'K',
+                    formatter: (value: any) => {
+                        const intValue = parseInt(value);
+                        if (intValue >= 1000000) {
+                            return (intValue / 1000000).toFixed(1) + 'M';
+                        } else if (intValue >= 1000) {
+                            return (intValue / 1000).toFixed(1) + 'K';
+                        }
+                        return intValue;
+                    },
                     font: { weight: 600, size: 14 },
                 }
             },
@@ -147,7 +165,15 @@ export default function TopProductByAOVandGMChart() {
                         font: {
                             weight: 600,
                             size: 12
-                        }
+                        }, 
+                        callback: function(value) {
+                            const label = this.getLabelForValue(value);
+                            return label.length > 8 ? label.substr(0, 8) + '..' : label; 
+                        },
+                        maxRotation: 0,
+                        minRotation: 0,
+                        padding: 10,
+                        autoSkip: false,
                     }
                 }
             },

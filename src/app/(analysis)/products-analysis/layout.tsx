@@ -39,6 +39,7 @@ export default function ProductsAnalysisLayout(props: {
               <Statistics />
             </div>
 
+            {/* التعديل هنا: إضافة row-span-2 للمكون الثالث و col-span-2 للرابع */}
             <div className="grid grid-cols-3 gap-2">
               <div className="p-4 min-h-[400px]">
                 {costAndGM}
@@ -47,14 +48,15 @@ export default function ProductsAnalysisLayout(props: {
                 {revenueAndProfit}
               </div>
               
-              <div className="p-4">
+              <div className="p-4 row-span-2">
                 {topProductsByTotalOrders}
               </div>
 
-              <div className="p-4 md:col-span-2 lg:col-span-2 min-h-[400px]">
+              <div className="p-4 col-span-2 min-h-[400px]"> 
                 {topProductsByAOVandGM}
               </div>
             </div>
+
           </div>
           
           <div className="lg:w-auto absolute right-5 top-3 z-50">
@@ -64,7 +66,6 @@ export default function ProductsAnalysisLayout(props: {
         </div>
       </div>
 
-      
       <div className="w-full 50">
           <TimelineFilter />
       </div>

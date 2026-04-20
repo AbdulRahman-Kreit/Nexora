@@ -1,11 +1,11 @@
 import React from 'react'
 
 export default function TopProductsbyTotalOrdersSkeleton() {
-  return (
-        <div className="bg-linear-to-r from-[#151a21] to-[#161616] ml-1 p-6 h-96 border-l-3 border-[#4a7fce] animate-pulse">
+    return (
+        <div className="bg-linear-to-r from-[#151a21] to-[#161616] ml-1 p-6 h-2/3 border-l-3 border-[#4a7fce] animate-pulse">
             <div className="h-5 w-48 bg-gray-700/50 rounded mb-8"></div>
             
-            <div className="flex flex-col justify-between h-[260px] w-full pr-10">
+            <div className="flex flex-col justify-between h-[calc(100%-60px)] w-full pr-10 py-5">
                 {[
                     { labelWidth: 'w-20', barWidth: 'w-[65%]' }, 
                     { labelWidth: 'w-16', barWidth: 'w-[30%]' }, 
@@ -22,8 +22,7 @@ export default function TopProductsbyTotalOrdersSkeleton() {
                         
                         <div className={`h-3 ${item.labelWidth} bg-gray-700/40 rounded`}></div>
                         
-                        <div className="relative flex-1 h-[25px]">
-
+                        <div className="relative flex-1 h-[18px]"> 
                             <div className="absolute inset-0 bg-[#12243c]/50 rounded-[5px]"></div>
                             
                             <div className={`absolute left-0 top-0 h-full ${item.barWidth} bg-[#006fff]/30 rounded-[5px]`}></div>

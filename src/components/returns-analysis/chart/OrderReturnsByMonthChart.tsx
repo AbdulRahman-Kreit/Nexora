@@ -111,7 +111,18 @@ export default function OrderReturnsByMonthChart() {
         scales: {
         x: {
             grid: { display: false },
-            ticks: { color: '#006fff', font: { weight: 600 } }
+            ticks: { 
+                color: '#006fff', 
+                font: { weight: 600 },
+                callback: function(value) {
+                    const label = this.getLabelForValue(value);
+                    return label.substr(0, 3);
+                },
+                maxRotation: 0,
+                minRotation: 0,
+                padding: 10,
+                autoSkip: false,
+            }
         },
         y: {
             grid: { display: false },

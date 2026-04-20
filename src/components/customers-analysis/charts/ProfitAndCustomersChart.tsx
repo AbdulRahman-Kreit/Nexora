@@ -127,7 +127,6 @@ export default function ProfitAndCustomersChart() {
                         size: 14
                     },
                     color: '#006fff'
-                    
                 }
             },
             datalabels: {
@@ -150,7 +149,15 @@ export default function ProfitAndCustomersChart() {
                     font: {
                         weight: 600,
                         size: 12
-                    }
+                    }, 
+                    callback: function(value) {
+                        const label = this.getLabelForValue(value);
+                        return label.length > 8 ? label.substr(0, 8) + '..' : label; 
+                    },
+                    maxRotation: 0,
+                    minRotation: 0,
+                    padding: 10,
+                    autoSkip: false,
                 }
             }
         },

@@ -1,24 +1,33 @@
+"use client";
 import React from 'react'
+import { useSearchParams } from 'next/navigation';
 
-export default function Filter() {
+interface FilterProps {
+    onCategoryChange?: (category: string) => void;
+}
+
+export default function Filter({ onCategoryChange }: FilterProps) {
+    // قراءة الفئة المختارة حالياً من الرابط لضمان بقاء الزر مفعلاً عند تحديث الصفحة
+    const searchParams = useSearchParams();
+    const currentCategory = searchParams.get('category') || '';
+
     const categoriesInputs = [
-        { id: 'all-categories', label: 'All Categories' },
-        { id: 'amino', label: 'Amino Acids' },
-        { id: 'carbs', label: 'Carbs' },
-        { id: 'protein', label: 'Protein' },
-        { id: 'clothing', label: 'Clothing' },
-        { id: 'vitamins', label: 'Vitamins' },
+        { id: 'all-categories', label: 'All Categories', value: '' },
+        { id: 'amino', label: 'Amino Acids', value: 'Amino Acids' },
+        { id: 'carbs', label: 'Carbs', value: 'Carbs' },
+        { id: 'protein', label: 'Protein', value: 'Protein' },
+        { id: 'clothing', label: 'Clothing', value: 'Clothing' },
     ];
+
     const regionsInputs = [
         { id: 'all-regions', label: 'All Regions' },
         { id: 'brazil', label: 'Brazil' },
         { id: 'canada', label: 'Canada' },
         { id: 'central', label: 'Central' },
         { id: 'france', label: 'France' },
-        { id: 'northeast', label: 'Northeast' },
-        { id: 'northwest', label: 'Northwest' },
-        { id: 'southeast', label: 'Southeast' },
-        { id: 'southwest', label: 'Southwest' },
+        { id: 'northeast', label: 'Saudi Arabia' },
+        { id: 'northwest', label: 'Australia' },
+        { id: 'southeast', label: 'Japan' },
     ];
 
     const cardStyle = `flex flex-col w-[230px] bg-[#006fff] mb-5 mx-0 
@@ -28,19 +37,24 @@ export default function Filter() {
 
     return (
         <div className='flex flex-col justify-center items-center'>
+            {/* Categories Section */}
             <div className={cardStyle}>
                 <h3 className={`${headingStyle} bg-white`}>
                     Categories
                 </h3>
                 {categoriesInputs.map((item, index) => {
                     return (
-                        <label key={index} className="flex flex-row items-center mx-5 cursor-pointer group">
+                        <label 
+                            key={index} 
+                            className="flex flex-row items-center mx-5 cursor-pointer group"
+                        >
                             <input 
                                 type="radio" 
                                 name="category"
                                 id={item.id}
                                 className="peer hidden"
-                                defaultChecked={item.id === 'all'} 
+                                checked={currentCategory === item.value}
+                                onChange={() => onCategoryChange?.(item.value)}
                             />
                             <div className="w-5 h-5 rounded-full border-2 border-[#0085ff] bg-white 
                                 transition-all duration-200
@@ -55,6 +69,8 @@ export default function Filter() {
                     )
                 })}
             </div>
+            
+            {/* Regions Section */}
             <div className={cardStyle}>
                 <h3 className={`${headingStyle} bg-[#2d2d2d]`}>
                     Regions
@@ -67,7 +83,7 @@ export default function Filter() {
                                 name="regions"
                                 id={item.id}
                                 className="peer hidden"
-                                defaultChecked={item.id === 'all'} 
+                                defaultChecked={item.id === 'all-regions'} 
                             />
                             <div className="w-5 h-5 rounded-full border-2 border-[#0085ff] bg-white 
                                 transition-all duration-200

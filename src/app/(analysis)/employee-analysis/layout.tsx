@@ -34,7 +34,7 @@ export default function TimeAnalysisLayout(props: {
             <div className="min-h-[400px]">{employeeReturns}</div>
           </div>
           
-          <div className="h-full">
+          <div className="h-full mx-4 pr-4">
             <div className="h-full min-h-[816px]">{employeeStatistics}</div>
           </div>
 

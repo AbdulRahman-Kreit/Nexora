@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import RevenueByBusinessSkeleton from '../skeletal-loading/RevenueByBusinessSkeleton';
+import RevenueByBusinessSkeleton from '../skeletal-loading/RevenueBySubcategorySkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
@@ -93,7 +93,7 @@ export default function RevenueByBusinessTypeChart() {
     return (
         <div className="bg-[#151a21] p-6 h-96 border-l-3 border-[#4a7fce] rounded-r-lg">
             <h2 className="text-gray-500 font-semibold mb-4">
-                Revenue by Business Type
+                Revenue by Subcategory
             </h2>
             <div className="h-[280px] w-full">
                 <Doughnut 
