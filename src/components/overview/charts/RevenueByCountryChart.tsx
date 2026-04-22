@@ -17,21 +17,38 @@ ChartJS.register(
     ChartDataLabels
 );
 
-
 export default function RevenueByCountryChart() {
     const bgMaxValue = 5000;
-
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     
+    const [themeColors, setThemeColors] = useState({
+        mainText: '#006fff',
+        barBgFiller: '#12243b'
+    });
+
+    const getCSSVariable = (variable: string) => {
+        if (typeof window !== 'undefined') {
+            return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+        }
+        return '';
+    };
+
     useEffect(() => {
-        const chart = chartRef.current;
-        return () => {
-            if (chart) {
-                chart.destroy();
-            }
+        const updateTheme = () => {
+            setThemeColors({
+                mainText: getCSSVariable('--main-text-color') || '#006fff',
+                barBgFiller: getCSSVariable('--bar-bg-filler') || '#12243b'
+            });
         };
+
+        updateTheme(); 
+
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -41,7 +58,13 @@ export default function RevenueByCountryChart() {
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
-        })
+        });
+
+        return () => {
+            if (chartRef.current) {
+                chartRef.current.destroy();
+            }
+        };
     }, []);
 
     if (loading) return <RevenueByCountrySkeleton />;
@@ -52,7 +75,7 @@ export default function RevenueByCountryChart() {
             {
                 label: 'Revenue',
                 data: chartData.map(item => parseFloat(item.revenue)),
-                backgroundColor: '#006fff',
+                backgroundColor: '#006fff', 
                 borderRadius: 5,
                 barThickness: 25,
                 order: 1,
@@ -65,15 +88,14 @@ export default function RevenueByCountryChart() {
                             if (context.type === 'data' && context.datasetIndex === 0) {
                                 return context.chart.scales.x.getPixelForValue(0);
                             }
-                            return undefined;
                         }
                     }
                 },
             },
             {
-                label: 'Total Revenue',
+                label: 'Total Revenue Background',
                 data: chartData.map(() => bgMaxValue),
-                backgroundColor: '#12243c',
+                backgroundColor: themeColors.barBgFiller, 
                 borderRadius: 5,
                 barThickness: 25,
                 order: 2, 
@@ -83,7 +105,7 @@ export default function RevenueByCountryChart() {
     };
 
     const options = {
-        indexAxis: 'y',
+        indexAxis: 'y' as const,
         responsive: true,
         maintainAspectRatio: false,
         grouped: false, 
@@ -94,9 +116,9 @@ export default function RevenueByCountryChart() {
         plugins: {
             legend: { display: false },
             datalabels: {
-                anchor: 'end',
-                align: 'right',
-                color: '#006fff',
+                anchor: 'end' as const,
+                align: 'right' as const,
+                color: themeColors.mainText, 
                 font: { weight: 600 },
                 formatter: (value: number) => {
                     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
@@ -114,27 +136,31 @@ export default function RevenueByCountryChart() {
             },
             y: {
                 grid: { display: false },
-                ticks: { color: '#006fff', font: { weight: 600 } },
+                ticks: { 
+                    color: themeColors.mainText, 
+                    font: { weight: 600 } 
+                },
                 border: { display: false }
             }
         },
         layout: {
-            padding: { right: 5 }
+            padding: { right: 35 } 
         }
-    }
+    };
 
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
+            <h2 className="text-(--alt-text-color) font-semibold mb-4">
                 Revenue by Country
             </h2>
             <div className="h-full w-full py-5">
                 <Bar 
-                    key="revenue-by-country-bar-chart" 
+                    ref={chartRef}
+                    key={themeColors.mainText} 
                     data={data} 
-                    options={options} />
+                    options={options as any} 
+                />
             </div>
         </div>
-    )
+    );
 }

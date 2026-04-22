@@ -4,39 +4,63 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import RevenueByBusinessSkeleton from '../skeletal-loading/RevenueBySubcategorySkeleton';
+// التأكد من استيراد السكيلتون الصحيح
+import RevenueBySubcategorySkeleton from '../skeletal-loading/RevenueBySubcategorySkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-
-
-export default function RevenueByBusinessTypeChart() {
+// تغيير اسم المكون ليتناسب مع طلبك
+export default function RevenueBySubcategory() {
     const chartRef = useRef<ChartJS<'doughnut'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-        
-        useEffect(() => {
-            const chart = chartRef.current;
-            return () => {
-                if (chart) {
-                    chart.destroy();
-                }
-            };
-        }, []);
+    const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+
+    const getCSSVariable = (variable: string) => {
+        if (typeof window !== 'undefined') {
+            return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+        }
+        return '';
+    };
+
+    // منطق تحديث الثيم
+    useEffect(() => {
+        const updateTheme = () => {
+            const color = getCSSVariable('--main-text-color') || '#006fff';
+            setCurrentThemeColor(color);
+        };
+
+        updateTheme(); 
+
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
+    }, []);
+
+    // جلب البيانات
+    useEffect(() => {
+        fetchFromAPI('GM By Business Type').then(data => {
+            const result = Array.isArray(data) ? data : (data?.data || []);
+            setchartData(result);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        })
+    }, []);
 
     useEffect(() => {
-            fetchFromAPI('GM By Business Type').then(data => {
-                const result = Array.isArray(data) ? data : (data?.data || []);
-                setchartData(result);
-                setLoading(false);
-            }).catch(error => {
-                console.error(`API Error: ${error}`);
-                setLoading(false);
-            })
-        }, []);
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
 
-    if (loading) return <RevenueByBusinessSkeleton />;
+    if (loading) return <RevenueBySubcategorySkeleton />;
 
     const data = {
         labels: chartData.map(item => item.business_type),
@@ -56,9 +80,9 @@ export default function RevenueByBusinessTypeChart() {
         plugins: {
             legend: {
                 display: true,
-                position: 'bottom', 
+                position: 'bottom' as const, 
                 labels: {
-                    color: '#cbd5e1',
+                    color: currentThemeColor,
                     padding: 20,
                     usePointStyle: true, 
                     font: { size: 12, weight: '600' }
@@ -67,7 +91,7 @@ export default function RevenueByBusinessTypeChart() {
             tooltip: {
                 callbacks: {
                     label: (context: any) => {
-                        const label = context.business_type || '';
+                        const label = context.label || '';
                         const value = context.formattedValue;
                         return ` ${label}: ${value}%`;
                     }
@@ -78,8 +102,8 @@ export default function RevenueByBusinessTypeChart() {
                 color: '#161616',
                 font: { weight: 'bold', size: 12 },
                 formatter: (value: unknown) => `${value}%`,
-                anchor: 'center',
-                align: 'center',
+                anchor: 'center' as const,
+                align: 'center' as const,
             },
         },
         layout: {
@@ -91,15 +115,16 @@ export default function RevenueByBusinessTypeChart() {
     };
 
     return (
-        <div className="bg-[#151a21] p-6 h-96 border-l-3 border-[#4a7fce] rounded-r-lg">
-            <h2 className="text-gray-500 font-semibold mb-4">
+        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] rounded-r-lg transition-all duration-500`}>
+            <h2 className="text-(--alt-text-color) font-semibold mb-4">
                 Revenue by Subcategory
             </h2>
             <div className="h-[280px] w-full">
                 <Doughnut 
-                    key="revenue-by-business-type-doughnut-chart"
+                    ref={chartRef}
+                    key={currentThemeColor}
                     data={data} 
-                    options={options} />
+                    options={options as any} />
             </div>
         </div>
     );

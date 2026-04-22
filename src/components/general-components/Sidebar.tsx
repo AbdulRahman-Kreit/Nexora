@@ -6,62 +6,42 @@ import { faCircleInfo, faClockRotateLeft, faUser, faChartPie, faDollarSign, faUs
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Header from './Header';
 
-const Sidebar = memo(function Sidebar()  {
+const Sidebar = memo(function Sidebar() {
     const pathname = usePathname();
 
     const passiveLinkStyle = `flex flex-row items-center gap-3 p-3 text-sm
-    text-gray-500 font-semibold duration-200 rounded-lg hover:bg-[#006fff] 
-    hover:text-white`;
+    text-(--alt-text-color) font-semibold duration-200 rounded-lg hover:bg-[#006fff] 
+    hover:text-white group`;
 
     const activeLinkStyle = `flex flex-row items-center gap-3 p-3 text-white 
-    text-sm font-semibold bg-[#006fff] rounded-lg`;
+    text-sm font-semibold bg-[#006fff] rounded-lg shadow-md`;
 
     return (
-        <nav className='bg-[#1f1f1f] text-white'>
+        <nav className="h-screen flex flex-col bg-(--side-bar-bg-color) border-r border-(--field-bg-color) transition-colors duration-300">
             <Header />
-            <div className="p-4 flex flex-col gap-4">
-                
-                <Link className={`${pathname === '/reports' ? activeLinkStyle : passiveLinkStyle}`} 
-                    href="/reports">
-                    <FontAwesomeIcon icon={faUser} className='mr-[15px]' />
-                    <span className=''>My Reports</span>
-                </Link>
-                <Link className={`${pathname === '/overview' ? activeLinkStyle : passiveLinkStyle}`} 
-                    href="/overview">
-                    <FontAwesomeIcon icon={faChartPie} className='mr-[15px]' />
-                    <span>Overview</span>
-                </Link>
-                <Link className={`${pathname === '/customers-analysis' ? activeLinkStyle : passiveLinkStyle}`} 
-                    href="/customers-analysis">
-                    <FontAwesomeIcon icon={faUserClock} className='mr-[15px]' />
-                    <span>Customers Analysis</span>
-                </Link>
-                <Link className={`${pathname === '/returns-analysis' ? activeLinkStyle : passiveLinkStyle}`} 
-                    href="/returns-analysis">
-                    <FontAwesomeIcon icon={faDollarSign} className='mr-[15px]' />
-                    <span>Returns Analysis</span>
-                </Link>
-                <Link className={`${pathname === '/products-analysis' ? activeLinkStyle : passiveLinkStyle}`} 
-                    href="/products-analysis">
-                    <FontAwesomeIcon icon={faBoxesStacked} className='mr-[15px]' />
-                    <span>Products Analysis</span>
-                </Link>
-                <Link className={`${pathname === '/time-analysis' ? activeLinkStyle : passiveLinkStyle}`} 
-                    href="/time-analysis">
-                    <FontAwesomeIcon icon={faClockRotateLeft} className='mr-[15px]' />
-                    <span>Time Analysis</span>
-                </Link>
-                <Link className={`${pathname === '/employee-analysis' ? activeLinkStyle : passiveLinkStyle}`} 
-                    href="/employee-analysis">
-                    <FontAwesomeIcon icon={faAddressCard} className='mr-[15px]' />
-                    <span>Employee Analysis</span>
-                </Link>
-                <Link className={`${pathname === '/support' ? activeLinkStyle : passiveLinkStyle}`} 
-                    href="/support">
-                    <FontAwesomeIcon icon={faCircleInfo} 
-                    className='mr-[15px]' />
-                    <span>Support</span>
-                </Link>
+            
+            <div className="p-4 flex flex-col gap-3 flex-1 overflow-y-auto">
+                {[
+                    { href: '/reports', icon: faUser, label: 'Reports Maker' },
+                    { href: '/overview', icon: faChartPie, label: 'Overview' },
+                    { href: '/customers-analysis', icon: faUserClock, label: 'Customers Analysis' },
+                    { href: '/returns-analysis', icon: faDollarSign, label: 'Returns Analysis' },
+                    { href: '/products-analysis', icon: faBoxesStacked, label: 'Products Analysis' },
+                    { href: '/time-analysis', icon: faClockRotateLeft, label: 'Time Analysis' },
+                    { href: '/employee-analysis', icon: faAddressCard, label: 'Employee Analysis' },
+                    { href: '/support', icon: faCircleInfo, label: 'Support' },
+                ].map((link) => (
+                    <Link 
+                        key={link.href}
+                        className={`${pathname === link.href ? activeLinkStyle : passiveLinkStyle}`} 
+                        href={link.href}
+                    >
+                        <div className="w-5 flex justify-center">
+                            <FontAwesomeIcon icon={link.icon} />
+                        </div>
+                        <span className="font-grotesk">{link.label}</span>
+                    </Link>
+                ))}
             </div>
         </nav>
     );

@@ -21,7 +21,7 @@ export default function RealTimeDate() {
     };
 
     return (
-        <div className="text-[16px] text-gray-500 mb-5 font-grotesk">
+        <div className="text-[16px] text-(--alt-text-color) mb-5 font-grotesk transition-colors duration-300">
             {formatDate(currentDate)}
         </div>
     );

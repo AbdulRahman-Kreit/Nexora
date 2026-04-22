@@ -21,14 +21,27 @@ export default function RevenueAndGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+
+    const getCSSVariable = (variable: string) => {
+        if (typeof window !== 'undefined') {
+            return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+        }
+        return '';
+    };
 
     useEffect(() => {
-        const chart = chartRef.current;
-        return () => {
-            if (chart) {
-                chart.destroy();
-            }
+        const updateTheme = () => {
+            const color = getCSSVariable('--main-text-color') || '#006fff';
+            setCurrentThemeColor(color);
         };
+
+        updateTheme(); 
+
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -38,7 +51,13 @@ export default function RevenueAndGMChart() {
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
-        })
+        });
+
+        return () => {
+            if (chartRef.current) {
+                chartRef.current.destroy();
+            }
+        };
     }, []);
 
     if (loading) return <RevenueAndGMSkeleton />;
@@ -58,12 +77,12 @@ export default function RevenueAndGMChart() {
                 label: 'GM %',
                 type: 'line', 
                 data: chartData.map(item => parseFloat(item.gm_percent)),
-                borderColor: '#ffffff',
+                borderColor: currentThemeColor,
                 borderWidth: 2,
-                pointRadius: 5,           
+                pointRadius: 3,           
                 pointHoverRadius: 8,      
-                pointBackgroundColor: '#ffffff',
-                pointBorderColor: '#ffffff', 
+                pointBackgroundColor: currentThemeColor,
+                pointBorderColor: currentThemeColor, 
                 pointBorderWidth: 2,
                 fill: false,
                 order: 1,
@@ -95,10 +114,7 @@ export default function RevenueAndGMChart() {
             legend: {
                 labels: {
                     usePointStyle: true,
-                    font: {
-                        weight: 600,
-                        size: 14
-                    },
+                    font: { weight: 600, size: 14 },
                     color: '#006fff'
                 }
             },
@@ -114,9 +130,7 @@ export default function RevenueAndGMChart() {
                 },
                 ticks: {
                     color: '#006fff',
-                    font: {
-                        weight: 600,
-                    },
+                    font: { weight: 600 },
                     padding: 10,
                 },
             },
@@ -125,39 +139,34 @@ export default function RevenueAndGMChart() {
                 grid: { display: false },
             },
             x: {
-                grid: {
-                    display: false,
-                    drawBorder: false
-                },
+                grid: { display: false, drawBorder: false },
                 ticks: {
                     color: '#006fff',
-                    font: {
-                        weight: 600,
-                    },
+                    font: { weight: 600 },
                     padding: 10,
                     maxRotation: 0,
                     autoSkip: false,
+                    autoSkipPadding: 0,
                 },
             }
         },
         layout: {
-            padding: {
-                bottom: 10,
-                left: 10,
-                right: 10,
-                top: 0,
-            }
+            padding: { bottom: 10, left: 10, right: 10, top: 0 }
         }
     };
 
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
+            <h2 className="text-(--alt-text-color) font-semibold mb-4">
                 Revenue and GM% Over Time
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key="revenue-gm-bar-chart" data={data} options={options as any} />
+                <Bar 
+                    ref={chartRef} 
+                    key={currentThemeColor} 
+                    data={data} 
+                    options={options as any} 
+                />
             </div>
         </div>
     );

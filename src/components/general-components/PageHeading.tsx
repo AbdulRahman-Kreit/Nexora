@@ -2,40 +2,30 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faFileCirclePlus, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
 
+import ThemeSwitcher from './ThemeSwitcher';
 
 export default function PageHeading() {
     const router = useRouter();
 
     return (
         <div className={`w-full sticky top-0 z-10 h-[57px] flex items-center 
-        justify-between px-5`}>
+            justify-between px-5 bg-(--main-bg-color) transition-colors duration-300`}>
+            
             <button onClick={() => router.back()}
-                className="text-gray-400 hover:text-white" >
+                className="text-(--alt-text-color) hover:text-(--main-text-color) transition-colors" >
                 <FontAwesomeIcon icon={faChevronLeft} size='lg' />
             </button>
 
             <div className={`ml-auto flex items-center justify-end gap-4 
-            font-grotesk font-medium h-full`}>
+                font-grotesk font-medium h-full`}>
 
-                <button className={`flex items-center justify-center 
-                    bg-transparent border-2 border-[#2d2d2d] mx-3
-                    hover:border-[#006fff] hover:bg-[#132741] py-1.5 px-3 rounded-lg text-white 
-                    transition-all group`}>
-                    <FontAwesomeIcon 
-                        icon={faFileCirclePlus} 
-                    className={`text-[13px] text-gray-400 
-                    group-hover:text-white transition-colors`} 
-                    />
-                    <span className={`ml-3 text-md font-semibold 
-                        whitespace-nowrap`}>
-                        Add to report
-                    </span>
-                </button>
+                <ThemeSwitcher />
 
                 <button className={`flex items-center justify-center p-2.5
-                    text-gray-500 hover:text-white hover:bg-[#1e1e1e] 
+                    text-(--alt-text-color) hover:text-(--main-text-color) 
+                    hover:bg-(--field-bg-color) 
                     rounded-md transition-all`}>
                     <FontAwesomeIcon 
                         icon={faArrowUpFromBracket} 

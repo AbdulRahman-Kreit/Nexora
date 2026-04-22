@@ -21,28 +21,45 @@ ChartJS.register(
 export default function RevenueByCategoryChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
-        const [loading, setLoading] = useState<boolean>(true);
-        
-        useEffect(() => {
-            const chart = chartRef.current;
-            return () => {
-                if (chart) {
-                    chart.destroy();
-                }
-            };
-        }, []);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
 
-        
-    
-        useEffect(() => {
-            fetchFromAPI('Revenue By Category').then(data => {
-                setchartData(data);
-                setLoading(false);
-            }).catch(error => {
-                console.error(`API Error: ${error}`);
-                setLoading(false);
-            })
-        }, []);
+    const getCSSVariable = (variable: string) => {
+        if (typeof window !== 'undefined') {
+            return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+        }
+        return '';
+    };
+
+    useEffect(() => {
+        const updateTheme = () => {
+            const color = getCSSVariable('--main-text-color') || '#006fff';
+            setCurrentThemeColor(color);
+        };
+
+        updateTheme(); 
+
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        fetchFromAPI('Revenue By Category').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        });
+
+        return () => {
+            if (chartRef.current) {
+                chartRef.current.destroy();
+            }
+        };
+    }, []);
 
     if (loading) return <RevenueByCategorySkeleton />;
     
@@ -85,7 +102,7 @@ export default function RevenueByCategoryChart() {
             datalabels: {
                 anchor: 'end',
                 align: 'top',
-                color: '#006fff',
+                color: currentThemeColor,
                 font: { weight: 600 },
                 formatter: (value: any) => {
                     const num = parseFloat(value);
@@ -101,7 +118,10 @@ export default function RevenueByCategoryChart() {
             },
             x: {
                 grid: { display: false },
-                ticks: { color: '#cbd5e1', font: { size: 10 } }
+                ticks: { 
+                    color: currentThemeColor, 
+                    font: { size: 10, weight: 600 } 
+                }
             }
         },
         layout: {
@@ -115,16 +135,17 @@ export default function RevenueByCategoryChart() {
     };
     
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
+            <h2 className="text-(--alt-text-color) font-semibold mb-4">
                 Revenue by Category
             </h2>
             <div className="h-full w-full py-5">
                 <Bar 
-                    key="revenue-by-category-bar-chart"
+                    ref={chartRef}
+                    key={currentThemeColor}
                     data={data} 
-                    options={options} />
+                    options={options as any} 
+                />
             </div>
         </div>
     )

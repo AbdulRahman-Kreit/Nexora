@@ -15,25 +15,26 @@ export default function Statistics() {
     }, []);
 
     const statisData = [
-    { id: 1, title: "Revenue", value: `$${stats?.revenue}` || "$0" },
-    { id: 2, title: "Profit", value: `$${stats?.profit}` || "$0" },
-    { id: 3, title: "Cost", value: `$${stats?.cost}` || "$0" },
-    { id: 4, title: "QTY", value: `${stats?.quantity}` || "0" },
+        { id: 1, title: "Revenue", value: stats?.revenue ?? 0, prefix: "$" },
+        { id: 2, title: "Profit", value: stats?.profit ?? 0, prefix: "$" },
+        { id: 3, title: "Cost", value: stats?.cost ?? 0, prefix: "$" },
+        { id: 4, title: "QTY", value: stats?.quantity ?? 0, prefix: "" },
     ];
 
     return (
-        <div className={`flex flex-row justify-between font-grotesk max-w-2/3
-        h-fit`}>
+        <div className={`flex flex-row justify-between font-grotesk max-w-2/3 h-fit gap-6 transition-colors duration-300`}>
             {statisData.map((data) => {
                 return (
-                    <div key={data.id} className={`flex flex-col justify-start 
-                    w-[110px] pl-3 border-l-3 border-[#4a7fce]`}>
-                        <h3 className='text-md font-mideum text-gray-500'>
+                    <div key={data.id} className={`flex flex-col justify-start min-w-[110px] pl-4 border-l-3 border-[#4a7fce]`}>
+
+                        <h3 className='text-sm font-medium text-(--alt-text-color) uppercase tracking-wider'>
                             {data.title}
                         </h3>
-                        <p className='text-2xl font-mideum'>
+
+                        <div className='text-2xl font-semibold text-(--main-text-color) flex items-center'>
+                            <span>{data.prefix}</span>
                             <AnimatedNumbers value={data.value} />
-                        </p>
+                        </div>
                     </div>
                 )
             })}
