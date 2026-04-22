@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/purity */
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -18,21 +18,28 @@ ChartJS.register(
     ChartDataLabels
 );
 
-
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function CustomerReturnsByRegionChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-        
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
     useEffect(() => {
-        const chart = chartRef.current;
-        return () => {
-            if (chart) {
-                chart.destroy();
-            }
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
         };
+
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -42,92 +49,83 @@ export default function CustomerReturnsByRegionChart() {
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
-        })
+        });
     }, []);
-    
+
+    const handleChageBarColors = useMemo(() => {
+        return chartData.map(() => barColors[Math.floor(Math.random() * barColors.length)]);
+    }, [chartData]);
+
     if (loading) return <CustomerReturnsByRegionSkeleton />;
 
-    const handleChageBarColors = chartData.map(() => {
-        return barColors[Math.floor(Math.random() * barColors.length)];
-    });
+    const labelTextColor = isDarkMode ? '#cbd5e1' : '#006fff'; 
 
     const data = {
-            labels: chartData.map(item => item.region),
-            datasets: [
-                {
-                    label: 'Order Frequency',
-                    data: chartData.map(item => item.customers_with_return),
-                    backgroundColor: handleChageBarColors,
-                    borderRadius: 5,
-                    barThickness: 45,
-                }
-            ]
-        };
-        
-        const options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-                duration: 2000,
-                easing: 'easeOutQuart',
+        labels: chartData.map(item => item.region),
+        datasets: [
+            {
+                label: 'Order Frequency',
+                data: chartData.map(item => item.customers_with_return),
+                backgroundColor: handleChageBarColors,
+                borderRadius: 5,
+                barThickness: 45,
+            }
+        ]
+    };
+
+    const options = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 2000,
+            easing: 'easeOutQuart' as const,
+        },
+        plugins: {
+            legend: { display: false },
+            datalabels: {
+                anchor: 'end' as const,
+                align: 'top' as const,
+                color: labelTextColor, 
+                font: { weight: 600, size: 14 },
+                offset: 1,
             },
-            animations: {
-                y: {
-                    duration: 2000,
-                    easing: 'easeOutQuart',
-                    type: 'number',
-                    from: (context: any) => {
-                        if (context.type === 'data') {
-                            return context.chart.scales.y.getPixelForValue(0);
-                        }
-                    }
-                }
+        },
+        scales: {
+            y: {
+                display: false, 
+                grid: { display: false },
             },
-            plugins: {
-                legend: { display: false, },
-                datalabels: {
-                    anchor: 'end',
-                    align: 'top',
-                    color: '#cbd5e1',
-                    font: { weight: 600, size: 14 },
-                    offset: 1,
-                },
-            },
-            scales: {
-                y: {
-                    title: { display: false }, 
-                    grid: { display: false },
-                    ticks: { display: false },
-                    
-                },
-                x: {
-                    title: { display: false }, 
-                    grid: { display: false },
-                    ticks: { 
-                        color: '#006fff', 
-                        font: { size: 14, weight: 600 },
-                        callback: function(value) {
-                            const label = this.getLabelForValue(value);
-                            return label.length > 8 ? label.substr(0, 8) + '..' : label; 
-                        },
-                        maxRotation: 0,
-                        minRotation: 0,
-                        padding: 10,
-                        autoSkip: false,
+            x: {
+                grid: { display: false },
+                ticks: { 
+                    color: '#006fff', 
+                    font: { size: 14, weight: 600 },
+                    callback: function(this: any, value: any) {
+                        const label = this.getLabelForValue(value);
+                        return label.length > 8 ? label.substr(0, 8) + '..' : label; 
                     },
+                    maxRotation: 0,
+                    minRotation: 0,
+                    padding: 10,
+                    autoSkip: false,
                 }
-            },
-        };
-        
-        return (
-            <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-            p-6 h-96 border-l-3 border-[#4a7fce]`}>
-                <h2 className="text-gray-500 font-semibold">
-                    Customer Returns by Region
-                </h2>
-                <div className="min-h-[320px] w-full py-5">
-                    <Bar key="customer-returns-by-region-chart" data={data} options={options} />
-                </div>
+            }
+        },
+    };
+
+    return (
+        <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
+            <h2 className="text-gray-500 font-semibold">
+                Customer Returns by Region
+            </h2>
+            <div className="min-h-[320px] w-full py-5">
+                <Bar 
+                    ref={chartRef}
+                    key={isDarkMode ? 'dark-region' : 'light-region'} 
+                    data={data} 
+                    options={options as any} 
+                />
             </div>
-        )
+        </div>
+    );
 }

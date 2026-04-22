@@ -1,34 +1,52 @@
-import React from 'react'
+"use client";
+import React, { useEffect, useState } from 'react';
 
 export default function OrderReturnsBySubcategorySkeleton() {
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+
+        return () => observer.disconnect();
+    }, []);
+
+    const skeletonElementColor = isDarkMode ? 'bg-[#1a1a1a]' : 'bg-gray-200';
+    const shimmerColor = isDarkMode ? 'via-white/5' : 'via-black/5';
+
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce] animate-pulse relative 
-        overflow-hidden`}>
-        
-            <div className="h-4 w-64 bg-[#1a1a1a] rounded-sm mb-12"></div>
+        <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] animate-pulse relative overflow-hidden transition-all duration-500">
+            <div className={`h-4 w-64 ${skeletonElementColor} rounded-sm mb-12`}></div>
 
             <div className="flex items-end justify-between h-56 px-2 gap-3">
                 {[...Array(12)].map((_, i) => {
-                const heights = ['60%', '50%', '55%', '35%', '60%', '85%', '65%', '58%', '40%', '30%', '40%', '30%'];
-                
-                return (
-                    <div key={i} className="flex-1 flex flex-col items-center gap-4">
-
-                        <div className="h-3 w-6 bg-[#1a1a1a] rounded-xs"></div>
-                        
-                        <div 
-                            className="w-full max-w-[20px] bg-[#1a1a1a] rounded-t-[5px]" 
-                            style={{ height: heights[i] }}
-                        ></div>
-                        
-                        <div className="h-3 w-10 bg-[#1a1a1a] rounded-sm mt-2"></div>
-                    </div>
-                );
+                    const heights = ['60%', '50%', '55%', '35%', '60%', '85%', '65%', '58%', '40%', '30%', '40%', '30%'];
+                    
+                    return (
+                        <div key={i} className="flex-1 flex flex-col items-center gap-4">
+                            <div className={`h-3 w-6 ${skeletonElementColor} rounded-xs`}></div>
+                            
+                            <div 
+                                className={`w-full max-w-[20px] ${skeletonElementColor} rounded-t-[5px] opacity-70`} 
+                                style={{ height: heights[i] }}
+                            ></div>
+                            
+                            <div className={`h-3 w-10 ${skeletonElementColor} rounded-sm mt-2`}></div>
+                        </div>
+                    );
                 })}
             </div>
 
-            <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-linear-to-r from-transparent via-white/5 to-transparent"></div>
+            <div className={`absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-linear-to-r from-transparent ${shimmerColor} to-transparent`}></div>
         </div>
-    )
+    );
 }
