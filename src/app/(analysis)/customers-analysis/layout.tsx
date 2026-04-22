@@ -24,7 +24,7 @@ export default function CustomersAnalysisLayout(props: {
   } = props;
 
   return (
-    <section className="flex flex-col h-screen overflow-hidden"> 
+    <section className="flex flex-col h-screen bg-(--main-bg-color) overflow-hidden"> 
   
       <div className="flex-1 overflow-y-auto pb-10">
         {children}

@@ -25,30 +25,50 @@ export default function OrderFrequencyChart() {
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     
+    const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+
+    const getCSSVariable = (variable: string) => {
+        if (typeof window !== 'undefined') {
+            return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+        }
+        return '';
+    };
+
     useEffect(() => {
-        const chart = chartRef.current;
-        return () => {
-            if (chart) {
-                chart.destroy();
-            }
+        const updateTheme = () => {
+            const color = getCSSVariable('--main-text-color') || '#006fff';
+            setCurrentThemeColor(color);
         };
+
+        updateTheme();
+
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
-            fetchFromAPI('Order Frequency').then(data => {
-                setchartData(data);
-                setLoading(false);
-            }).catch(error => {
-                console.error(`API Error: ${error}`);
-                setLoading(false);
-            })
-        }, []);
+        fetchFromAPI('Order Frequency').then(data => {
+            setchartData(data);
+            setLoading(false);
+        }).catch(error => {
+            console.error(`API Error: ${error}`);
+            setLoading(false);
+        });
+
+        return () => {
+            if (chartRef.current) {
+                chartRef.current.destroy();
+            }
+        };
+    }, []);
     
     if (loading) return <OrderFrequencySkeleton />;
 
-        const handleChageBarColors = chartData.map(() => {
-            return barColors[Math.floor(Math.random() * barColors.length)];
-        });
+    const handleChageBarColors = chartData.map((_, index) => {
+        return barColors[index % barColors.length];
+    });
 
     const data = {
         labels: chartData.map(item => item.month),
@@ -68,13 +88,13 @@ export default function OrderFrequencyChart() {
         maintainAspectRatio: false,
         animation: {
             duration: 2000,
-            easing: 'easeOutQuart',
+            easing: 'easeOutQuart' as const,
         },
         animations: {
             y: {
                 duration: 2000,
-                easing: 'easeOutQuart',
-                type: 'number',
+                easing: 'easeOutQuart' as const,
+                type: 'number' as const,
                 from: (context: any) => {
                     if (context.type === 'data') {
                         return context.chart.scales.y.getPixelForValue(0);
@@ -83,11 +103,11 @@ export default function OrderFrequencyChart() {
             }
         },
         plugins: {
-            legend: { display: false, },
+            legend: { display: false },
             datalabels: {
-                anchor: 'end',
-                align: 'top',
-                color: '#006fff',
+                anchor: 'end' as const,
+                align: 'top' as const,
+                color: currentThemeColor, 
                 font: { weight: 600, size: 14 },
                 offset: 1,
             },
@@ -97,11 +117,8 @@ export default function OrderFrequencyChart() {
                 title: {
                     display: true,
                     text: 'Customers',
-                    color: '#006fff',
-                    font: {
-                        weight: 600,
-                        size: 14,
-                    },
+                    color: currentThemeColor, 
+                    font: { weight: 600, size: 14 },
                     padding: { bottom: 10 }
                 }, 
                 grid: { display: false },
@@ -111,36 +128,30 @@ export default function OrderFrequencyChart() {
                 title: {
                     display: true,
                     text: 'No. of Orders',
-                    color: '#006fff',
-                    font: {
-                        weight: 600,
-                        size: 14,
-                    },
+                    color: currentThemeColor, 
+                    font: { weight: 600, size: 14 },
                     padding: { top: 10 }
                 }, 
                 grid: { display: false },
-                ticks: { color: '#cbd5e1', font: { size: 14 } }
+                ticks: { 
+                    color: getCSSVariable('--alt-text-color') || '#cbd5e1',
+                    font: { size: 14 } 
+                }
             }
         },
         layout: {
-            padding: {
-                bottom: 20,
-                left: 10,
-                right: 10,
-                top: 20,
-            }
+            padding: { bottom: 20, left: 10, right: 10, top: 20 }
         }
     };
 
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
+            <h2 className="text-(--alt-text-color) font-semibold mb-4">
                 Order Frequency
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key="order-frequency-chart" data={data} options={options} />
+                <Bar key={currentThemeColor} data={data} options={options as any} />
             </div>
         </div>
-    )
+    );
 }

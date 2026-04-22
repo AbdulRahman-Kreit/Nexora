@@ -18,41 +18,58 @@ ChartJS.register(
     ChartDataLabels
 );
 
-
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function CustomersWithoutOrdersChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-        
+    
+    const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+
+    const getCSSVariable = (variable: string) => {
+        if (typeof window !== 'undefined') {
+            return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+        }
+        return '';
+    };
+
     useEffect(() => {
-        const chart = chartRef.current;
+        const updateTheme = () => {
+            const color = getCSSVariable('--main-text-color') || '#006fff';
+            setCurrentThemeColor(color);
+        };
+
+        updateTheme();
+
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        fetchFromAPI('No Sales By Region')
+            .then(data => {
+                setchartData(data.regionsWithoutSales);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error(`API Error: ${error}`);
+                setLoading(false);
+            });
+
         return () => {
-            if (chart) {
-                chart.destroy();
+            if (chartRef.current) {
+                chartRef.current.destroy();
             }
         };
     }, []);
 
-    useEffect(() => {
-            fetchFromAPI('No Sales By Region')
-                .then(data => {
-                    setchartData(data.regionsWithoutSales);
-                    setLoading(false);
-                })
-                .catch(error => {
-                    console.error(`API Error: ${error}`);
-                    setLoading(false);
-                });
-        }, []);
-
-        
     if (loading) return <CustomersWithoutOrdersSkeleton />;
-    
 
-    const handleChageBarColors = chartData.map(() => {
-        return barColors[Math.floor(Math.random() * barColors.length)];
+    const handleChageBarColors = chartData.map((_, index) => {
+        return barColors[index % barColors.length];
     });
 
     const data = {
@@ -67,19 +84,19 @@ export default function CustomersWithoutOrdersChart() {
             }
         ]
     };
-    
+
     const options = {
         responsive: true,
         maintainAspectRatio: false,
         animation: {
             duration: 2000,
-            easing: 'easeOutQuart',
+            easing: 'easeOutQuart' as const,
         },
         animations: {
             y: {
                 duration: 2000,
-                easing: 'easeOutQuart',
-                type: 'number',
+                easing: 'easeOutQuart' as const,
+                type: 'number' as const,
                 from: (context: any) => {
                     if (context.type === 'data') {
                         return context.chart.scales.y.getPixelForValue(0);
@@ -88,38 +105,40 @@ export default function CustomersWithoutOrdersChart() {
             }
         },
         plugins: {
-            legend: { display: false, },
+            legend: { display: false },
             datalabels: {
-                anchor: 'end',
-                align: 'top',
-                color: '#cbd5e1',
+                anchor: 'end' as const,
+                align: 'top' as const,
+                color: currentThemeColor, 
                 font: { weight: 600, size: 14 },
                 offset: 1,
             },
         },
         scales: {
             y: {
-                title: { display: false }, 
+                title: { display: false },
                 grid: { display: false },
                 ticks: { display: false }
             },
             x: {
-                title: { display: false }, 
+                title: { display: false },
                 grid: { display: false },
-                ticks: { color: '#006fff', font: { size: 14, weight: 600 } }
+                ticks: { 
+                    color: currentThemeColor, 
+                    font: { size: 14, weight: 600 } 
+                }
             }
         },
     };
-    
+
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold">
+        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
+            <h2 className="text-(--alt-text-color) font-semibold">
                 Customers without Orders by Region
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key="customers-without-orders-chart" data={data} options={options} />
+                <Bar key={currentThemeColor} data={data} options={options as any} />
             </div>
         </div>
-    )
+    );
 }

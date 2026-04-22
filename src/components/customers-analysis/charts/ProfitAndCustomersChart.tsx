@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/purity */
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend, plugins } from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, LineController, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -27,14 +27,28 @@ export default function ProfitAndCustomersChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-        
+    
+    const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+
+    const getCSSVariable = (variable: string) => {
+        if (typeof window !== 'undefined') {
+            return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+        }
+        return '';
+    };
+
     useEffect(() => {
-        const chart = chartRef.current;
-        return () => {
-            if (chart) {
-                chart.destroy();
-            }
+        const updateTheme = () => {
+            const color = getCSSVariable('--main-text-color') || '#006fff';
+            setCurrentThemeColor(color);
         };
+
+        updateTheme();
+
+        const observer = new MutationObserver(updateTheme);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -44,13 +58,17 @@ export default function ProfitAndCustomersChart() {
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
-        })
+        });
+
+        return () => {
+            if (chartRef.current) chartRef.current.destroy();
+        };
     }, []);
         
     if (loading) return <ProfitAndCustomersSkeleton />;
 
-    const handleChageBarColors = chartData.map(() => {
-        return barColors[Math.floor(Math.random() * barColors.length)];
+    const handleChageBarColors = chartData.map((_, index) => {
+        return barColors[index % barColors.length];
     });
 
     const data = {
@@ -60,23 +78,23 @@ export default function ProfitAndCustomersChart() {
                 type: 'line' as const,
                 label: 'Profit',
                 data: chartData.map(item => Number(item.profit || 0)),
-                borderColor: '#ffffff',
+                borderColor: currentThemeColor,
                 borderWidth: 2,
                 pointRadius: 4, 
-                pointBackgroundColor: '#ffffff', 
+                pointBackgroundColor: currentThemeColor, 
                 pointHoverRadius: 6, 
                 fill: false,
                 tension: 0.4, 
                 order: 1,
                 yAxisID: 'y1',
                 datalabels: {
-                    align: 'bottom',
-                    anchor: 'end',
-                    color: '#fff0f0',
+                    align: 'bottom' as const,
+                    anchor: 'end' as const,
+                    color: currentThemeColor,
                     formatter: (value: any) => {
                         return value >= 1000000 ? (value / 1000000) + 'M' : value;
                     },
-                    font: { weight: 600, size: 14 },
+                    font: { weight: 600, size: 12 },
                     offset: 6,
                 }
             },
@@ -90,10 +108,10 @@ export default function ProfitAndCustomersChart() {
                 order: 2,
                 yAxisID: 'y',
                 datalabels: {
-                    align: 'top',
-                    anchor: 'end',
-                    color: '#ffffff',
-                    font: { weight: 600, size: 14 },
+                    align: 'top' as const,
+                    anchor: 'end' as const,
+                    color: getCSSVariable('--alt-text-color') || '#ffffff',
+                    font: { weight: 700, size: 13 },
                 }
             },
         ]
@@ -104,13 +122,13 @@ export default function ProfitAndCustomersChart() {
         maintainAspectRatio: false,
         animation: {
             duration: 2000,
-            easing: 'easeOutQuart',
+            easing: 'easeOutQuart' as const,
         },
         animations: {
             y: {
                 duration: 2000,
-                easing: 'easeOutQuart',
-                type: 'number',
+                easing: 'easeOutQuart' as const,
+                type: 'number' as const,
                 from: (context: any) => {
                     if (context.type === 'data') {
                         return context.chart.scales.y.getPixelForValue(0);
@@ -122,11 +140,8 @@ export default function ProfitAndCustomersChart() {
             legend: {
                 labels: {
                     usePointStyle: true,
-                    font: {
-                        weight: 600,
-                        size: 14
-                    },
-                    color: '#006fff'
+                    font: { weight: 600, size: 13 },
+                    color: currentThemeColor
                 }
             },
             datalabels: {
@@ -134,9 +149,7 @@ export default function ProfitAndCustomersChart() {
             }
         },
         scales: {
-            y: {
-                display: false,
-            },
+            y: { display: false },
             y1: {
                 display: false,
                 ticks: {
@@ -144,13 +157,11 @@ export default function ProfitAndCustomersChart() {
                 }
             },
             x: {
+                grid: { display: false },
                 ticks: {
-                    color: '#006fff',
-                    font: {
-                        weight: 600,
-                        size: 12
-                    }, 
-                    callback: function(value) {
+                    color: currentThemeColor,
+                    font: { weight: 600, size: 11 }, 
+                    callback: function(this: any, value: any) {
                         const label = this.getLabelForValue(value);
                         return label.length > 8 ? label.substr(0, 8) + '..' : label; 
                     },
@@ -164,14 +175,13 @@ export default function ProfitAndCustomersChart() {
     };
 
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold">
+        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
+            <h2 className="text-(--alt-text-color) font-semibold">
                 Profit & Customers by Region
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key="profit-customers-chart" data={data} options={options} />
+                <Bar key={currentThemeColor} data={data} options={options as any} />
             </div>
         </div>
-    )
+    );
 }

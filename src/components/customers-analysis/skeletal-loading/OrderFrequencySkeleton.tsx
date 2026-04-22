@@ -11,28 +11,26 @@ export default function OrderFrequencySkeleton() {
     return (
         <div 
             className={`
-                bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-                p-6 h-96 border-l-3 border-[#4a7fce] 
-                animate-pulse flex flex-col
+                bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] 
+                animate-pulse flex flex-col transition-all duration-500
             `}
             aria-hidden="true" 
         >
-            <div className="h-5 w-40 bg-gray-700/50 rounded mb-8"></div>
+            <div className="h-5 w-40 bg-(--field-bg-color) opacity-50 rounded mb-8"></div>
 
             <div className="flex flex-1 w-full gap-2 relative">
                 
+                <div className="absolute -left-2 top-1/2 -rotate-90 origin-left w-20 h-3 bg-(--field-bg-color) opacity-20 rounded"></div>
 
-                <div className="absolute -left-2 top-1/2 -rotate-90 origin-left text-[10px] w-20 h-3 bg-gray-700/20 rounded"></div>
-
-                <div className="flex items-end justify-between w-full h-[240px] px-2 gap-1 border-b border-gray-700/30">
+                <div className="flex items-end justify-between w-full h-[240px] px-2 gap-1 border-b border-(--field-bg-color) border-opacity-20">
                     {skeletonBars.map((barHeight, index) => (
                         <div key={index} className="flex flex-col items-center flex-1 group">
                             
-                            <div className="h-3 w-6 bg-gray-700/20 rounded mb-2"></div>
+                            <div className="h-3 w-6 bg-(--field-bg-color) opacity-20 rounded mb-2"></div>
                             
                             <div 
                                 className={`
-                                    bg-gray-700/40 rounded-t-sm 
+                                    bg-(--field-bg-color) opacity-40 rounded-t-sm 
                                     w-[20px] sm:w-[28px]
                                     ${barHeight} 
                                 `}
@@ -45,10 +43,12 @@ export default function OrderFrequencySkeleton() {
             <div className="flex flex-col items-center mt-2">
                 <div className="flex justify-between w-full px-4 mb-2">
                     {[...Array(12)].map((_, i) => (
-                        <div key={i} className="h-2 w-4 bg-gray-700/10 rounded"></div>
+
+                        <div key={i} className="h-2 w-4 bg-(--field-bg-color) opacity-10 rounded"></div>
                     ))}
                 </div>
-                <div className="h-3 w-24 bg-gray-700/30 rounded"></div>
+
+                <div className="h-3 w-24 bg-(--field-bg-color) opacity-30 rounded"></div>
             </div>
         </div>
     )

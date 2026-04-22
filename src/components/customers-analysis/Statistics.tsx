@@ -9,7 +9,6 @@ export default function Statistics() {
     
     useEffect(() => {
         fetchFromAPI('Customer Analysis/Summary').then(data => {
-            
             setStats(data || {});
         }).catch(error => {
             console.error(`API Error: ${error}`);
@@ -17,23 +16,25 @@ export default function Statistics() {
     }, []);
 
     const statisData = [
-        { id: 1, title: "Customers", value: stats?.customer || "0" },
-        { id: 2, title: "AOV", value: `$${stats?.aov}` || "$0" },
-        { id: 3, title: "Orders", value: stats?.orders || "0" },
-        { id: 4, title: "Customer No Sales", value: stats?.customer_no_sales || "0" },
+        { id: 1, title: "Customers", value: stats?.customer ?? 0, prefix: "" },
+        { id: 2, title: "AOV", value: stats?.aov ?? 0, prefix: "$" },
+        { id: 3, title: "Orders", value: stats?.orders ?? 0, prefix: "" },
+        { id: 4, title: "Customer No Sales", value: stats?.customer_no_sales ?? 0, prefix: "" },
     ];
 
     return (
-        <div className={`flex flex-row justify-between font-grotesk max-w-2/3
-        h-fit`}>
+        <div className={`flex flex-row justify-between font-grotesk max-w-2/3 h-fit transition-colors duration-500`}>
             {statisData.map((data) => {
                 return (
                     <div key={data.id} className={`flex flex-col justify-start 
                     w-[150px] pl-3 border-l-3 border-[#4a7fce]`}>
-                        <h3 className='text-md font-mideum text-gray-500'>
+                        
+                        <h3 className='text-md font-medium text-(--alt-text-color) opacity-80'>
                             {data.title}
                         </h3>
-                        <p className='text-2xl font-mideum'>
+
+                        <p className='text-2xl font-medium text-(--main-text-color)'>
+                            <span>{data.prefix}</span>
                             <AnimatedNumbers value={data.value} />
                         </p>
                     </div>
