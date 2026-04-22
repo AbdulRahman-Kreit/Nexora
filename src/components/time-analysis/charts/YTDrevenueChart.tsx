@@ -1,8 +1,10 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
+import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -16,29 +18,36 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const chartDataValues = [
-    { month: "Jan", value: 12200000 },
-    { month: "Feb", value: 8900000 },
-    { month: "Mar", value: 7200000 },
-    { month: "Apr", value: 8900000 },
-    { month: "May", value: 13800000 },
-    { month: "Jun", value: 4700000 },
-    { month: "Jul", value: 9300000 },
-    { month: "Aug", value: 11800000 },
-    { month: "Sep", value: 5900000 },
-    { month: "Oct", value: 10400000 },
-    { month: "Nov", value: 9400000 },
-    { month: "Dec", value: 5900000 },
-];
+const monthMapping: { [key: number]: string } = {
+    1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
+    7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
+};
 
 export default function YTDrevenueChart() {
     const chartRef = useRef<ChartJS<'line'> | null>(null);
-            
+    const [chartDataValues, setChartDataValues] = useState<{ month: string, value: number }[]>([]);
+
     useEffect(() => {
-        const chart = chartRef.current;
+        const loadData = async () => {
+            try {
+                const result = await fetchFromAPI('Time Analysis/getRevenueYtd Copy');
+                if (Array.isArray(result)) {
+                    const formattedData = result.map((item: any) => ({
+                        month: monthMapping[item.month] || `M${item.month}`,
+                        value: Number(item.revenue)
+                    }));
+                    setChartDataValues(formattedData);
+                }
+            } catch (error) {
+                console.error("Error fetching YTD Revenue:", error);
+            }
+        };
+
+        loadData();
+
         return () => {
-            if (chart) {
-                chart.destroy();
+            if (chartRef.current) {
+                chartRef.current.destroy();
             }
         };
     }, []);
@@ -76,15 +85,11 @@ export default function YTDrevenueChart() {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        animation: {
-            duration: 2000,
-            easing: 'easeOutQuart',
-        },
         animations: {
             y: {
+                type: 'number' as const,
                 duration: 2000,
-                easing: 'easeOutQuart',
-                type: 'number',
+                easing: 'easeOutQuart' as const,
                 from: (context: any) => {
                     if (context.type === 'data') {
                         return context.chart.scales.y.getPixelForValue(0);
@@ -104,8 +109,12 @@ export default function YTDrevenueChart() {
                 offset: 8,
                 color: '#ffffff',
                 font: { weight: 'bold' as const },
-                formatter: (value: any) => Math.round(value / 1000000) + 'M' // التنسيق المطلوب
-            }
+                formatter: (value: any) => {
+                    if (value >= 1000000) return Math.round(value / 1000000) + 'M';
+                    if (value >= 1000) return Math.round(value / 1000) + 'K';
+                    return value;
+                }
+            },
         },
         scales: {
             x: {
@@ -124,8 +133,8 @@ export default function YTDrevenueChart() {
         <div className="bg-linear-to-r from-[#151a21] to-[#161616] p-6 h-96 border-l-3 border-[#4a7fce]">
             <h2 className="text-gray-500 font-semibold mb-4">YTD Revenue</h2>
             <div className="min-h-[300px] w-full">
-                <Line key="ytd-revenue-chart" data={data} options={options} />
+                <Line ref={chartRef} key={JSON.stringify(chartDataValues)} data={data} options={options} />
             </div>
         </div>
-    )
+    );
 }

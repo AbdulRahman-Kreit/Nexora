@@ -24,6 +24,7 @@ ChartJS.register(
 export default function CostAndGMChart() {
     const searchParams = useSearchParams();
     const category = searchParams.get('category') || '';
+    const region = searchParams.get('region') || '';
 
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
@@ -40,14 +41,14 @@ export default function CostAndGMChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('Cost & GM By Category', category).then(data => {
+        fetchFromAPI('Cost & GM By Category', category, region).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [category]);
+    }, [category, region]);
 
     if (loading) return <CostAndGMSkeleton />;
 
@@ -166,7 +167,7 @@ export default function CostAndGMChart() {
                 Cost & GM by Price Category
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key={`cost-gm-chart-${category}`} data={data} options={options} />
+                <Bar key={`cost-gm-chart-${category}-${region}`} data={data} options={options} />
             </div>
         </div>
     )

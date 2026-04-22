@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { fetchFromAPI } from '@/data/fetchFromAPI'; 
 import RevenueOverTimeSkeleton from '../skeletal-loading/RevenueOverTimeSkeleton';
 
 export default function RevenueOverTimeTable() {
@@ -14,8 +15,8 @@ export default function RevenueOverTimeTable() {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch('https://analysis.laraveladvancedsayed101.cloud/api/admin/time-analysis/table');
-                const result = await response.json();
+                
+                const result = await fetchFromAPI('Time Analysis/table');
                 
                 setTableData(result);
 
@@ -93,7 +94,6 @@ export default function RevenueOverTimeTable() {
                                                         <span>{row.year}</span>
                                                     </div>
                                                 </td>
-                                                
                                                 <td className="py-3 px-4 text-center">-</td>
                                                 <td className="py-3 px-4 text-center">-</td>
                                                 <td className="py-3 px-4 text-center">-</td>

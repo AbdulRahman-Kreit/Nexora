@@ -13,6 +13,16 @@
         {
           "name": "Summary",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "18|fPDMSC3r1Q9d2LdBBRfmNrSjLhV0vzbVgTyMcAj543f4cf3e",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -258,93 +268,6 @@
       ]
     },
     {
-      "name": "Returns Analysis",
-      "item": [
-        {
-          "name": "Summary",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/admin/returns-analysis/summary",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "returns-analysis",
-                "summary"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "By Region",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/admin/returns-analysis/by-region",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "returns-analysis",
-                "by-region"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "By SubCategory",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/admin/returns-analysis/by-subcategory",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "returns-analysis",
-                "by-subcategory"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "By Month",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/admin/returns-analysis/by-month",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "returns-analysis",
-                "by-month"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
       "name": "Product Analysis",
       "item": [
         {
@@ -514,6 +437,62 @@
           "response": []
         },
         {
+          "name": "revenueByMonth",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/revenueByMonth",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "revenueByMonth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getRevenueYtd",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/getRevenueYtd?days=5000",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "getRevenueYtd"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "5000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Top Products",
           "request": {
             "method": "GET",
@@ -622,6 +601,62 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "getRevenueYtd Copy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/time-analysis/getRevenueYtd?days=5000",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "time-analysis",
+                "getRevenueYtd"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "5000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "revenueByMonth Copy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/time-analysis/revenueByMonth",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "time-analysis",
+                "revenueByMonth"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -723,6 +758,197 @@
                 "admin",
                 "employee-analysis",
                 "table"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Returns Analysis",
+      "item": [
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/summary",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "summary"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "By Region",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "1|4PVKhYiDiWR9feo0PUQvQsFQIDDS4jBJnUsPvBcW10841b77",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/by-region",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "by-region"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "By SubCategory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/by-subcategory",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "by-subcategory"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "By Month",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/by-month",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "by-month"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/login?email=admin@admin.com&password=admin@2026",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "admin@admin.com"
+                },
+                {
+                  "key": "password",
+                  "value": "admin@2026"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CHAT ( MY Reports)",
+      "item": [
+        {
+          "name": "send the days",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "18|fPDMSC3r1Q9d2LdBBRfmNrSjLhV0vzbVgTyMcAj543f4cf3e",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"days\" : 100\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/chat/sendDays",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "chat",
+                "sendDays"
               ]
             }
           },

@@ -1,6 +1,6 @@
 import postmanData from './Ananlysis Admin API.postman_collection.json';
 
-const BASE_URL = 'https://analysis.laraveladvancedsayed101.cloud/api';
+const BASE_URL = "https://analysis.gproject.space/api";
 
 function findRequestRecursive(items: any[], targetName: string): any {
     for (const item of items) {
@@ -15,7 +15,7 @@ function findRequestRecursive(items: any[], targetName: string): any {
     return null;
 }
 
-export async function fetchFromAPI(requestName: string, category: string = '') {
+export async function fetchFromAPI(requestName: string, payload: any = null, paramsObj: Record<string, string> = {}) {
     let requestItem: any = null;
 
     if (requestName.includes('/')) {
@@ -26,37 +26,57 @@ export async function fetchFromAPI(requestName: string, category: string = '') {
         requestItem = findRequestRecursive(postmanData.item, requestName.trim());
     }
 
-    if (!requestItem) {
-        throw new Error(`Request "${requestName}" not found in JSON collection.`);
-    }
+    if (!requestItem) throw new Error(`Request "${requestName}" not found in Postman JSON.`);
 
     const pathSegments = requestItem.request.url.path;
-    const path = Array.isArray(pathSegments) ? pathSegments.join('/') : pathSegments;
+    let path = Array.isArray(pathSegments) ? pathSegments.join('/') : pathSegments;
+    
+    path = path.replace(/^api\//, "");
 
     let finalUrl = `${BASE_URL}/${path}`.replace(/([^:]\/)\/+/g, "$1"); 
     
-    if (category && category !== '') {
-        finalUrl += `?category=${encodeURIComponent(category)}`;
-    }
+    const urlParams = new URLSearchParams();
+    Object.entries(paramsObj).forEach(([key, value]) => {
+        if (value) urlParams.append(key, value);
+    });
     
-    console.log(`🚀 API Call: [${requestItem.request.method}] ${finalUrl}`);
+    const queryString = urlParams.toString();
+    if (queryString) finalUrl += `?${queryString}`;
+
+    console.log(`Fetching from: ${finalUrl}`);
 
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const method = requestItem.request.method;
 
     const response = await fetch(finalUrl, {
-        method: requestItem.request.method,
+        method: method,
         headers: {
-            'Accept': 'application/json',
+            'Accept': 'application/json', 
             'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest', 
             ...(token && { 'Authorization': `Bearer ${token}` })
-        }
+        },
+        body: (method !== 'GET' && payload) ? JSON.stringify(payload) : undefined,
     });
 
-    const result = await response.json();
-
-    if (!response.ok) {
-        throw new Error(result.message || `API Error: ${response.status}`);
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+        const textError = await response.text();
+        console.error("Server returned non-JSON:", textError);
+        throw new Error(`Server Error: Received HTML instead of JSON. Check the network tab.`);
     }
+
+    const result = await response.json();
+    
+    if (response.status === 401) {
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('token');
+            window.location.href = '/login'; 
+        }
+        throw new Error("Session expired");
+    }
+
+    if (!response.ok) throw new Error(result.message || `Error: ${response.status}`);
 
     return result;
 }

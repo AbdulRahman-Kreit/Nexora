@@ -24,6 +24,7 @@ ChartJS.register(
 export default function RevenueAndProfitChart() {
     const searchParams = useSearchParams();
     const category = searchParams.get('category') || '';
+    const region = searchParams.get('region') || '';
 
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
@@ -40,14 +41,14 @@ export default function RevenueAndProfitChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('Revenue & Profit By Category', category).then(data => {
+        fetchFromAPI('Revenue & Profit By Category', category, region).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [category]); 
+    }, [category, region]); 
     
     if (loading) return <RevenueAndProfitSkeleton />;
 
@@ -166,7 +167,7 @@ export default function RevenueAndProfitChart() {
                 Revenue & Profit by Price Category 
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key={`revenue-profit-chart-${category}`} data={data} options={options} />
+                <Bar key={`revenue-profit-chart-${category}-${region}`} data={data} options={options} />
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend, plugins } from "chart.js";
+import { useSearchParams } from 'next/navigation';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -20,12 +21,13 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const gmData = [68.1, 68.4 ,68.8 ,69.0 ,68.9 ,68.9 ,69.1 ,69.1 ,68.3 ,68.9];
-
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
-
 export default function TopProductByAOVandGMChart() {
+    const searchParams = useSearchParams();
+    const category = searchParams.get('category') || '';
+    const region = searchParams.get('region') || '';
+
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -40,14 +42,15 @@ export default function TopProductByAOVandGMChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('Top Products').then(data => {
+        setLoading(true);
+        fetchFromAPI('Top Products', category, region).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, []);
+    }, [category, region]);
     
     if (loading) return <TopProductsbyAOVandGMSkeleton />;
 
@@ -77,11 +80,11 @@ export default function TopProductByAOVandGMChart() {
                 order: 1,
                 yAxisID: 'y1',
                 datalabels: {
-                    align: 'bottom',
-                    anchor: 'end',
+                    align: 'bottom' as const,
+                    anchor: 'end' as const,
                     color: '#ffffff',
                     formatter: (value: any) => (value + "%"),
-                    font: { weight: 600, size: 14 },
+                    font: { weight: 600 as const, size: 14 },
                     offset: 6,
                 }
             },
@@ -95,8 +98,8 @@ export default function TopProductByAOVandGMChart() {
                 order: 2,
                 yAxisID: 'y',
                 datalabels: {
-                    align: 'top',
-                    anchor: 'end',
+                    align: 'top' as const,
+                    anchor: 'end' as const,
                     color: '#ffffff',
                     formatter: (value: any) => {
                         const intValue = parseInt(value);
@@ -107,7 +110,7 @@ export default function TopProductByAOVandGMChart() {
                         }
                         return intValue;
                     },
-                    font: { weight: 600, size: 14 },
+                    font: { weight: 600 as const, size: 14 },
                 }
             },
         ]
@@ -118,13 +121,13 @@ export default function TopProductByAOVandGMChart() {
             maintainAspectRatio: false,
             animation: {
                 duration: 2000,
-                easing: 'easeOutQuart',
+                easing: 'easeOutQuart' as const,
             },
             animations: {
                 y: {
                     duration: 2000,
-                    easing: 'easeOutQuart',
-                    type: 'number',
+                    easing: 'easeOutQuart' as const,
+                    type: 'number' as const,
                     from: (context: any) => {
                         if (context.type === 'data') {
                             return context.chart.scales.y.getPixelForValue(0);
@@ -137,7 +140,7 @@ export default function TopProductByAOVandGMChart() {
                     labels: {
                         usePointStyle: true,
                         font: {
-                            weight: 600,
+                            weight: 600 as const,
                             size: 14
                         },
                         color: '#006fff'
@@ -151,7 +154,6 @@ export default function TopProductByAOVandGMChart() {
             scales: {
                 y: {
                     display: false,
-                    
                 },
                 y1: {
                     display: false,
@@ -163,10 +165,10 @@ export default function TopProductByAOVandGMChart() {
                     ticks: {
                         color: '#006fff',
                         font: {
-                            weight: 600,
+                            weight: 600 as const,
                             size: 12
                         }, 
-                        callback: function(value) {
+                        callback: function(this: any, value: any) {
                             const label = this.getLabelForValue(value);
                             return label.length > 8 ? label.substr(0, 8) + '..' : label; 
                         },
@@ -186,7 +188,7 @@ export default function TopProductByAOVandGMChart() {
                 Top 10 Products by AOV & GM%
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key="top-products-aov-gm-chart" data={data} options={options} />
+                <Bar key={`top-products-aov-gm-${category}-${region}`} data={data} options={options} />
             </div>
         </div>
     )

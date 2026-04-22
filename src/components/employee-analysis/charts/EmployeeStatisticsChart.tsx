@@ -1,13 +1,37 @@
-import React from 'react';
+"use client"; // إضافة هذه السطر للسماح بالوصول للـ Token من المتصفح
+
+import React, { useState, useEffect } from 'react';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
-export default async function EmployeeStatisticsChart() {
-    let tableData = [];
-    try {
-        tableData = await fetchFromAPI('Employee Analysis/table');
-    } catch (error) {
-        console.error(`Server-side API Error: ${error}`);
-        return <div className="p-10 text-red-500">Failed to load statistics.</div>;
+export default function EmployeeStatisticsChart() {
+    // استخدام State لإدارة البيانات والتحميل
+    const [tableData, setTableData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                // الآن سيتم إرسال الـ Token بشكل صحيح من الـ localStorage داخل المتصفح
+                const data = await fetchFromAPI('Employee Analysis/table');
+                setTableData(data || []);
+            } catch (err) {
+                console.error(`API Error: ${err}`);
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadData();
+    }, []);
+
+    if (loading) {
+        return <div className="p-10 text-white text-center">Loading statistics...</div>;
+    }
+
+    if (error) {
+        return <div className="p-10 text-red-500">Failed to load statistics. Session may be expired.</div>;
     }
 
     if (!tableData || tableData.length === 0) {

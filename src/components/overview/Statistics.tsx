@@ -8,7 +8,6 @@ export default function Statistics() {
 
     useEffect(() => {
         fetchFromAPI('Dashboard Overview/Summary').then(data => {
-            
             setStats(data || {});
         }).catch(error => {
             console.error(`API Error: ${error}`);
@@ -16,9 +15,9 @@ export default function Statistics() {
     }, []);
 
     const statisData = [
-    { id: 1, title: "Revenue", value: `$${stats?.revenue}` || "0" },
-    { id: 2, title: "Profit", value: `$${stats?.profit}` || "0" },
-    { id: 3, title: "Cost", value: `$${stats?.cost}` || "0" },
+    { id: 1, title: "Revenue", value: `$${stats?.revenue}` || "$0" },
+    { id: 2, title: "Profit", value: `$${stats?.profit}` || "$0" },
+    { id: 3, title: "Cost", value: `$${stats?.cost}` || "$0" },
     { id: 4, title: "QTY", value: `${stats?.quantity}` || "0" },
     ];
 

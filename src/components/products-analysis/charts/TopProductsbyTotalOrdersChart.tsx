@@ -1,5 +1,6 @@
-/* eslint-disable react-hooks/purity */
+"use client";
 import React, { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -18,6 +19,10 @@ ChartJS.register(
 );
 
 export default function TopProductsbyTotalOrdersChart() {
+    const searchParams = useSearchParams();
+    const category = searchParams.get('category') || '';
+    const region = searchParams.get('region') || '';
+
     const bgMaxValue = 5000;
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
@@ -33,14 +38,15 @@ export default function TopProductsbyTotalOrdersChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('Top Products').then(data => {
+        setLoading(true);
+        fetchFromAPI('Top Products', category, region).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, []);
+    }, [category, region]);
 
     if (loading) return <TopProductsbyTotalOrdersSkeleton />;
 
@@ -57,8 +63,8 @@ export default function TopProductsbyTotalOrdersChart() {
                 animations: {
                     x: {
                         duration: 2000,
-                        easing: 'easeOutQuart',
-                        type: 'number',
+                        easing: 'easeOutQuart' as const,
+                        type: 'number' as const,
                         from: (context: any) => {
                             if (context.type === 'data' && context.datasetIndex === 0) {
                                 return context.chart.scales.x.getPixelForValue(0);
@@ -137,7 +143,7 @@ export default function TopProductsbyTotalOrdersChart() {
                 Top 10 Products by Total Orders
             </h2>
             <div className="h-[calc(100%-40px)] w-full mt-0">
-                <Bar key="top-products-chart" data={data} options={options} />
+                <Bar key={`top-orders-chart-${category}-${region}`} data={data} options={options} />
             </div>
         </div>
     )

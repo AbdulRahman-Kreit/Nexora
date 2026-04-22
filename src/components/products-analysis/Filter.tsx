@@ -4,12 +4,13 @@ import { useSearchParams } from 'next/navigation';
 
 interface FilterProps {
     onCategoryChange?: (category: string) => void;
+    onRegionChange?: (region: string) => void; 
 }
 
-export default function Filter({ onCategoryChange }: FilterProps) {
-    // قراءة الفئة المختارة حالياً من الرابط لضمان بقاء الزر مفعلاً عند تحديث الصفحة
+export default function Filter({ onCategoryChange, onRegionChange }: FilterProps) {
     const searchParams = useSearchParams();
     const currentCategory = searchParams.get('category') || '';
+    const currentRegion = searchParams.get('region') || ''; 
 
     const categoriesInputs = [
         { id: 'all-categories', label: 'All Categories', value: '' },
@@ -20,14 +21,13 @@ export default function Filter({ onCategoryChange }: FilterProps) {
     ];
 
     const regionsInputs = [
-        { id: 'all-regions', label: 'All Regions' },
-        { id: 'brazil', label: 'Brazil' },
-        { id: 'canada', label: 'Canada' },
-        { id: 'central', label: 'Central' },
-        { id: 'france', label: 'France' },
-        { id: 'northeast', label: 'Saudi Arabia' },
-        { id: 'northwest', label: 'Australia' },
-        { id: 'southeast', label: 'Japan' },
+        { id: 'all-regions', label: 'All Regions', value: '' }, 
+        { id: 'brazil', label: 'Brazil', value: 'Brazil' },
+        { id: 'canada', label: 'Canada', value: 'Canada' },
+        { id: 'france', label: 'France', value: 'France' },
+        { id: 'northeast', label: 'Saudi Arabia', value: 'Saudi Arabia' },
+        { id: 'northwest', label: 'Australia', value: 'Australia' },
+        { id: 'southeast', label: 'Japan', value: 'Japan' },
     ];
 
     const cardStyle = `flex flex-col w-[230px] bg-[#006fff] mb-5 mx-0 
@@ -83,7 +83,8 @@ export default function Filter({ onCategoryChange }: FilterProps) {
                                 name="regions"
                                 id={item.id}
                                 className="peer hidden"
-                                defaultChecked={item.id === 'all-regions'} 
+                                checked={currentRegion === item.value}
+                                onChange={() => onRegionChange?.(item.value)}
                             />
                             <div className="w-5 h-5 rounded-full border-2 border-[#0085ff] bg-white 
                                 transition-all duration-200

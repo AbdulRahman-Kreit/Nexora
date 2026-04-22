@@ -20,15 +20,18 @@ export default function SectionSwitcher() {
         setIsMounted(true);
     }, [])
 
-    // وظيفة تحديث الرابط عند تغيير الفئة
     const handleCategoryChange = (category: string) => {
         const params = new URLSearchParams(searchParams.toString());
-        if (category) {
-            params.set('category', category);
-        } else {
-            params.delete('category');
-        }
-        router.push(`?${params.toString()}`);
+        if (category) params.set('category', category);
+        else params.delete('category');
+        router.push(`?${params.toString()}`, { scroll: false });
+    };
+
+    const handleRegionChange = (region: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (region) params.set('region', region);
+        else params.delete('region');
+        router.push(`?${params.toString()}`, { scroll: false });
     };
 
     if (!isMounted) return null;
@@ -76,7 +79,10 @@ export default function SectionSwitcher() {
 
                     <div className="max-h-[500px] overflow-y-auto w-64 custom-scrollbar">
                         {isFilter ? (
-                            <Filter onCategoryChange={handleCategoryChange} />
+                            <Filter 
+                                onCategoryChange={handleCategoryChange} 
+                                onRegionChange={handleRegionChange} 
+                            />
                         ) : (
                             <TopProducts />
                         )}

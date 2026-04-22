@@ -1,7 +1,20 @@
-
-import React from 'react';
+"use client"; 
+import React, { useEffect, useState } from 'react';
 
 export default function Header() {
+    const [userName, setUserName] = useState<string>('');
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            try {
+                const user = JSON.parse(storedUser);
+                setUserName(user.name); 
+            } catch (error) {
+                console.error("Error parsing user data", error);
+            }
+        }
+    }, []);
 
     return (
         <div className={`flex flex-row items-stretch border-b border-[#2d2d2d] 
@@ -21,9 +34,8 @@ export default function Header() {
                 hover:bg-[#161616] transition-colors group`}>
                 <span className={`font-semibold text-sm text-gray-100 
                     truncate max-w-[120px] font-grotesk`}>
-                    Nexora Analytics
+                    {userName || 'Guest'} 
                 </span>
-                
             </div>
         </div> 
     )
