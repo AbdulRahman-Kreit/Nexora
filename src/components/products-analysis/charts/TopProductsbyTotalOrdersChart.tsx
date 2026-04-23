@@ -27,6 +27,7 @@ export default function TopProductsbyTotalOrdersChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isDarkMode, setIsDarkMode] = useState(true);
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -35,6 +36,22 @@ export default function TopProductsbyTotalOrdersChart() {
                 chart.destroy();
             }
         };
+    }, []);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -49,6 +66,9 @@ export default function TopProductsbyTotalOrdersChart() {
     }, [category, region]);
 
     if (loading) return <TopProductsbyTotalOrdersSkeleton />;
+
+    const barBgColor = isDarkMode ? '#12243c' : '#d5e7fe';
+    const labelColor = isDarkMode ? '#ffffff' : '#006fff';
 
     const data = {
         labels: chartData.map(item => item.product),
@@ -75,9 +95,9 @@ export default function TopProductsbyTotalOrdersChart() {
                 }
             },
             {
-                label: 'Top Product',
+                label: 'Background Bar',
                 data: chartData.map(() => bgMaxValue),
-                backgroundColor: '#12243c',
+                backgroundColor: barBgColor,
                 borderRadius: 5,
                 barThickness: 25,
                 order: 2, 
@@ -100,7 +120,7 @@ export default function TopProductsbyTotalOrdersChart() {
             datalabels: {
                 anchor: 'end' as const,
                 align: 'right' as const,
-                color: '#006fff',
+                color: labelColor,
                 font: { weight: 600 as const },
                 formatter: (value: any) => {
                     return value >= 1000 ? `${(value / 1000).toFixed(1)}K` : parseInt(value);
@@ -132,18 +152,21 @@ export default function TopProductsbyTotalOrdersChart() {
             }
         },
         layout: {
-            padding: { right: 25 }
+            padding: { right: 35 }
         }
     }
     
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-2/3 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-0">
+        <div className="bg-main-gradient ml-1 p-6 h-2/3 border-l-3 border-[#4a7fce] transition-all duration-500">
+            <h2 className="text-gray-500 font-semibold mb-0 uppercase tracking-wider text-sm">
                 Top 10 Products by Total Orders
             </h2>
             <div className="h-[calc(100%-40px)] w-full mt-0">
-                <Bar key={`top-orders-chart-${category}-${region}`} data={data} options={options} />
+                <Bar 
+                    key={`top-orders-chart-${category}-${region}-${isDarkMode}`} 
+                    data={data} 
+                    options={options as any} 
+                />
             </div>
         </div>
     )

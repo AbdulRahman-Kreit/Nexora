@@ -19,16 +19,28 @@ export default function Statistics() {
     const arcLength = circumference / 2; 
 
     const [stats, setStats] = useState<ProductStats | null>(null);
+    const [isDarkMode, setIsDarkMode] = useState(true);
         
     useEffect(() => {
-    fetchFromAPI('Product Analysis/Summary') 
-        .then(data => {
-            console.log("Data to be set in state:", data);
-            const statsData = data?.data || data;
-            setStats(statsData);
-        })
-        .catch(err => console.error("Final Error Catch:", err));
-}, []);
+        fetchFromAPI('Product Analysis/Summary') 
+            .then(data => {
+                console.log("Data to be set in state:", data);
+                const statsData = data?.data || data;
+                setStats(statsData);
+            })
+            .catch(err => console.error("Final Error Catch:", err));
+    }, []);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
 
     if (!stats) return <div className="p-8 text-white text-center">Loading...</div>;
 
@@ -90,7 +102,12 @@ export default function Statistics() {
                                 </span>
                             </div>
                         </div>
-                        <span className="text-white text-lg font-semibold mt-4">{data.title}</span>
+                        <span 
+                            className="text-lg font-semibold mt-4 transition-colors duration-500"
+                            style={{ color: isDarkMode ? '#ffffff' : '#006fff' }}
+                        >
+                            {data.title}
+                        </span>
                     </div>
                 );
             })}

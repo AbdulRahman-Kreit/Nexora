@@ -31,6 +31,7 @@ export default function TopProductByAOVandGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isDarkMode, setIsDarkMode] = useState(true);
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -39,6 +40,22 @@ export default function TopProductByAOVandGMChart() {
                 chart.destroy();
             }
         };
+    }, []);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -58,6 +75,8 @@ export default function TopProductByAOVandGMChart() {
         return barColors[Math.floor(Math.random() * barColors.length)];
     });
 
+    const labelColor = isDarkMode ? '#ffffff' : '#006fff';
+
     const data = {
         labels: chartData.map(item => item.product),
         datasets: [
@@ -70,22 +89,17 @@ export default function TopProductByAOVandGMChart() {
                     }
                     return 0;
                 }),
-                borderColor: '#ffffff',
+                borderColor: labelColor,
                 borderWidth: 2,
                 pointRadius: 4, 
-                pointBackgroundColor: '#ffffff', 
+                pointBackgroundColor: labelColor, 
                 pointHoverRadius: 6, 
                 fill: false,
                 tension: 0.4, 
                 order: 1,
                 yAxisID: 'y1',
                 datalabels: {
-                    align: 'bottom' as const,
-                    anchor: 'end' as const,
-                    color: '#ffffff',
-                    formatter: (value: any) => (value + "%"),
-                    font: { weight: 600 as const, size: 14 },
-                    offset: 6,
+                    display: false,
                 }
             },
             {
@@ -100,7 +114,7 @@ export default function TopProductByAOVandGMChart() {
                 datalabels: {
                     align: 'top' as const,
                     anchor: 'end' as const,
-                    color: '#ffffff',
+                    color: labelColor,
                     formatter: (value: any) => {
                         const intValue = parseInt(value);
                         if (intValue >= 1000000) {
@@ -154,14 +168,17 @@ export default function TopProductByAOVandGMChart() {
             scales: {
                 y: {
                     display: false,
+                    beginAtZero: true,
                 },
                 y1: {
                     display: false,
+                    beginAtZero: true,
                     ticks: {
                         callback: (value: any) => (value / 1000000) + 'M'
                     }
                 },
                 x: {
+                    display: false,
                     ticks: {
                         color: '#006fff',
                         font: {
@@ -182,13 +199,16 @@ export default function TopProductByAOVandGMChart() {
         };
     
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold">
+        <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
+            <h2 className="text-gray-500 font-semibold uppercase tracking-wider text-sm">
                 Top 10 Products by AOV & GM%
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key={`top-products-aov-gm-${category}-${region}`} data={data} options={options} />
+                <Bar 
+                    key={`top-products-aov-gm-${category}-${region}-${isDarkMode}`} 
+                    data={data} 
+                    options={options as any} 
+                />
             </div>
         </div>
     )

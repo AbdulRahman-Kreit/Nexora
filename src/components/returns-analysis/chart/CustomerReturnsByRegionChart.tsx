@@ -69,6 +69,17 @@ export default function CustomerReturnsByRegionChart() {
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 45,
+                animations: {
+                    y: {
+                        duration: 2000,
+                        easing: 'easeOutQuart',
+                        from: (context: any) => {
+                            if (context.type === 'data') {
+                                return context.chart.scales.y.getPixelForValue(0);
+                            }
+                        }
+                    }
+                }
             }
         ]
     };
@@ -76,10 +87,6 @@ export default function CustomerReturnsByRegionChart() {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        animation: {
-            duration: 2000,
-            easing: 'easeOutQuart' as const,
-        },
         plugins: {
             legend: { display: false },
             datalabels: {
@@ -94,6 +101,7 @@ export default function CustomerReturnsByRegionChart() {
             y: {
                 display: false, 
                 grid: { display: false },
+                beginAtZero: true, 
             },
             x: {
                 grid: { display: false },
@@ -115,10 +123,10 @@ export default function CustomerReturnsByRegionChart() {
 
     return (
         <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold">
+            <h2 className="text-gray-500 font-semibold uppercase tracking-wider text-sm">
                 Customer Returns by Region
             </h2>
-            <div className="min-h-[320px] w-full py-5">
+            <div className="h-[320px] w-full pt-8 pb-5">
                 <Bar 
                     ref={chartRef}
                     key={isDarkMode ? 'dark-region' : 'light-region'} 

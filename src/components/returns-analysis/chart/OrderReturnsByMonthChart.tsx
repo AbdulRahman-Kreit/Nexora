@@ -27,6 +27,15 @@ export default function OrderReturnsByMonthChart() {
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
+
+    useEffect(() => {
         const checkTheme = () => {
             const isDark = document.documentElement.classList.contains('dark');
             setIsDarkMode(isDark);
@@ -83,6 +92,15 @@ export default function OrderReturnsByMonthChart() {
                 pointHoverRadius: 10,
                 pointHoverBackgroundColor: 'rgba(0, 111, 255, 0.8)',
                 pointHoverBorderWidth: 2,
+                animations: {
+                    y: {
+                        from: (context: any) => {
+                            if (context.type === 'data') {
+                                return context.chart.scales.y.getPixelForValue(0);
+                            }
+                        }
+                    }
+                }
             }
         ]
     };

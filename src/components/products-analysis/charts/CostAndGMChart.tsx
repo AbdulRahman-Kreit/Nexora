@@ -29,6 +29,7 @@ export default function CostAndGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isDarkMode, setIsDarkMode] = useState(true); // حالة الثيم
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -37,6 +38,22 @@ export default function CostAndGMChart() {
                 chart.destroy();
             }
         };
+    }, []);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -52,6 +69,8 @@ export default function CostAndGMChart() {
 
     if (loading) return <CostAndGMSkeleton />;
 
+    const labelColor = isDarkMode ? '#ffffff' : '#006fff';
+
     const data = {
         labels: chartData.map(item => item.category),
         datasets: [
@@ -59,25 +78,17 @@ export default function CostAndGMChart() {
                 type: 'line' as const,
                 label: 'GM%',
                 data: chartData.map(item => item.gm_percent),
-                borderColor: '#ffffff',
+                borderColor: labelColor, 
                 borderWidth: 2,
                 pointRadius: 4, 
-                pointBackgroundColor: '#ffffff', 
+                pointBackgroundColor: labelColor, 
                 pointHoverRadius: 6, 
                 fill: false,
                 tension: 0.4, 
                 order: 1,
                 yAxisID: 'y1',
                 datalabels: {
-                    align: 'bottom' as const,
-                    anchor: 'end' as const,
-                    color: '#ffffff',
-                    formatter: (value: any) => {
-                        const num = Number(value);
-                        return num >= 1000 ? (num / 1000).toFixed(1) + 'K' : num.toFixed(0);
-                    },
-                    font: { weight: 600 as const, size: 14 },
-                    offset: 6,
+                    display: false,
                 }
             },
             {
@@ -92,7 +103,7 @@ export default function CostAndGMChart() {
                 datalabels: {
                     align: 'top' as const,
                     anchor: 'end' as const,
-                    color: '#ffffff',
+                    color: labelColor,
                     formatter: (value: any) => {
                         const num = Number(value);
                         return num >= 1000 ? (num / 1000).toFixed(1) + 'K' : num.toFixed(0);
@@ -142,14 +153,17 @@ export default function CostAndGMChart() {
         scales: {
             y: {
                 display: false,
+                beginAtZero: true,
             },
             y1: {
                 display: false,
+                beginAtZero: true,
                 ticks: {
                     callback: (value: any) => (value / 1000000) + 'M'
                 }
             },
             x: {
+                display: false,
                 ticks: {
                     color: '#006fff',
                     font: {
@@ -162,12 +176,16 @@ export default function CostAndGMChart() {
     };
     
     return (
-        <div className="bg-linear-to-r from-[#151a21] to-[#161616] ml-1 p-4 h-96 border-l-3 border-[#4a7fce]">
-            <h2 className="text-gray-500 font-semibold">
+        <div className="bg-main-gradient ml-1 p-4 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
+            <h2 className="text-gray-500 font-semibold uppercase tracking-wider text-sm">
                 Cost & GM by Price Category
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key={`cost-gm-chart-${category}-${region}`} data={data} options={options} />
+                <Bar 
+                    key={`cost-gm-chart-${category}-${region}-${isDarkMode}`} 
+                    data={data} 
+                    options={options as any} 
+                />
             </div>
         </div>
     )

@@ -1,9 +1,26 @@
-import React from 'react'
+"use client";
+import React from 'react';
 
 export default function TopProductsbyTotalOrdersSkeleton() {
+    const containerStyle = {
+        background: 'var(--background-image-main-gradient)',
+    };
+
+    const labelPlaceholderStyle = {
+        backgroundColor: 'var(--field-bg-color)',
+    };
+
+    const bgBarPlaceholderStyle = {
+        backgroundColor: 'var(--bar-bg-filler)',
+    };
+
     return (
-        <div className="bg-linear-to-r from-[#151a21] to-[#161616] ml-1 p-6 h-2/3 border-l-3 border-[#4a7fce] animate-pulse">
-            <div className="h-5 w-48 bg-gray-700/50 rounded mb-8"></div>
+        <div 
+            style={containerStyle}
+            className="ml-1 p-6 h-2/3 border-l-3 border-[#4a7fce] animate-pulse transition-all duration-500"
+        >
+            {/* Title Placeholder */}
+            <div style={labelPlaceholderStyle} className="h-5 w-48 rounded mb-8 opacity-50"></div>
             
             <div className="flex flex-col justify-between h-[calc(100%-60px)] w-full pr-10 py-5">
                 {[
@@ -20,15 +37,28 @@ export default function TopProductsbyTotalOrdersSkeleton() {
                 ].map((item, index) => (
                     <div key={index} className="flex items-center w-full gap-4">
                         
-                        <div className={`h-3 ${item.labelWidth} bg-gray-700/40 rounded`}></div>
+                        {/* Y-Axis Label Placeholder */}
+                        <div 
+                            className={`h-3 ${item.labelWidth} rounded opacity-40`} 
+                            style={labelPlaceholderStyle}
+                        ></div>
                         
+                        {/* Horizontal Bar Placeholder */}
                         <div className="relative flex-1 h-[18px]"> 
-                            <div className="absolute inset-0 bg-[#12243c]/50 rounded-[5px]"></div>
+                            {/* Background Bar (Total Capacity) */}
+                            <div 
+                                style={bgBarPlaceholderStyle}
+                                className="absolute inset-0 rounded-[5px] opacity-50"
+                            ></div>
                             
-                            <div className={`absolute left-0 top-0 h-full ${item.barWidth} bg-[#006fff]/30 rounded-[5px]`}></div>
+                            {/* Foreground Bar (Value) */}
+                            <div 
+                                className={`absolute left-0 top-0 h-full ${item.barWidth} bg-[#006fff]/30 rounded-[5px]`}
+                            ></div>
                         </div>
 
-                        <div className="h-3 w-8 bg-gray-700/30 rounded"></div>
+                        {/* Value/Percentage Placeholder */}
+                        <div style={labelPlaceholderStyle} className="h-3 w-8 rounded opacity-30"></div>
                     </div>
                 ))}
             </div>

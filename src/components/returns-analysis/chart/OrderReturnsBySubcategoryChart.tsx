@@ -27,6 +27,15 @@ export default function OrderReturnsBySubcategoryChart() {
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
+        const chart = chartRef.current;
+        return () => {
+            if (chart) {
+                chart.destroy();
+            }
+        };
+    }, []);
+
+    useEffect(() => {
         const checkTheme = () => {
             const isDark = document.documentElement.classList.contains('dark');
             setIsDarkMode(isDark);
@@ -69,6 +78,17 @@ export default function OrderReturnsBySubcategoryChart() {
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 20,
+                animations: {
+                    y: {
+                        duration: 2000,
+                        easing: 'easeOutQuart',
+                        from: (context: any) => {
+                            if (context.type === 'data') {
+                                return context.chart.scales.y.getPixelForValue(0);
+                            }
+                        }
+                    }
+                }
             }
         ]
     };
@@ -76,10 +96,6 @@ export default function OrderReturnsBySubcategoryChart() {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        animation: {
-            duration: 2000,
-            easing: 'easeOutQuart' as const,
-        },
         plugins: {
             legend: { display: false },
             datalabels: {
@@ -94,6 +110,7 @@ export default function OrderReturnsBySubcategoryChart() {
             y: {
                 display: false,
                 grid: { display: false },
+                beginAtZero: true, 
             },
             x: {
                 grid: { display: false },

@@ -4,13 +4,11 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-// التأكد من استيراد السكيلتون الصحيح
 import RevenueBySubcategorySkeleton from '../skeletal-loading/RevenueBySubcategorySkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-// تغيير اسم المكون ليتناسب مع طلبك
 export default function RevenueBySubcategory() {
     const chartRef = useRef<ChartJS<'doughnut'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
@@ -24,7 +22,6 @@ export default function RevenueBySubcategory() {
         return '';
     };
 
-    // منطق تحديث الثيم
     useEffect(() => {
         const updateTheme = () => {
             const color = getCSSVariable('--main-text-color') || '#006fff';
@@ -39,7 +36,6 @@ export default function RevenueBySubcategory() {
         return () => observer.disconnect();
     }, []);
 
-    // جلب البيانات
     useEffect(() => {
         fetchFromAPI('GM By Business Type').then(data => {
             const result = Array.isArray(data) ? data : (data?.data || []);
