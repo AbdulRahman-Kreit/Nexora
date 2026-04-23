@@ -5,10 +5,26 @@ import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 export default function Statistics() {
     const [stats, setStats] = useState<any>({});
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+
+        return () => observer.disconnect();
+    }, []);
         
     useEffect(() => {
         fetchFromAPI('Employee Analysis/Summary').then(data => {
-            
             setStats(data || {});
         }).catch(error => {
             console.error(`API Error: ${error}`);
@@ -24,17 +40,18 @@ export default function Statistics() {
     
 
     return (
-        <div className={`flex flex-row justify-between font-grotesk max-w-2/3
-        h-fit`}>
+        <div className={`flex flex-row justify-between font-grotesk max-w-2/3 h-fit transition-colors duration-300`}>
             {statisData.map((data) => {
                 return (
                     <div key={data.id} className={`flex flex-col justify-start 
                     pl-3 mr-8 border-l-3 border-[#4a7fce]`}>
-                        <h3 className='text-md font-mideum text-gray-500 mb-2'>
+                        
+                        <h3 className='text-sm font-medium text-(--alt-text-color) uppercase tracking-wider mb-2'>
                             {data.title}
                         </h3>
+
                         <div className="flex flex-row gap-4">
-                            <p className='text-2xl font-mideum'>
+                            <p className='text-2xl font-semibold text-(--main-text-color)'>
                                 <AnimatedNumbers value={data.value} />
                             </p>
                         </div>

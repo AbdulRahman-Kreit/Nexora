@@ -17,13 +17,29 @@ ChartJS.register(
     ChartDataLabels
 );
 
-
 export default function EmployeeReturnsChart() {
     const bgMaxValue = 100;
         
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+
+        return () => observer.disconnect();
+    }, []);
     
     useEffect(() => {
         const chart = chartRef.current;
@@ -45,6 +61,10 @@ export default function EmployeeReturnsChart() {
     }, []);
     
     if (loading) return <TopEmployeesSkeleton />;
+
+    const barFillerColor = typeof window !== 'undefined' 
+        ? getComputedStyle(document.documentElement).getPropertyValue('--bar-bg-filler').trim() 
+        : (isDarkMode ? '#12243b' : '#d5e7fe');
     
     const data = {
         labels: chartData.map(item => item.employee),
@@ -57,23 +77,23 @@ export default function EmployeeReturnsChart() {
                 barThickness: 20,
                 order: 1,
                 animations: {
-                x: {
-                    duration: 2000,
-                    easing: 'easeOutQuart',
-                    type: 'number',
-                    from: (context: any) => {
-                        if (context.type === 'data' && context.datasetIndex === 0) {
-                                return context.chart.scales.x.getPixelForValue(0);
+                    x: {
+                        duration: 2000,
+                        easing: 'easeOutQuart' as const,
+                        type: 'number' as const,
+                        from: (context: any) => {
+                            if (context.type === 'data' && context.datasetIndex === 0) {
+                                    return context.chart.scales.x.getPixelForValue(0);
+                                }
+                                return undefined;
                             }
-                            return undefined;
-                        }
                     }
                 },
             },
             {
                 label: 'Total Sales',
                 data: chartData.map(() => bgMaxValue),
-                backgroundColor: '#12243c',
+                backgroundColor: barFillerColor,
                 borderRadius: 5,
                 barThickness: 20,
                 order: 2, 
@@ -83,20 +103,20 @@ export default function EmployeeReturnsChart() {
     };
     
     const options = {
-    indexAxis: 'y',
+    indexAxis: 'y' as const,
     responsive: true,
     maintainAspectRatio: false,
     grouped: false, 
     animation: {
         duration: 2000,
-            easing: 'easeOutQuart',
+        easing: 'easeOutQuart' as const,
         },
         plugins: {
             legend: { display: false },
             datalabels: {
-            anchor: 'end',
-            align: 'right',
-            color: '#006fff',
+                anchor: 'end' as const,
+                align: 'right' as const,
+                color: '#006fff',
                 font: { weight: 600 },
                 formatter: (value: number) => {
                     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
@@ -114,7 +134,10 @@ export default function EmployeeReturnsChart() {
             },
             y: {
                 grid: { display: false },
-                ticks: { color: '#006fff', font: { weight: 600 } },
+                ticks: { 
+                    color: '#006fff', 
+                    font: { weight: 600 } 
+                },
                 border: { display: false }
             }
         },
@@ -124,16 +147,17 @@ export default function EmployeeReturnsChart() {
     }
         
     return (
-        <div className={`bg-linear-to-r from-[#151a21] to-[#161616] ml-1 
-        p-6 h-96 border-l-3 border-[#4a7fce]`}>
-            <h2 className="text-gray-500 font-semibold mb-4">
+        <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
+            <h2 className="text-gray-500 font-semibold mb-4 uppercase tracking-wider text-sm">
                 Order Returned by Employee
             </h2>
             <div className="h-full w-full pb-5">
                 <Bar 
-                    key="employee-returns-chart" 
+                    ref={chartRef}
+                    key={isDarkMode ? 'dark-chart' : 'light-chart'} 
                     data={data} 
-                    options={options} />
+                    options={options as any} 
+                />
             </div>
         </div>
     )
