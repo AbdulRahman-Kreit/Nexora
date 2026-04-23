@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function ReportLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="antialiased grid grid-cols-[250px_1fr] h-screen w-full bg-[#161616] overflow-hidden" suppressHydrationWarning>
+    <main className="antialiased grid grid-cols-[250px_1fr] h-screen w-full bg-(--main-bg-color) overflow-hidden" suppressHydrationWarning>
       <Sidebar />
       <div className="flex flex-col h-full overflow-y-auto">
         <PageHeading />

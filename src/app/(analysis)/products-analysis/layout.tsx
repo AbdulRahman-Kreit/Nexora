@@ -26,7 +26,7 @@ export default function ProductsAnalysisLayout(props: {
   } = props;
 
   return (
-    <section className="flex flex-col h-screen overflow-hidden relative">
+    <section className="flex flex-col h-screen bg-(--main-bg-color) overflow-hidden relative">
       
       <div className="flex-1 overflow-y-auto pb-10">
         {children}
@@ -39,7 +39,6 @@ export default function ProductsAnalysisLayout(props: {
               <Statistics />
             </div>
 
-            {/* التعديل هنا: إضافة row-span-2 للمكون الثالث و col-span-2 للرابع */}
             <div className="grid grid-cols-3 gap-2">
               <div className="p-4 min-h-[400px]">
                 {costAndGM}

@@ -16,7 +16,7 @@ export default function SupportLayout({ children }: { children: React.ReactNode 
     <main className={`antialiased grid grid-cols-[250px_1fr] h-screen w-full 
     bg-[#161616] overflow-hidden`}>
       <Sidebar />
-      <div className="flex flex-col h-full overflow-hidden relative">
+      <div className="flex flex-col h-full bg-(--main-bg-color) overflow-hidden relative">
         <PageHeading />
         
         <section className="flex-1 flex flex-col overflow-y-auto pb-[200px]">

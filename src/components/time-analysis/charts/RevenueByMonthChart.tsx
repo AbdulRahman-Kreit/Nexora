@@ -4,7 +4,6 @@ import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement
 import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-// استيراد دالة الجلب
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 ChartJS.register(
@@ -19,7 +18,6 @@ ChartJS.register(
     ChartDataLabels
 );
 
-// مصفوفة مرجعية لتحويل أرقام الشهور القادمة من الـ API إلى أسماء
 const monthMapping: { [key: number]: string } = {
     1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
     7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
@@ -28,6 +26,23 @@ const monthMapping: { [key: number]: string } = {
 export default function RevenueByMonthChart() {
     const chartRef = useRef<ChartJS<'line'> | null>(null);
     const [chartDataValues, setChartDataValues] = useState<{ month: string, value: number }[]>([]);
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+        const observer = new MutationObserver(checkTheme);
+        observer.observe(document.documentElement, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         const loadData = async () => {
@@ -76,7 +91,7 @@ export default function RevenueByMonthChart() {
                 },
                 pointRadius: 6,
                 pointBackgroundColor: '#006fff',
-                pointBorderColor: '#ffffff',
+                pointBorderColor: isDarkMode ? '#ffffff' : '#151a21',
                 pointBorderWidth: 2,
                 pointHoverRadius: 10,
                 pointHoverBackgroundColor: 'rgba(0, 111, 255, 0.8)',
@@ -110,7 +125,7 @@ export default function RevenueByMonthChart() {
                 display: true,
                 align: 'top' as const,
                 offset: 8,
-                color: '#ffffff',
+                color: isDarkMode ? '#ffffff' : '#006fff',
                 font: { weight: 'bold' as const },
                 formatter: (value: any) => {
                     if (value >= 1000000) return Math.round(value / 1000000) + 'M';
@@ -133,15 +148,14 @@ export default function RevenueByMonthChart() {
     };
 
     return (
-        <div className="bg-linear-to-r from-[#151a21] to-[#161616] p-6 h-96 border-l-3 border-[#4a7fce]">
+        <div className="bg-main-gradient p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
             <h2 className="text-gray-500 font-semibold mb-4">Revenue By Month</h2>
             <div className="min-h-[300px] w-full">
-                {/* استخدام الـ key لضمان إعادة تشغيل الأنميشن عند تحديث البيانات */}
                 <Line 
                     ref={chartRef} 
-                    key={JSON.stringify(chartDataValues)} 
+                    key={`${isDarkMode}-${JSON.stringify(chartDataValues)}`} 
                     data={data} 
-                    options={options} 
+                    options={options as any} 
                 />
             </div>
         </div>
