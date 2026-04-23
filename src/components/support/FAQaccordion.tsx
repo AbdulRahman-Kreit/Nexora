@@ -42,7 +42,7 @@ export default function FAQaccordion() {
     };
 
     return (
-        <div className="bg-gradient-to-r from-[#151a21] to-[#161616] p-8 w-full border-l-4 border-[#4a7fce] relative shadow-2xl max-h-[500px] flex flex-col rounded-r-xl">
+        <div className="bg-main-gradient p-8 w-full border-l-4 border-[#4a7fce] relative shadow-2xl max-h-[500px] flex flex-col rounded-r-xl transition-all duration-500">
             
             <style dangerouslySetInnerHTML={{ __html: `
                 .faq-scrollbar {
@@ -50,10 +50,7 @@ export default function FAQaccordion() {
                     scrollbar-color: #4a7fce transparent !important;
                     overflow: auto !important; 
                 }
-                .faq-scrollbar::-webkit-scrollbar { 
-                    width: 5px; 
-                    height: 5px; 
-                }
+                .faq-scrollbar::-webkit-scrollbar { width: 5px; }
                 .faq-scrollbar::-webkit-scrollbar-track { background: transparent; }
                 .faq-scrollbar::-webkit-scrollbar-thumb {
                     background: #4a7fce;
@@ -61,7 +58,7 @@ export default function FAQaccordion() {
                 }
             `}} />
 
-            <h2 className="text-gray-500 text-xs font-bold mb-6 uppercase tracking-[0.2em] shrink-0">
+            <h2 className="text-[var(--alt-text-color)] opacity-50 text-xs font-bold mb-6 uppercase tracking-[0.2em] shrink-0">
                 Frequently Asked Questions
             </h2>
 
@@ -69,24 +66,33 @@ export default function FAQaccordion() {
                 {faqData.map((item, index) => {
                     const isOpen = openIndices.includes(index);
                     return (
-                        <div key={index} className="border-b border-white/5 last:border-0">
+                        <div key={index} className="border-b border-[var(--field-bg-color)] opacity-80 last:border-0">
                             <button
                                 onClick={() => toggleAccordion(index)}
                                 className="w-full flex justify-between items-center text-left py-5 transition-all duration-300 group"
                             >
-                                <span className={`text-[15px] font-semibold tracking-wide transition-colors ${isOpen ? 'text-white' : 'text-gray-400 group-hover:text-gray-200'}`}>
+                                <span 
+                                    className="text-[15px] font-semibold tracking-wide transition-all duration-300"
+                                    style={{ 
+                                        color: 'var(--main-text-color)',
+                                        opacity: isOpen ? 1 : 0.6 
+                                    }}
+                                >
                                     {item.question}
                                 </span>
                                 <FontAwesomeIcon 
                                     icon={isOpen ? faChevronUp : faChevronDown} 
-                                    className={`text-[10px] transition-all duration-300 ${isOpen ? 'text-[#4a7fce] scale-125' : 'text-gray-600'}`}
+                                    className={`text-[10px] transition-all duration-300 ${isOpen ? 'text-[#4a7fce] scale-125' : 'text-[var(--alt-text-color)] opacity-40'}`}
                                 />
                             </button>
                             
                             <div 
                                 className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-40 opacity-100 mb-5' : 'max-h-0 opacity-0'}`}
                             >
-                                <p className="text-gray-500 text-sm leading-relaxed font-medium pl-1">
+                                <p 
+                                    className="text-sm leading-relaxed font-medium pl-1 opacity-80"
+                                    style={{ color: 'var(--alt-text-color)' }}
+                                >
                                     {item.answer}
                                 </p>
                             </div>
@@ -95,7 +101,6 @@ export default function FAQaccordion() {
                 })}
             </div>
 
-            
             <div className="absolute right-2 top-10 bottom-10 w-[2px] bg-[#4a7fce] opacity-20 blur-[1px]"></div>
         </div>
     );

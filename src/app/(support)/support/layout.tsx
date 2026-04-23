@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "../../globals.css";
 import Sidebar from "@/components/general-components/Sidebar";
-import PageHeading from "@/components/support/PageHeading";
+import PageHeading from "@/components/general-components/PageHeading";
 import Footer from "@/components/support/Footer";
 import FAQaccordion from "@/components/support/FAQaccordion";
 
