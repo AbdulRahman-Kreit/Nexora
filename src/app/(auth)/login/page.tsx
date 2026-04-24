@@ -1,10 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import LoginInputs from '@/components/login/LoginInputs';
+import PolicyFooter from '@/components/login/PolicyFooter';
 
 export default function page() {
-    const LinkStyle = `underline duration-200 hover:text-[#69b4ff]`;
+    // const LinkStyle = `underline duration-200 hover:text-[#69b4ff]`;
 
     return (
         <main className={`flex flex-col items-center justify-center text-center
@@ -19,9 +19,7 @@ export default function page() {
                 LOG IN
             </h2>
             <LoginInputs />
-            <p className="text-sm text-center font-grotesk mt-6 opacity-50">
-                By continuing, you agree to our <Link className={LinkStyle} href='#'>Terms of Service</Link>, <Link className={LinkStyle} href='#'>Privacy Policy</Link> and <Link className={LinkStyle} href='#'>Data Protection Agreement</Link>
-            </p>
+            <PolicyFooter />
         </main>
     )
 }
