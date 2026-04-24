@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -5,8 +6,9 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement,
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import RevenueAndProfitSkeleton from '../skeletal-loading/RevenueAndProfitSkeleton';
+import CostAndGMSkeleton from '../skeletal-loading/CostAndGMSkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from '@/contexts/FilterProvider';
 
 ChartJS.register(
     CategoryScale,
@@ -21,7 +23,8 @@ ChartJS.register(
     ChartDataLabels
 );
 
-export default function RevenueAndProfitChart() {
+export default function CostAndGMChart() {
+    const { days } = useFilter(); 
     const searchParams = useSearchParams();
     const category = searchParams.get('category') || '';
     const region = searchParams.get('region') || '';
@@ -29,7 +32,7 @@ export default function RevenueAndProfitChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isDarkMode, setIsDarkMode] = useState(true); 
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -58,16 +61,20 @@ export default function RevenueAndProfitChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('Revenue & Profit By Category', category, region).then(data => {
+        fetchFromAPI('Cost & GM By Category', { 
+            category, 
+            region, 
+            days 
+        }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [category, region]); 
-    
-    if (loading) return <RevenueAndProfitSkeleton />;
+    }, [category, region, days]); 
+
+    if (loading) return <CostAndGMSkeleton />;
 
     const labelColor = isDarkMode ? '#ffffff' : '#006fff';
 
@@ -76,9 +83,9 @@ export default function RevenueAndProfitChart() {
         datasets: [
             {
                 type: 'line' as const,
-                label: 'Profit',
-                data: chartData.map(item => Number(item.profit)),
-                borderColor: labelColor,
+                label: 'GM%',
+                data: chartData.map(item => item.gm_percent),
+                borderColor: labelColor, 
                 borderWidth: 2,
                 pointRadius: 4, 
                 pointBackgroundColor: labelColor, 
@@ -93,23 +100,22 @@ export default function RevenueAndProfitChart() {
             },
             {
                 type: 'bar' as const, 
-                label: 'Revenue',
-                data: chartData.map(item => Number(item.revenue)),
+                label: 'Customers',
+                data: chartData.map(item => item.total_cost),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
                 barThickness: 25,
                 order: 2,
                 yAxisID: 'y',
                 datalabels: {
-                    align: 'top' as const, 
+                    align: 'top' as const,
                     anchor: 'end' as const,
-                    color: labelColor, 
+                    color: labelColor,
                     formatter: (value: any) => {
                         const num = Number(value);
                         return num >= 1000 ? (num / 1000).toFixed(1) + 'K' : num.toFixed(0);
                     },
                     font: { weight: 600 as const, size: 14 },
-                    offset: 2, 
                 }
             },
         ]
@@ -118,11 +124,6 @@ export default function RevenueAndProfitChart() {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
-        layout: {
-            padding: {
-                top: 20 
-            }
-        },
         animation: {
             duration: 2000,
             easing: 'easeOutQuart' as const,
@@ -169,7 +170,7 @@ export default function RevenueAndProfitChart() {
                 }
             },
             x: {
-                display: false,
+                grid: { display: false },
                 ticks: {
                     color: '#006fff',
                     font: {
@@ -178,17 +179,17 @@ export default function RevenueAndProfitChart() {
                     }
                 }
             }
-        },   
+        },
     };
     
     return (
         <div className="bg-main-gradient ml-1 p-4 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
             <h2 className="text-gray-500 font-semibold uppercase tracking-wider text-sm">
-                Revenue & Profit by Price Category 
+                Cost & GM by Price Category
             </h2>
             <div className="h-full w-full py-5">
                 <Bar 
-                    key={`revenue-profit-chart-${category}-${region}-${isDarkMode}`} 
+                    key={`cost-gm-chart-${category}-${region}-${days}-${isDarkMode}`} 
                     data={data} 
                     options={options as any} 
                 />

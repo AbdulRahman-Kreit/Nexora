@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement,PointElement, LineElement, LineController, Title, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, LineController, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import TopProductsbyAOVandGMSkeleton from '../skeletal-loading/TopProductsbyAOVandGMSkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from '@/contexts/FilterProvider';
 
 ChartJS.register(
     CategoryScale,
@@ -24,8 +26,8 @@ ChartJS.register(
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function TopProductByAOVandGMChart() {
+    const { days } = useFilter(); 
     const searchParams = useSearchParams();
-    const category = searchParams.get('category') || '';
     const region = searchParams.get('region') || '';
 
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
@@ -60,14 +62,17 @@ export default function TopProductByAOVandGMChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('Top Products', category, region).then(data => {
+        fetchFromAPI('Top Products', { 
+            region, 
+            days 
+        }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [category, region]);
+    }, [region, days]); 
     
     if (loading) return <TopProductsbyAOVandGMSkeleton />;
 
@@ -108,7 +113,7 @@ export default function TopProductByAOVandGMChart() {
                 data: chartData.map(item => item.aov),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
-                barThickness: 25,
+                barThickness: 30,
                 order: 2,
                 yAxisID: 'y',
                 datalabels: {
@@ -158,7 +163,6 @@ export default function TopProductByAOVandGMChart() {
                             size: 14
                         },
                         color: '#006fff'
-                        
                     }
                 },
                 datalabels: {
@@ -178,7 +182,7 @@ export default function TopProductByAOVandGMChart() {
                     }
                 },
                 x: {
-                    display: false,
+                    grid: { display: false },
                     ticks: {
                         color: '#006fff',
                         font: {
@@ -200,12 +204,12 @@ export default function TopProductByAOVandGMChart() {
     
     return (
         <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold uppercase tracking-wider text-sm">
+            <h2 className="text-gray-500 font-semibold text-sm">
                 Top 10 Products by AOV & GM%
             </h2>
             <div className="h-full w-full py-5">
                 <Bar 
-                    key={`top-products-aov-gm-${category}-${region}-${isDarkMode}`} 
+                    key={`top-products-aov-gm-${region}-${days}-${isDarkMode}`} 
                     data={data} 
                     options={options as any} 
                 />

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React from 'react'
 import { useSearchParams } from 'next/navigation';
@@ -31,73 +32,78 @@ export default function Filter({ onCategoryChange, onRegionChange }: FilterProps
     ];
 
     const cardStyle = `flex flex-col w-[230px] bg-[#006fff] mb-5 mx-0 
-    rounded-2xl text-center relative`;
+    rounded-2xl text-center relative shadow-xl shadow-black/30`;
+    
     const headingStyle = `w-full text-[#006fff] font-semibold py-2 text-lg
     my-0 mx-auto rounded-t-2xl`;
 
     return (
-        <div className='flex flex-col justify-center items-center'>
+        <div className='flex flex-col justify-center items-center py-2'>
             {/* Categories Section */}
             <div className={cardStyle}>
-                <h3 className={`${headingStyle} bg-white`}>
+                <h3 className={`${headingStyle} bg-white shadow-sm`}>
                     Categories
                 </h3>
-                {categoriesInputs.map((item, index) => {
-                    return (
-                        <label 
-                            key={index} 
-                            className="flex flex-row items-center mx-5 cursor-pointer group"
-                        >
-                            <input 
-                                type="radio" 
-                                name="category"
-                                id={item.id}
-                                className="peer hidden"
-                                checked={currentCategory === item.value}
-                                onChange={() => onCategoryChange?.(item.value)}
-                            />
-                            <div className="w-5 h-5 rounded-full border-2 border-[#0085ff] bg-white 
-                                transition-all duration-200
-                                peer-checked:shadow-[0_0_10px_rgba(0,133,255,0.5)]
-                                peer-checked:bg-[#69b4ff]">
-                            </div>
-                            
-                            <span className="m-2 text-lg font-semibold text-white">
-                                {item.label}
-                            </span>
-                        </label>
-                    )
-                })}
+                <div className="py-2">
+                    {categoriesInputs.map((item, index) => {
+                        return (
+                            <label 
+                                key={index} 
+                                className="flex flex-row items-center mx-5 cursor-pointer group"
+                            >
+                                <input 
+                                    type="radio" 
+                                    name="category"
+                                    id={item.id}
+                                    className="peer hidden"
+                                    checked={currentCategory === item.value}
+                                    onChange={() => onCategoryChange?.(item.value)}
+                                />
+                                <div className="w-5 h-5 rounded-full border-2 border-[#0085ff] bg-white 
+                                    transition-all duration-200
+                                    peer-checked:shadow-[0_0_10px_rgba(255,255,255,0.8)]
+                                    peer-checked:bg-[#69b4ff]">
+                                </div>
+                                
+                                <span className="m-2 text-lg font-semibold text-white">
+                                    {item.label}
+                                </span>
+                            </label>
+                        )
+                    })}
+                </div>
             </div>
             
             {/* Regions Section */}
             <div className={cardStyle}>
-                <h3 className={`${headingStyle} bg-[#2d2d2d]`}>
+                <h3 className={`${headingStyle} bg-[#2d2d2d] shadow-sm`}>
                     Regions
                 </h3>
-                {regionsInputs.map((item, index) => {
-                    return (
-                        <label key={index} className="flex flex-row items-center mx-5 cursor-pointer group">
-                            <input 
-                                type="radio" 
-                                name="regions"
-                                id={item.id}
-                                className="peer hidden"
-                                checked={currentRegion === item.value}
-                                onChange={() => onRegionChange?.(item.value)}
-                            />
-                            <div className="w-5 h-5 rounded-full border-2 border-[#0085ff] bg-white 
-                                transition-all duration-200
-                                peer-checked:shadow-[0_0_10px_rgba(0,133,255,0.5)]
-                                peer-checked:bg-[#69b4ff]">
-                            </div>
-                            
-                            <span className="m-2 text-lg font-semibold text-white">
-                                {item.label}
-                            </span>
-                        </label>
-                    )
-                })}
+                <div className="py-2">
+                    {regionsInputs.map((item, index) => {
+                        return (
+                            <label key={index} className="flex flex-row items-center mx-5 cursor-pointer group">
+                                <input 
+                                    type="radio" 
+                                    name="regions"
+                                    id={item.id}
+                                    className="peer hidden"
+                                    checked={currentRegion === item.value}
+                                    onChange={() => onRegionChange?.(item.value)}
+                                />
+                                <div className="w-5 h-5 rounded-full border-2 border-[#0085ff] bg-white 
+                                    transition-all duration-200
+                                    peer-checked:shadow-[0_0_10px_rgba(255,255,255,0.8)]
+                                    peer-checked:bg-[#69b4ff]">
+                                </div>
+                                
+                                <span className="m-2 text-lg font-semibold text-white">
+                                    {item.label}
+                                </span>
+                            </label>
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )

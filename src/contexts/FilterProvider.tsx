@@ -11,8 +11,8 @@ type FilterContextType = {
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 export function FilterProvider({ children }: { children: React.ReactNode }) {
-    const [days, setDays] = useState(30);
-    const [timeLabel, setTimeLabel] = useState('Month');
+    const [days, setDays] = useState(1825);
+    const [timeLabel, setTimeLabel] = useState('5 Years');
 
     return (
         <FilterContext.Provider value={{ days, setDays, timeLabel, setTimeLabel }}>

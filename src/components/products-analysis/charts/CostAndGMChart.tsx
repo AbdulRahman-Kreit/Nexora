@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -7,6 +8,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import CostAndGMSkeleton from '../skeletal-loading/CostAndGMSkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from '@/contexts/FilterProvider';
 
 ChartJS.register(
     CategoryScale,
@@ -22,6 +24,7 @@ ChartJS.register(
 );
 
 export default function CostAndGMChart() {
+    const { days } = useFilter(); // إضافة فلتر الأيام لضمان التحديث
     const searchParams = useSearchParams();
     const category = searchParams.get('category') || '';
     const region = searchParams.get('region') || '';
@@ -29,7 +32,7 @@ export default function CostAndGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [isDarkMode, setIsDarkMode] = useState(true); // حالة الثيم
+    const [isDarkMode, setIsDarkMode] = useState(true); 
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -58,14 +61,21 @@ export default function CostAndGMChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('Cost & GM By Category', category, region).then(data => {
+        
+        // التعديل هنا: تمرير المعاملات ككائن واحد (Object)
+        // ليقوم كود fetchFromAPI بوضعها في المسار أو الـ Query String بشكل صحيح
+        fetchFromAPI('Cost & GM By Category', { 
+            category, 
+            region, 
+            days 
+        }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [category, region]);
+    }, [category, region, days]); // إضافة التبعيات اللازمة
 
     if (loading) return <CostAndGMSkeleton />;
 
@@ -163,7 +173,7 @@ export default function CostAndGMChart() {
                 }
             },
             x: {
-                display: false,
+                grid: { display: false },
                 ticks: {
                     color: '#006fff',
                     font: {
@@ -177,12 +187,12 @@ export default function CostAndGMChart() {
     
     return (
         <div className="bg-main-gradient ml-1 p-4 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold uppercase tracking-wider text-sm">
+            <h2 className="text-gray-500 font-semibold text-sm">
                 Cost & GM by Price Category
             </h2>
             <div className="h-full w-full py-5">
                 <Bar 
-                    key={`cost-gm-chart-${category}-${region}-${isDarkMode}`} 
+                    key={`cost-gm-chart-${category}-${region}-${days}-${isDarkMode}`} 
                     data={data} 
                     options={options as any} 
                 />

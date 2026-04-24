@@ -6,10 +6,12 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import ChurnAnalysisSkeleton from '../skeletal-loading/ChurnAnalysisSkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider"; 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
 export default function ChurnAnalysisChart() {
+    const { days } = useFilter(); 
     const [chartData, setChartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
@@ -36,7 +38,8 @@ export default function ChurnAnalysisChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('Churn Analysis')
+        setLoading(true);
+        fetchFromAPI('Churn Analysis', { days })
             .then(data => {
                 setChartData(data);
                 setLoading(false);
@@ -45,7 +48,7 @@ export default function ChurnAnalysisChart() {
                 console.error(`API Error: ${error}`);
                 setLoading(false);
             });
-    }, []);
+    }, [days]); 
 
     if (loading) return <ChurnAnalysisSkeleton />;
 
@@ -130,7 +133,7 @@ export default function ChurnAnalysisChart() {
                 Churn Analysis
             </h2>
             <div className="h-[280px] w-full py-5">
-                <Bar key={currentThemeColor} data={data} options={options as any} />
+                <Bar key={`${currentThemeColor}-${days}`} data={data} options={options as any} />
             </div>
         </div>
     );

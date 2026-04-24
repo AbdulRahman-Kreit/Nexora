@@ -7,6 +7,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import RevenueByCategorySkeleton from '../skeletal-loading/RevenueByCategorySkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from '@/contexts/FilterProvider'; 
 
 ChartJS.register(
     CategoryScale,
@@ -19,6 +20,7 @@ ChartJS.register(
 );
 
 export default function RevenueByCategoryChart() {
+    const { days } = useFilter(); 
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -46,7 +48,8 @@ export default function RevenueByCategoryChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('Revenue By Category').then(data => {
+        setLoading(true); 
+        fetchFromAPI('Revenue By Category', { days }).then(data => { 
             setchartData(data);
             setLoading(false);
         }).catch(error => {
@@ -59,7 +62,7 @@ export default function RevenueByCategoryChart() {
                 chartRef.current.destroy();
             }
         };
-    }, []);
+    }, [days]); 
 
     if (loading) return <RevenueByCategorySkeleton />;
     
@@ -142,7 +145,7 @@ export default function RevenueByCategoryChart() {
             <div className="h-full w-full py-5">
                 <Bar 
                     ref={chartRef}
-                    key={currentThemeColor}
+                    key={`${currentThemeColor}-${days}`} 
                     data={data} 
                     options={options as any} 
                 />

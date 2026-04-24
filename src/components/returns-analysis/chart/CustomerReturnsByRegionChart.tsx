@@ -7,6 +7,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import CustomerReturnsByRegionSkeleton from '../skeletal-loading/CustomerReturnsByRegionSkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider";
 
 ChartJS.register(
     CategoryScale,
@@ -21,6 +22,7 @@ ChartJS.register(
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function CustomerReturnsByRegionChart() {
+    const { days } = useFilter();
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -43,14 +45,15 @@ export default function CustomerReturnsByRegionChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('By Region').then(data => {
+        setLoading(true);
+        fetchFromAPI('By Region', { days }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         });
-    }, []);
+    }, [days]);
 
     const handleChageBarColors = useMemo(() => {
         return chartData.map(() => barColors[Math.floor(Math.random() * barColors.length)]);
@@ -123,13 +126,13 @@ export default function CustomerReturnsByRegionChart() {
 
     return (
         <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold uppercase tracking-wider text-sm">
+            <h2 className="text-gray-500 font-semibold text-sm">
                 Customer Returns by Region
             </h2>
             <div className="h-[320px] w-full pt-8 pb-5">
                 <Bar 
                     ref={chartRef}
-                    key={isDarkMode ? 'dark-region' : 'light-region'} 
+                    key={`${isDarkMode ? 'dark-region' : 'light-region'}-${days}`} 
                     data={data} 
                     options={options as any} 
                 />

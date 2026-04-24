@@ -5,6 +5,7 @@ import { Bar } from "react-chartjs-2";
 
 import RevenueAndGMSkeleton from "../skeletal-loading/RevenueAndGMSkeleton";
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider";
 
 ChartJS.register(
     CategoryScale,
@@ -18,6 +19,7 @@ ChartJS.register(
 );
 
 export default function RevenueAndGMChart() {
+    const { days } = useFilter();
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -45,7 +47,8 @@ export default function RevenueAndGMChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('Revenue Over Time').then(data => {
+        setLoading(true); 
+        fetchFromAPI('Revenue Over Time', { days }).then(data => { 
             setchartData(data);
             setLoading(false);
         }).catch(error => {
@@ -58,7 +61,7 @@ export default function RevenueAndGMChart() {
                 chartRef.current.destroy();
             }
         };
-    }, []);
+    }, [days]); 
 
     if (loading) return <RevenueAndGMSkeleton />;
 
@@ -71,7 +74,10 @@ export default function RevenueAndGMChart() {
                 backgroundColor: chartData.map(item => item.quarter === 1 ? '#69b4ff' : '#006fff'),
                 borderRadius: 5,
                 order: 2,
-                yAxisID: 'y'
+                yAxisID: 'y',
+                barPercentage: 0.4,       
+                categoryPercentage: 2,  
+                maxBarThickness: 40,      
             },
             {
                 label: 'GM %',
@@ -139,7 +145,11 @@ export default function RevenueAndGMChart() {
                 grid: { display: false },
             },
             x: {
-                grid: { display: false, drawBorder: false },
+                grid: { 
+                    display: false, 
+                    drawBorder: false,
+                    offset: true 
+                },
                 ticks: {
                     color: '#006fff',
                     font: { weight: 600 },
@@ -163,7 +173,7 @@ export default function RevenueAndGMChart() {
             <div className="h-full w-full py-5">
                 <Bar 
                     ref={chartRef} 
-                    key={currentThemeColor} 
+                    key={`${currentThemeColor}-${days}`} 
                     data={data} 
                     options={options as any} 
                 />

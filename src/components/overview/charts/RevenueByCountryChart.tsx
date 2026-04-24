@@ -6,6 +6,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import RevenueByCountrySkeleton from '../skeletal-loading/RevenueByCountrySkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider"; 
 
 ChartJS.register(
     CategoryScale, 
@@ -18,7 +19,7 @@ ChartJS.register(
 );
 
 export default function RevenueByCountryChart() {
-    const bgMaxValue = 5000;
+    const { days } = useFilter(); 
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -27,6 +28,8 @@ export default function RevenueByCountryChart() {
         mainText: '#006fff',
         barBgFiller: '#12243b'
     });
+
+    const bgMaxValue = Math.max(...chartData.map(item => parseFloat(item.revenue) || 0), 1000) * 1.2;
 
     const getCSSVariable = (variable: string) => {
         if (typeof window !== 'undefined') {
@@ -52,7 +55,8 @@ export default function RevenueByCountryChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('revenue-by-region').then(data => {
+        setLoading(true); 
+        fetchFromAPI('revenue-by-region', { days }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
@@ -65,7 +69,7 @@ export default function RevenueByCountryChart() {
                 chartRef.current.destroy();
             }
         };
-    }, []);
+    }, [days]); 
 
     if (loading) return <RevenueByCountrySkeleton />;
 
@@ -120,7 +124,8 @@ export default function RevenueByCountryChart() {
                 align: 'right' as const,
                 color: themeColors.mainText, 
                 font: { weight: 600 },
-                formatter: (value: number) => {
+                formatter: (value: number, context: any) => {
+                    if (context.datasetIndex !== 0) return null;
                     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
                     if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
                     return value;
@@ -144,7 +149,7 @@ export default function RevenueByCountryChart() {
             }
         },
         layout: {
-            padding: { right: 35 } 
+            padding: { right: 45 } 
         }
     };
 
@@ -156,7 +161,7 @@ export default function RevenueByCountryChart() {
             <div className="h-full w-full py-5">
                 <Bar 
                     ref={chartRef}
-                    key={themeColors.mainText} 
+                    key={`${themeColors.mainText}-${days}`} 
                     data={data} 
                     options={options as any} 
                 />

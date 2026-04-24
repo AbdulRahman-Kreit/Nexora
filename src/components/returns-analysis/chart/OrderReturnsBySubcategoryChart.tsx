@@ -77,7 +77,7 @@ export default function OrderReturnsBySubcategoryChart() {
                 data: chartData.map(item => item.returns),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
-                barThickness: 20,
+                barThickness: 30,
                 animations: {
                     y: {
                         duration: 2000,

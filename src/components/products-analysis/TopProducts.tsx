@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React, { useEffect, useState } from 'react';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
@@ -30,17 +31,23 @@ export default function TopProducts() {
         );
     };
 
-    if (loading) return <div className="text-white">Loading Top Cards...</div>;
+    if (loading) return (
+        <div className="flex justify-center items-center h-40">
+            <div className="animate-pulse text-[#006fff] font-semibold">
+                Loading Top Products...
+            </div>
+        </div>
+    );
 
     const topProfit = getTopBy('profit');
     const topGM = getTopBy('gm_percent');
     const topRevenue = getTopBy('revenue');
     const topAOV = getTopBy('aov');
 
-    const cardStyle = `w-[200px] h-[160px] bg-[#006fff] mb-5 mx-0 rounded-2xl text-center relative transition-transform hover:scale-105`;
-    const headingStyle = `w-full text-[#006fff] font-semibold py-2 my-0 mx-auto rounded-t-2xl text-[13px]`;
-    const percentageStyle = `text-4xl text-white font-bold my-4`; 
-    const miniCardStyle = `flex items-center justify-center w-[170px] px-2 py-1 my-2 text-[#006fff] text-[10px] mx-auto rounded overflow-hidden`;
+    const cardStyle = `w-[210px] h-[165px] bg-[#006fff] mb-6 mx-0 rounded-2xl text-center relative transition-all duration-300 hover:scale-105 shadow-xl shadow-black/40 overflow-hidden`;
+    const headingStyle = `w-full text-[#006fff] font-bold py-2 my-0 mx-auto rounded-t-2xl text-[12px] uppercase shadow-sm`;
+    const percentageStyle = `text-4xl text-white font-black my-4 drop-shadow-md`; 
+    const miniCardStyle = `flex items-center justify-center w-[180px] px-2 py-1.5 my-2 text-[#006fff] text-[11px] mx-auto rounded-lg shadow-inner`;
 
     const cards = [
         { title: "Top Product by Profit", data: topProfit, key: 'profit', suffix: '$', bg: 'bg-white' },
@@ -50,7 +57,7 @@ export default function TopProducts() {
     ];
 
     return (
-        <div className='flex flex-col items-center'>
+        <div className='flex flex-col items-center py-4'>
             {cards.map((card, index) => (
                 <div key={index} className={cardStyle}>
                     <h3 className={`${headingStyle} ${card.bg}`}>
@@ -58,11 +65,11 @@ export default function TopProducts() {
                     </h3>
                     <p className={percentageStyle}>
                         {card.data ? Math.round(parseFloat(card.data[card.key as keyof Product] as string)) : 0}
-                        <span className="text-lg ml-1">{card.suffix}</span>
+                        <span className="text-lg ml-1 opacity-80">{card.suffix}</span>
                     </p>
                     <div className={`${miniCardStyle} ${card.bg}`}>
-                        <span className='truncate opacity-80 font-semibold text-[14px]'>
-                            {card.data?.product}
+                        <span className='truncate font-bold text-[13px]'>
+                            {card.data?.product || 'N/A'}
                         </span>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import ProfitAndCustomersSkeleton from '../skeletal-loading/ProfitAndCustomersSkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider";
 
 ChartJS.register(
     CategoryScale,
@@ -24,6 +25,7 @@ ChartJS.register(
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function ProfitAndCustomersChart() {
+    const { days } = useFilter();
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -52,7 +54,8 @@ export default function ProfitAndCustomersChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('Region Stats').then(data => {
+        setLoading(true);
+        fetchFromAPI('Region Stats', { days }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
@@ -63,7 +66,7 @@ export default function ProfitAndCustomersChart() {
         return () => {
             if (chartRef.current) chartRef.current.destroy();
         };
-    }, []);
+    }, [days]);
         
     if (loading) return <ProfitAndCustomersSkeleton />;
 
@@ -88,14 +91,7 @@ export default function ProfitAndCustomersChart() {
                 order: 1,
                 yAxisID: 'y1',
                 datalabels: {
-                    align: 'bottom' as const,
-                    anchor: 'end' as const,
-                    color: currentThemeColor,
-                    formatter: (value: any) => {
-                        return value >= 1000000 ? (value / 1000000) + 'M' : value;
-                    },
-                    font: { weight: 600, size: 12 },
-                    offset: 6,
+                    display: false,
                 }
             },
             {
@@ -180,7 +176,7 @@ export default function ProfitAndCustomersChart() {
                 Profit & Customers by Region
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key={currentThemeColor} data={data} options={options as any} />
+                <Bar key={`${currentThemeColor}-${days}`} data={data} options={options as any} />
             </div>
         </div>
     );

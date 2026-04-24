@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -7,6 +8,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import TopProductsbyTotalOrdersSkeleton from '../skeletal-loading/TopProductsbyTotalOrdersSkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from '@/contexts/FilterProvider'; 
 
 ChartJS.register(
     CategoryScale,
@@ -19,8 +21,8 @@ ChartJS.register(
 );
 
 export default function TopProductsbyTotalOrdersChart() {
+    const { days } = useFilter();
     const searchParams = useSearchParams();
-    const category = searchParams.get('category') || '';
     const region = searchParams.get('region') || '';
 
     const bgMaxValue = 5000;
@@ -56,14 +58,18 @@ export default function TopProductsbyTotalOrdersChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('Top Products', category, region).then(data => {
+        
+        fetchFromAPI('Top Products', { 
+            region, 
+            days 
+        }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [category, region]);
+    }, [region, days]); 
 
     if (loading) return <TopProductsbyTotalOrdersSkeleton />;
 
@@ -158,12 +164,12 @@ export default function TopProductsbyTotalOrdersChart() {
     
     return (
         <div className="bg-main-gradient ml-1 p-6 h-2/3 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold mb-0 uppercase tracking-wider text-sm">
+            <h2 className="text-gray-500 font-semibold mb-0 text-sm">
                 Top 10 Products by Total Orders
             </h2>
             <div className="h-[calc(100%-40px)] w-full mt-0">
                 <Bar 
-                    key={`top-orders-chart-${category}-${region}-${isDarkMode}`} 
+                    key={`top-orders-chart-${region}-${days}-${isDarkMode}`} 
                     data={data} 
                     options={options as any} 
                 />

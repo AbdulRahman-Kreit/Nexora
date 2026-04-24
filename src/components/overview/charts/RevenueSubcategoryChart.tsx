@@ -6,10 +6,12 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import RevenueBySubcategorySkeleton from '../skeletal-loading/RevenueBySubcategorySkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from '@/contexts/FilterProvider';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 export default function RevenueBySubcategory() {
+    const { days } = useFilter(); 
     const chartRef = useRef<ChartJS<'doughnut'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -37,7 +39,8 @@ export default function RevenueBySubcategory() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('GM By Business Type').then(data => {
+        setLoading(true); 
+        fetchFromAPI('GM By Business Type', { days }).then(data => { 
             const result = Array.isArray(data) ? data : (data?.data || []);
             setchartData(result);
             setLoading(false);
@@ -45,7 +48,7 @@ export default function RevenueBySubcategory() {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, []);
+    }, [days]); 
 
     useEffect(() => {
         const chart = chartRef.current;
@@ -73,6 +76,10 @@ export default function RevenueBySubcategory() {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+            duration: 2000,
+            easing: 'easeOutQuart',
+        },
         plugins: {
             legend: {
                 display: true,
@@ -118,7 +125,7 @@ export default function RevenueBySubcategory() {
             <div className="h-[280px] w-full">
                 <Doughnut 
                     ref={chartRef}
-                    key={currentThemeColor}
+                    key={`${currentThemeColor}-${days}`} 
                     data={data} 
                     options={options as any} />
             </div>

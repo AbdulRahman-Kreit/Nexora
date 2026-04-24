@@ -32,7 +32,7 @@ export default function RevenueOverTimeTable() {
         fetchData();
     }, []);
 
-    const toggleYear = (year) => {
+    const toggleYear = (year: any) => {
         setOpenYears(prev => 
             prev.includes(year) ? prev.filter(y => y !== year) : [...prev, year]
         );

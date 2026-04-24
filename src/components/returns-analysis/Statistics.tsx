@@ -5,28 +5,23 @@ import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 export default function Statistics() {
     const [stats, setStats] = useState<any>({});
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchFromAPI('Returns Analysis/Summary')
             .then(data => {
                 setStats(data || {});
-                setLoading(false);
             })
             .catch(error => {
                 console.error(`API Error: ${error}`);
-                setLoading(false);
             });
     }, []);
 
     const statisData = [
-        { id: 1, title: "Returns Amount", value: stats.returns_amount, percentage: `${stats.returns_amount_percent}%` },
-        { id: 2, title: "QTV Returns", value: stats.qty_returns, percentage: `${stats.qty_returns_percent}%` },
-        { id: 3, title: "Order Returns", value: stats.order_returns, percentage: `${stats.order_returns_percent}%` },
-        { id: 4, title: "Customer Returns", value: stats.customer_returns, percentage: `${stats.customer_returns_percent}%` },
+        { id: 1, title: "Returns Amount", value: stats.returns_amount ?? 0, percentage: stats.returns_amount_percent ?? 0},
+        { id: 2, title: "QTV Returns", value: stats.qty_returns ?? 0, percentage: stats.qty_returns_percent ?? 0},
+        { id: 3, title: "Order Returns", value: stats.order_returns ?? 0, percentage: stats.order_returns_percent ?? 0},
+        { id: 4, title: "Customer Returns", value: stats.customer_returns ?? 0, percentage: stats.customer_returns_percent ?? 0},
     ];
-
-    if (loading) return <div className="h-20 animate-pulse bg-transparent" />;
 
     return (
         <div className="flex flex-row justify-between font-grotesk max-w-2/3 h-fit transition-all duration-500">
@@ -45,8 +40,8 @@ export default function Statistics() {
                                 <AnimatedNumbers value={data.value} />
                             </p>
                             
-                            <p className="text-2xl font-medium border-l-2 border-[#4a7fce] pl-4 text-(--main-text-color)">
-                                <AnimatedNumbers value={data.percentage} />
+                            <p className="text-2xl font-semibold border-l-2 border-[#4a7fce] pl-4 text-(--main-text-color)">
+                                <AnimatedNumbers value={data.percentage} />%
                             </p>
                         </div>
                     </div>

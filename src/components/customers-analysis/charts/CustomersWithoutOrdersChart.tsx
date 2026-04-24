@@ -7,6 +7,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import CustomersWithoutOrdersSkeleton from '../skeletal-loading/CustomersWithoutOrdersSkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider";
 
 ChartJS.register(
     CategoryScale,
@@ -21,6 +22,7 @@ ChartJS.register(
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function CustomersWithoutOrdersChart() {
+    const { days } = useFilter(); 
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -49,9 +51,10 @@ export default function CustomersWithoutOrdersChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('No Sales By Region')
+        setLoading(true); 
+        fetchFromAPI('No Sales By Region', { days }) 
             .then(data => {
-                setchartData(data.regionsWithoutSales);
+                setchartData(data.regionsWithoutSales || []);
                 setLoading(false);
             })
             .catch(error => {
@@ -64,7 +67,7 @@ export default function CustomersWithoutOrdersChart() {
                 chartRef.current.destroy();
             }
         };
-    }, []);
+    }, [days]); 
 
     if (loading) return <CustomersWithoutOrdersSkeleton />;
 
@@ -137,7 +140,7 @@ export default function CustomersWithoutOrdersChart() {
                 Customers without Orders by Region
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key={currentThemeColor} data={data} options={options as any} />
+                <Bar key={`${currentThemeColor}-${days}`} data={data} options={options as any} />
             </div>
         </div>
     );

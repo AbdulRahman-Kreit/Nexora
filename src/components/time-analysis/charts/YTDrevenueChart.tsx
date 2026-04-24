@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
@@ -5,6 +6,7 @@ import { Line } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from '@/contexts/FilterProvider'; 
 
 ChartJS.register(
     CategoryScale,
@@ -24,11 +26,11 @@ const monthMapping: { [key: number]: string } = {
 };
 
 export default function YTDrevenueChart() {
+    const { days } = useFilter(); 
     const chartRef = useRef<ChartJS<'line'> | null>(null);
     const [chartDataValues, setChartDataValues] = useState<{ month: string, value: number }[]>([]);
     const [isDarkMode, setIsDarkMode] = useState(true);
 
-    // مراقبة تغيير الثيم
     useEffect(() => {
         const checkTheme = () => {
             const isDark = document.documentElement.classList.contains('dark');
@@ -48,7 +50,8 @@ export default function YTDrevenueChart() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const result = await fetchFromAPI('Time Analysis/getRevenueYtd Copy');
+                const result = await fetchFromAPI('Time Analysis/getRevenueYtd Copy', { days });
+                
                 if (Array.isArray(result)) {
                     const formattedData = result.map((item: any) => ({
                         month: monthMapping[item.month] || `M${item.month}`,
@@ -68,13 +71,13 @@ export default function YTDrevenueChart() {
                 chartRef.current.destroy();
             }
         };
-    }, []);
+    }, [days]); 
 
     const data = {
         labels: chartDataValues.map((item) => item.month),
         datasets: [
             {
-                label: 'Customer Returns',
+                label: 'Revenue',
                 data: chartDataValues.map((item) => item.value),
                 fill: true,
                 tension: 0.4,
@@ -128,8 +131,8 @@ export default function YTDrevenueChart() {
                 color: isDarkMode ? '#ffffff' : '#006fff',
                 font: { weight: 'bold' as const },
                 formatter: (value: any) => {
-                    if (value >= 1000000) return Math.round(value / 1000000) + 'M';
-                    if (value >= 1000) return Math.round(value / 1000) + 'K';
+                    if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
+                    if (value >= 1000) return (value / 1000).toFixed(1) + 'K';
                     return value;
                 }
             },
@@ -153,7 +156,7 @@ export default function YTDrevenueChart() {
             <div className="min-h-[300px] w-full">
                 <Line 
                     ref={chartRef} 
-                    key={`${isDarkMode}-${JSON.stringify(chartDataValues)}`} 
+                    key={`${isDarkMode}-${days}-${chartDataValues.length}`} 
                     data={data} 
                     options={options as any} 
                 />

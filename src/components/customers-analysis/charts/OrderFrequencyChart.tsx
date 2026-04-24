@@ -7,6 +7,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import OrderFrequencySkeleton from '../skeletal-loading/OrderFrequencySkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider"; 
 
 ChartJS.register(
     CategoryScale,
@@ -21,6 +22,7 @@ ChartJS.register(
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function OrderFrequencyChart() {
+    const { days } = useFilter(); 
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -49,7 +51,8 @@ export default function OrderFrequencyChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('Order Frequency').then(data => {
+        setLoading(true);
+        fetchFromAPI('Order Frequency', { days }).then(data => { 
             setchartData(data);
             setLoading(false);
         }).catch(error => {
@@ -62,7 +65,7 @@ export default function OrderFrequencyChart() {
                 chartRef.current.destroy();
             }
         };
-    }, []);
+    }, [days]); 
     
     if (loading) return <OrderFrequencySkeleton />;
 
@@ -150,7 +153,7 @@ export default function OrderFrequencyChart() {
                 Order Frequency
             </h2>
             <div className="h-full w-full py-5">
-                <Bar key={currentThemeColor} data={data} options={options as any} />
+                <Bar key={`${currentThemeColor}-${days}`} data={data} options={options as any} />
             </div>
         </div>
     );

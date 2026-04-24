@@ -28,14 +28,36 @@ export async function fetchFromAPI(requestName: string, payload: any = null, par
 
     if (!requestItem) throw new Error(`Request "${requestName}" not found in Postman JSON.`);
 
+    const method = requestItem.request.method;
     const pathSegments = requestItem.request.url.path;
     let path = Array.isArray(pathSegments) ? pathSegments.join('/') : pathSegments;
     
     path = path.replace(/^api\//, "");
 
+    const currentPayload = payload ? { ...payload } : null;
+
+    if (currentPayload && typeof currentPayload === 'object') {
+        Object.keys(currentPayload).forEach(key => {
+            const placeholder = `:${key}`;
+            if (path.includes(placeholder)) {
+                path = path.replace(placeholder, encodeURIComponent(String(currentPayload[key])));
+                delete currentPayload[key];
+            }
+        });
+    }
+
     let finalUrl = `${BASE_URL}/${path}`.replace(/([^:]\/)\/+/g, "$1"); 
     
     const urlParams = new URLSearchParams();
+
+    if (method === 'GET' && currentPayload && typeof currentPayload === 'object') {
+        Object.entries(currentPayload).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                urlParams.append(key, String(value));
+            }
+        });
+    }
+
     Object.entries(paramsObj).forEach(([key, value]) => {
         if (value) urlParams.append(key, value);
     });
@@ -43,10 +65,7 @@ export async function fetchFromAPI(requestName: string, payload: any = null, par
     const queryString = urlParams.toString();
     if (queryString) finalUrl += `?${queryString}`;
 
-    console.log(`Fetching from: ${finalUrl}`);
-
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    const method = requestItem.request.method;
 
     const response = await fetch(finalUrl, {
         method: method,
@@ -56,14 +75,17 @@ export async function fetchFromAPI(requestName: string, payload: any = null, par
             'X-Requested-With': 'XMLHttpRequest', 
             ...(token && { 'Authorization': `Bearer ${token}` })
         },
-        body: (method !== 'GET' && payload) ? JSON.stringify(payload) : undefined,
+        body: (method !== 'GET' && currentPayload && Object.keys(currentPayload).length > 0) 
+                ? JSON.stringify(currentPayload) 
+                : undefined,
     });
 
+    // معالجة نوع المحتوى (Content-Type)
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
         const textError = await response.text();
-        console.error("Server returned non-JSON:", textError);
-        throw new Error(`Server Error: Received HTML instead of JSON. Check the network tab.`);
+        console.error("Non-JSON Response:", textError);
+        throw new Error(`Server Error: Received non-JSON response.`);
     }
 
     const result = await response.json();
@@ -76,7 +98,9 @@ export async function fetchFromAPI(requestName: string, payload: any = null, par
         throw new Error("Session expired");
     }
 
-    if (!response.ok) throw new Error(result.message || `Error: ${response.status}`);
+    if (!response.ok) {
+        throw new Error(result.message || `Error: ${response.status}`);
+    }
 
     return result;
 }

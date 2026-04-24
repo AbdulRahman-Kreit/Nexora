@@ -50,7 +50,7 @@ export default function TimelineFilter() {
             <div className="flex flex-row min-w-[210px] my-2 font-semibold h-10 shadow-sm">
                 
                 <button 
-                    onClick={() => handleManualChange(Math.max(1, days - 7))} 
+                    onClick={() => handleManualChange(Math.max(30, days - 7))} 
                     className={`px-4 duration-200 border border-r-0 border-(--field-bg-color) rounded-l 
                     bg-(--main-bg-color) text-(--alt-text-color) 
                     hover:bg-(--filter-buttons-bg-color) hover:text-white transition-colors`}

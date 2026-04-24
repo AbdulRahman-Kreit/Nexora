@@ -555,6 +555,16 @@
         {
           "name": "Orders Returns By Month",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "25|7ln65sFB4Gd68jZoJZotmKmq0ARVcgwkmZJp7Lpy955b7352",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -580,6 +590,16 @@
         {
           "name": "Table",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "26|vOpTlCEPx9BHLHDG0iNFbbhVlbav5yjYMSDQGXJ74afe0625",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -882,24 +902,23 @@
                 "type": "text"
               }
             ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\" : \"admin@admin.com\",\r\n    \"password\" : \"admin@2026\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "{{base_url}}/auth/login?email=admin@admin.com&password=admin@2026",
+              "raw": "{{base_url}}/auth/login",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "auth",
                 "login"
-              ],
-              "query": [
-                {
-                  "key": "email",
-                  "value": "admin@admin.com"
-                },
-                {
-                  "key": "password",
-                  "value": "admin@2026"
-                }
               ]
             }
           },
@@ -918,7 +937,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "18|fPDMSC3r1Q9d2LdBBRfmNrSjLhV0vzbVgTyMcAj543f4cf3e",
+                  "value": "39|AJ7cYjET0qhicA5Nrq3ejGaT0nkT1mrv5Sj1snrHba9b091b",
                   "type": "string"
                 }
               ]
@@ -933,7 +952,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"days\" : 100\r\n}",
+              "raw": "{\r\n    \"days\" : 360\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -949,6 +968,50 @@
                 "admin",
                 "chat",
                 "sendDays"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ask ai chat",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "44|K6lN4SW06f1OtZTC6BzXFg9J513a9pNi05OmQIfP9fe96646",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"message\" : \"يعني اي صافي الربح\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/chat/askAi",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "chat",
+                "askAi"
               ]
             }
           },
