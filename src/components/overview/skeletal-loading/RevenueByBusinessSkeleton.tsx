@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-export default function RevenueBySubcategorySkeleton() {
+export default function RevenueByBusinessSkeleton() {
     return (
         <div 
             className={`

@@ -18,7 +18,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "18|fPDMSC3r1Q9d2LdBBRfmNrSjLhV0vzbVgTyMcAj543f4cf3e",
+                  "value": "1|CxfaL6pdl44Wfige2ANAIWl7FeBMiUeM0cJUUQHYa7a0c7be",
                   "type": "string"
                 }
               ]
@@ -49,6 +49,16 @@
         {
           "name": "Revenue Over Time",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "18|KhGYaKrzXINHcQmxm3YzMklyUYJYLQqQkWUR3Eeae65f4235",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -70,7 +80,7 @@
               "query": [
                 {
                   "key": "days",
-                  "value": null,
+                  "value": "",
                   "disabled": true
                 }
               ]
@@ -79,8 +89,60 @@
           "response": []
         },
         {
-          "name": "revenue-by-region",
+          "name": "gmOverTime",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "18|KhGYaKrzXINHcQmxm3YzMklyUYJYLQqQkWUR3Eeae65f4235",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/dashboard/gmOverTime",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard",
+                "gmOverTime"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "revenue-by-region(country)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "12|jLwcjUGlvU2p8GULmoQraTEknoAjK8k4dWmWmsRjbb72af2c",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -98,6 +160,13 @@
                 "admin",
                 "dashboard",
                 "revenue-by-region"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "70",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -106,6 +175,16 @@
         {
           "name": "Revenue By Category",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "12|jLwcjUGlvU2p8GULmoQraTEknoAjK8k4dWmWmsRjbb72af2c",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -131,8 +210,24 @@
         {
           "name": "GM By Business Type",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "77|iP2D3sk4JP9aRjnKXP9oC36SNxEaQx9GJedOXYQge8eec111",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/admin/dashboard/gm-by-business-type",
               "host": [
@@ -155,8 +250,24 @@
         {
           "name": "Summary",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "18|KhGYaKrzXINHcQmxm3YzMklyUYJYLQqQkWUR3Eeae65f4235",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/admin/customer-analysis/summary",
               "host": [
@@ -166,6 +277,13 @@
                 "admin",
                 "customer-analysis",
                 "summary"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "5",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -174,6 +292,16 @@
         {
           "name": "Order Frequency",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -193,6 +321,16 @@
         {
           "name": "Churn Analysis",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -218,6 +356,16 @@
         {
           "name": "Region Stats",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -227,14 +375,14 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/customer-analysis/region-stats",
+              "raw": "{{base_url}}/admin/customer-analysis/profit-customer-by-region",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "admin",
                 "customer-analysis",
-                "region-stats"
+                "profit-customer-by-region"
               ]
             }
           },
@@ -243,6 +391,16 @@
         {
           "name": "No Sales By Region",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "2|sMu0TxCEho3AL5RCIQ5tiK0tKCsV2pVAi5aVB1wH08a1f3d5",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -273,6 +431,16 @@
         {
           "name": "Summary",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "16|AyO4hyJUc8jHALh3XnLmoffMQlCXxrPJgVjjQjNP698dac65",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -282,7 +450,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/product-analysis/summary?days=500&region=France&category=Health",
+              "raw": "{{base_url}}/admin/product-analysis/summary",
               "host": [
                 "{{base_url}}"
               ],
@@ -295,15 +463,18 @@
                 {
                   "key": "days",
                   "value": "500",
-                  "description": "اخر سنه مثلا "
+                  "description": "اخر سنه مثلا ",
+                  "disabled": true
                 },
                 {
                   "key": "region",
-                  "value": "France"
+                  "value": "France",
+                  "disabled": true
                 },
                 {
                   "key": "category",
-                  "value": "Health"
+                  "value": "Health",
+                  "disabled": true
                 }
               ]
             }
@@ -311,8 +482,18 @@
           "response": []
         },
         {
-          "name": "Cost & GM By Category",
+          "name": "costGMByPriceCategory",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -334,17 +515,7 @@
               "query": [
                 {
                   "key": "days",
-                  "value": "800",
-                  "disabled": true
-                },
-                {
-                  "key": "region",
-                  "value": "Germany",
-                  "disabled": true
-                },
-                {
-                  "key": "category",
-                  "value": "Beauty",
+                  "value": "50",
                   "disabled": true
                 }
               ]
@@ -397,6 +568,16 @@
         {
           "name": "Orders Return By Subcategory",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "75|LFP4rEwn5YdIq0ZTN94SaY6e4a8mxQ8Vas3T2Rrv12ad7c9b",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -406,7 +587,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/product-analysis/orders-return-by-subcategory",
+              "raw": "{{base_url}}/admin/product-analysis/orders-return-by-subcategory?days=900",
               "host": [
                 "{{base_url}}"
               ],
@@ -418,8 +599,7 @@
               "query": [
                 {
                   "key": "days",
-                  "value": "900",
-                  "disabled": true
+                  "value": "900"
                 },
                 {
                   "key": "origin",
@@ -493,19 +673,35 @@
           "response": []
         },
         {
-          "name": "Top Products",
+          "name": "Top Products order total",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
-              "raw": "{{base_url}}/admin/product-analysis/top-products",
+              "raw": "{{base_url}}/admin/product-analysis/topProductsByOrderTotal",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "admin",
                 "product-analysis",
-                "top-products"
+                "topProductsByOrderTotal"
               ],
               "query": [
                 {
@@ -527,6 +723,90 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "revenueProfitByPriceCategory",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/revenueProfitByPriceCategory",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "revenueProfitByPriceCategory"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "900",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "topProductsAovGm",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/topProductsAovGm",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "topProductsAovGm"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "900",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -536,8 +816,24 @@
         {
           "name": "Summary",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/admin/time-analysis/summary",
               "host": [
@@ -553,14 +849,14 @@
           "response": []
         },
         {
-          "name": "Orders Returns By Month",
+          "name": "Revenues By Month",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "25|7ln65sFB4Gd68jZoJZotmKmq0ARVcgwkmZJp7Lpy955b7352",
+                  "value": "14|uss2KEQD5AeQXwZFJFcvkxgHuWP6grzTSqe78vDY708bbafa",
                   "type": "string"
                 }
               ]
@@ -574,14 +870,20 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/time-analysis/orders-returns-by-month",
+              "raw": "{{base_url}}/admin/time-analysis/revenueByMonth?days=30",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "admin",
                 "time-analysis",
-                "orders-returns-by-month"
+                "revenueByMonth"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30"
+                }
               ]
             }
           },
@@ -595,7 +897,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "26|vOpTlCEPx9BHLHDG0iNFbbhVlbav5yjYMSDQGXJ74afe0625",
+                  "value": "14|uss2KEQD5AeQXwZFJFcvkxgHuWP6grzTSqe78vDY708bbafa",
                   "type": "string"
                 }
               ]
@@ -623,8 +925,18 @@
           "response": []
         },
         {
-          "name": "getRevenueYtd Copy",
+          "name": "getRevenueYtd",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "14|uss2KEQD5AeQXwZFJFcvkxgHuWP6grzTSqe78vDY708bbafa",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -634,7 +946,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/time-analysis/getRevenueYtd?days=5000",
+              "raw": "{{base_url}}/admin/time-analysis/getRevenueYtd",
               "host": [
                 "{{base_url}}"
               ],
@@ -646,33 +958,9 @@
               "query": [
                 {
                   "key": "days",
-                  "value": "5000"
+                  "value": "5000",
+                  "disabled": true
                 }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "revenueByMonth Copy",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/admin/time-analysis/revenueByMonth",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "time-analysis",
-                "revenueByMonth"
               ]
             }
           },
@@ -686,6 +974,16 @@
         {
           "name": "Summary",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "14|uss2KEQD5AeQXwZFJFcvkxgHuWP6grzTSqe78vDY708bbafa",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -711,6 +1009,16 @@
         {
           "name": "Top Employees",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "78|lMfpX4fkDJ5rH11aH2z0wCAmZLhyFdEAOViuRjjW37aa32dd",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -720,7 +1028,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/employee-analysis/top-employees",
+              "raw": "{{base_url}}/admin/employee-analysis/top-employees?days",
               "host": [
                 "{{base_url}}"
               ],
@@ -728,14 +1036,31 @@
                 "admin",
                 "employee-analysis",
                 "top-employees"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": null,
+                  "type": "text"
+                }
               ]
             }
           },
           "response": []
         },
         {
-          "name": "returns-by-employee",
+          "name": "orders returns-by-employee",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "15|VszHqrqEgwDk8Wm5XoE6M0DSHoEXsgV16msxuznz6abb0694",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -753,6 +1078,13 @@
                 "admin",
                 "employee-analysis",
                 "returns-by-employee"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -761,6 +1093,16 @@
         {
           "name": "table",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "18|KhGYaKrzXINHcQmxm3YzMklyUYJYLQqQkWUR3Eeae65f4235",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -778,6 +1120,14 @@
                 "admin",
                 "employee-analysis",
                 "table"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Ashle",
+                  "description": "search for employee",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -791,8 +1141,24 @@
         {
           "name": "Summary",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "15|VszHqrqEgwDk8Wm5XoE6M0DSHoEXsgV16msxuznz6abb0694",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/admin/returns-analysis/summary",
               "host": [
@@ -808,14 +1174,14 @@
           "response": []
         },
         {
-          "name": "By Region",
+          "name": "customers return By Region",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
                 {
                   "key": "token",
-                  "value": "1|4PVKhYiDiWR9feo0PUQvQsFQIDDS4jBJnUsPvBcW10841b77",
+                  "value": "15|VszHqrqEgwDk8Wm5XoE6M0DSHoEXsgV16msxuznz6abb0694",
                   "type": "string"
                 }
               ]
@@ -837,6 +1203,13 @@
                 "admin",
                 "returns-analysis",
                 "by-region"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "20",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -845,25 +1218,16 @@
         {
           "name": "By SubCategory",
           "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/admin/returns-analysis/by-subcategory",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "returns-analysis",
-                "by-subcategory"
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "15|VszHqrqEgwDk8Wm5XoE6M0DSHoEXsgV16msxuznz6abb0694",
+                  "type": "string"
+                }
               ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "By Month",
-          "request": {
+            },
             "method": "GET",
             "header": [
               {
@@ -873,14 +1237,105 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/returns-analysis/by-month",
+              "raw": "{{base_url}}/admin/returns-analysis/by-subcategory",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "admin",
                 "returns-analysis",
-                "by-month"
+                "by-subcategory"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "10",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCustomersByMonth",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "15|VszHqrqEgwDk8Wm5XoE6M0DSHoEXsgV16msxuznz6abb0694",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/get-customers-by-month",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "get-customers-by-month"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-order-returns-by-month",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "15|VszHqrqEgwDk8Wm5XoE6M0DSHoEXsgV16msxuznz6abb0694",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/returns-analysis/get-returns-by-month",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "returns-analysis",
+                "get-returns-by-month"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "30",
+                  "disabled": true
+                }
               ]
             }
           },
@@ -937,7 +1392,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "39|AJ7cYjET0qhicA5Nrq3ejGaT0nkT1mrv5Sj1snrHba9b091b",
+                  "value": "18|KhGYaKrzXINHcQmxm3YzMklyUYJYLQqQkWUR3Eeae65f4235",
                   "type": "string"
                 }
               ]
@@ -952,7 +1407,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"days\" : 360\r\n}",
+              "raw": "{\r\n    \"days\" : 200\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -981,7 +1436,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "44|K6lN4SW06f1OtZTC6BzXFg9J513a9pNi05OmQIfP9fe96646",
+                  "value": "18|KhGYaKrzXINHcQmxm3YzMklyUYJYLQqQkWUR3Eeae65f4235",
                   "type": "string"
                 }
               ]
@@ -996,7 +1451,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"message\" : \"يعني اي صافي الربح\"\r\n}",
+              "raw": "{\r\n    \"message\" : \"what is meaning of profit?\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"

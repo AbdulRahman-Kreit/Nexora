@@ -54,7 +54,7 @@ export default function CustomersWithoutOrdersChart() {
         setLoading(true); 
         fetchFromAPI('No Sales By Region', { days }) 
             .then(data => {
-                setchartData(data.regionsWithoutSales || []);
+                setchartData(data || []); 
                 setLoading(false);
             })
             .catch(error => {
@@ -80,7 +80,7 @@ export default function CustomersWithoutOrdersChart() {
         datasets: [
             {
                 label: 'Customers without Orders',
-                data: chartData.map(() => 1),
+                data: chartData.map((item) => item.customers_without_orders),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 25,
@@ -126,16 +126,25 @@ export default function CustomersWithoutOrdersChart() {
             x: {
                 title: { display: false },
                 grid: { display: false },
-                ticks: { 
-                    color: currentThemeColor, 
-                    font: { size: 14, weight: 600 } 
+                ticks: {
+                    color: currentThemeColor,
+                    font: { weight: 600, size: 11 }, 
+                    callback: function(this: any, value: any) {
+                        const label = this.getLabelForValue(value);
+                        return label.length > 8 ? label.substr(0, 8) + '..' : label; 
+                    },
+                    maxRotation: 0,
+                    minRotation: 0,
+                    padding: 10,
+                    autoSkip: false,
                 }
             }
         },
     };
 
     return (
-        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
+        <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] 
+        transition-all duration-500`}>
             <h2 className="text-(--alt-text-color) font-semibold">
                 Customers without Orders by Region
             </h2>

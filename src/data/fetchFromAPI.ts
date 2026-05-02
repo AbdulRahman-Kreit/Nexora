@@ -80,7 +80,6 @@ export async function fetchFromAPI(requestName: string, payload: any = null, par
                 : undefined,
     });
 
-    // معالجة نوع المحتوى (Content-Type)
     const contentType = response.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
         const textError = await response.text();

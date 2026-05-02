@@ -4,13 +4,13 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import RevenueBySubcategorySkeleton from '../skeletal-loading/RevenueBySubcategorySkeleton';
+import RevenueByBusinessSkeleton from '../skeletal-loading/RevenueByBusinessSkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 import { useFilter } from '@/contexts/FilterProvider';
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-export default function RevenueBySubcategory() {
+export default function RevenueByBusinessChart() {
     const { days } = useFilter(); 
     const chartRef = useRef<ChartJS<'doughnut'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
@@ -59,13 +59,13 @@ export default function RevenueBySubcategory() {
         };
     }, []);
 
-    if (loading) return <RevenueBySubcategorySkeleton />;
+    if (loading) return <RevenueByBusinessSkeleton />;
 
     const data = {
         labels: chartData.map(item => item.business_type),
         datasets: [
             {
-                data: chartData.map(item => parseInt(item.gm_percent)),
+                data: chartData.map(item => parseInt(item.revenue_percentage)),
                 backgroundColor: ['#e1ffff', '#69b4ff', '#006fff'],
                 borderWidth: 0,
                 cutout: '55%',
@@ -120,7 +120,7 @@ export default function RevenueBySubcategory() {
     return (
         <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] rounded-r-lg transition-all duration-500`}>
             <h2 className="text-(--alt-text-color) font-semibold mb-4">
-                Revenue by Subcategory
+                Revenue by Business Type
             </h2>
             <div className="h-[280px] w-full">
                 <Doughnut 

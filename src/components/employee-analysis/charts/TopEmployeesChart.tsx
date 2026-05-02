@@ -18,7 +18,7 @@ ChartJS.register(
 );
 
 export default function TopEmployeesChart() {
-    const bgMaxValue = 5000;
+    const bgMaxValue = 10000000;
     
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);

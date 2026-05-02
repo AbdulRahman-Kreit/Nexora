@@ -61,7 +61,7 @@ export default function CostAndGMChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('Cost & GM By Category', { 
+        fetchFromAPI('revenueProfitByPriceCategory', { 
             category, 
             region, 
             days 
@@ -79,12 +79,12 @@ export default function CostAndGMChart() {
     const labelColor = isDarkMode ? '#ffffff' : '#006fff';
 
     const data = {
-        labels: chartData.map(item => item.category),
+        labels: chartData.map(item => item.price_category),
         datasets: [
             {
                 type: 'line' as const,
-                label: 'GM%',
-                data: chartData.map(item => item.gm_percent),
+                label: 'Profit',
+                data: chartData.map(item => item.profit),
                 borderColor: labelColor, 
                 borderWidth: 2,
                 pointRadius: 4, 
@@ -100,8 +100,8 @@ export default function CostAndGMChart() {
             },
             {
                 type: 'bar' as const, 
-                label: 'Customers',
-                data: chartData.map(item => item.total_cost),
+                label: 'Revenue',
+                data: chartData.map(item => item.revenue),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
                 barThickness: 25,
@@ -112,8 +112,11 @@ export default function CostAndGMChart() {
                     anchor: 'end' as const,
                     color: labelColor,
                     formatter: (value: any) => {
-                        const num = Number(value);
-                        return num >= 1000 ? (num / 1000).toFixed(1) + 'K' : num.toFixed(0);
+                        const num = parseFloat(value);
+                        if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+                        if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+                        if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+                        return num;
                     },
                     font: { weight: 600 as const, size: 14 },
                 }
@@ -184,8 +187,8 @@ export default function CostAndGMChart() {
     
     return (
         <div className="bg-main-gradient ml-1 p-4 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold uppercase tracking-wider text-sm">
-                Cost & GM by Price Category
+            <h2 className="text-gray-500 font-semibold text-sm">
+                Revenue & Profit by Price Category
             </h2>
             <div className="h-full w-full py-5">
                 <Bar 

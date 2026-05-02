@@ -53,8 +53,8 @@ export default function CustomerReturnsByMonthChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('By Month').then(data => {
-            setchartData(data.customers_per_month);
+        fetchFromAPI('getCustomersByMonth').then(data => {
+            setchartData(data|| []);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
@@ -68,11 +68,11 @@ export default function CustomerReturnsByMonthChart() {
     const labelTextColor = isDarkMode ? '#ffffff' : '#006fff';
 
     const data = {
-        labels: chartData.map((item) => item.month),
+        labels: chartData.map((item) => item.month_name),
         datasets: [
             {
                 label: 'Customer Returns',
-                data: chartData.map((item) => item.customers),
+                data: chartData.map((item) => item.customers_returns),
                 fill: true,
                 tension: 0.4,
                 borderColor: '#006fff',

@@ -1,10 +1,8 @@
-"use client"; // إضافة هذه السطر للسماح بالوصول للـ Token من المتصفح
-
+"use client"; 
 import React, { useState, useEffect } from 'react';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
 export default function EmployeeStatisticsChart() {
-    // استخدام State لإدارة البيانات والتحميل
     const [tableData, setTableData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -12,7 +10,6 @@ export default function EmployeeStatisticsChart() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                // الآن سيتم إرسال الـ Token بشكل صحيح من الـ localStorage داخل المتصفح
                 const data = await fetchFromAPI('Employee Analysis/table');
                 setTableData(data || []);
             } catch (err) {
@@ -39,7 +36,7 @@ export default function EmployeeStatisticsChart() {
     }
 
     return (
-        <div className="bg-[#006fff] p-6 max-h-[500px] flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
+        <div className="bg-[#006fff] p-6 max-h-[800px] flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
             <style dangerouslySetInnerHTML={{ __html: `
                 .custom-scrollbar {
                     scrollbar-width: thin !important;

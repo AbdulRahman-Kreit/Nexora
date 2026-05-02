@@ -46,7 +46,7 @@ export default function CustomerReturnsByRegionChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('By Region', { days }).then(data => {
+        fetchFromAPI('customers return By Region', { days }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
@@ -68,7 +68,7 @@ export default function CustomerReturnsByRegionChart() {
         datasets: [
             {
                 label: 'Order Frequency',
-                data: chartData.map(item => item.customers_with_return),
+                data: chartData.map(item => item.customers_count),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 45,

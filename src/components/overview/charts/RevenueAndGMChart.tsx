@@ -47,9 +47,36 @@ export default function RevenueAndGMChart() {
     }, []);
 
     useEffect(() => {
-        setLoading(true); 
-        fetchFromAPI('Revenue Over Time', { days }).then(data => { 
-            setchartData(data);
+        setLoading(true);
+        Promise.all([
+            fetchFromAPI('Revenue Over Time', { days }),
+            fetchFromAPI('gmOverTime', { days })
+        ]).then(([revenueRaw, gmRaw]) => {
+            const formattedData: any[] = [];
+
+            revenueRaw.forEach((yearEntry: any) => {
+                const year = yearEntry.year;
+                
+                const gmYearEntry = gmRaw.find((item: any) => item.year === year);
+
+                [1, 2, 3, 4].forEach(qNum => {
+                    const qKey = `q${qNum}`;
+                    const revenueValue = parseFloat(yearEntry[qKey]);
+                    
+                    const gmValue = gmYearEntry ? parseFloat(gmYearEntry[qKey]) : 0;
+
+                    if (revenueValue > 0) {
+                        formattedData.push({
+                            year: year,
+                            quarter: qNum,
+                            revenue: revenueValue,
+                            gm_percent: gmValue 
+                        });
+                    }
+                });
+            });
+
+            setchartData(formattedData);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
@@ -61,8 +88,7 @@ export default function RevenueAndGMChart() {
                 chartRef.current.destroy();
             }
         };
-    }, [days]); 
-
+    }, [days]);
     if (loading) return <RevenueAndGMSkeleton />;
 
     const data = {
@@ -138,6 +164,13 @@ export default function RevenueAndGMChart() {
                     color: '#006fff',
                     font: { weight: 600 },
                     padding: 10,
+                    callback: function(value: string) {
+                        const num = parseFloat(value);
+                        if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+                        if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+                        if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+                        return num;
+                    }
                 },
             },
             y2: {

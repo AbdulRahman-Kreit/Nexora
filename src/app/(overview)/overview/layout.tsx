@@ -13,14 +13,14 @@ export default function OverviewLayout(props: {
   children: React.ReactNode,
   "revenue-and-gm": React.ReactNode,
   "revenue-by-country": React.ReactNode,
-  "revenue-by-subcategory": React.ReactNode,
+  "revenue-by-business": React.ReactNode,
   "revenue-by-category": React.ReactNode,
 }) {
   const { 
     children, 
     "revenue-and-gm": revenueAndGm, 
     "revenue-by-country": revenueByCountry, 
-    "revenue-by-subcategory": revenueBySubcategory, 
+    "revenue-by-business": revenueByBusiness, 
     "revenue-by-category": revenueByCategory 
   } = props;
 
@@ -43,7 +43,7 @@ export default function OverviewLayout(props: {
                         {revenueByCategory}
                     </div>
                     <div className="col-span-1">
-                        {revenueBySubcategory}
+                        {revenueByBusiness}
                     </div>
                 </div>
               </div>

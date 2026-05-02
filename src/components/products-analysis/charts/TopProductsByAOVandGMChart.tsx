@@ -62,7 +62,7 @@ export default function TopProductByAOVandGMChart() {
 
     useEffect(() => {
         setLoading(true);
-        fetchFromAPI('Top Products', { 
+        fetchFromAPI('topProductsAovGm', { 
             region, 
             days 
         }).then(data => {
@@ -83,7 +83,7 @@ export default function TopProductByAOVandGMChart() {
     const labelColor = isDarkMode ? '#ffffff' : '#006fff';
 
     const data = {
-        labels: chartData.map(item => item.product),
+        labels: chartData.map(item => item.product_name),
         datasets: [
             {
                 type: 'line' as const,

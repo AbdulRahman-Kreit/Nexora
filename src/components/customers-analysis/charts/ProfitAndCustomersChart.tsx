@@ -97,7 +97,7 @@ export default function ProfitAndCustomersChart() {
             {
                 type: 'bar' as const, 
                 label: 'Customers',
-                data: chartData.map(item => item.customer_count),
+                data: chartData.map(item => item.customers),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
                 barThickness: 25,

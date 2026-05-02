@@ -52,8 +52,8 @@ export default function OrderReturnsByMonthChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('By Month').then(data => {
-            setchartData(data.orders_per_month);
+        fetchFromAPI('get-order-returns-by-month').then(data => {
+            setchartData(data || []);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
@@ -67,11 +67,11 @@ export default function OrderReturnsByMonthChart() {
     const pointRingColor = isDarkMode ? '#ffffff' : '#151a21'; 
 
     const data = {
-        labels: chartData.map((item) => item.month),
+        labels: chartData.map((item) => item.month_name),
         datasets: [
             {
                 label: 'Order Returns',
-                data: chartData.map((item) => item.orders),
+                data: chartData.map((item) => item.order_returns),
                 fill: true,
                 tension: 0.4,
                 borderColor: '#006fff',

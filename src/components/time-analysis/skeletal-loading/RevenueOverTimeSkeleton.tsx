@@ -10,7 +10,7 @@ export default function RevenueOverTimeSkeleton() {
                 >
                     {/* Year/ Month Column */}
                     <div className="w-[25%] flex items-center gap-2">
-                        <div className="w-3 h-3 bg-white/20 rounded-full"></div> {/* أيقونة السهم */}
+                        <div className="w-3 h-3 bg-white/20 rounded-full"></div> 
                         <div className="h-4 bg-white/20 rounded w-16"></div>
                     </div>
                     

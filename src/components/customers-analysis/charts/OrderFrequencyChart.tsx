@@ -74,7 +74,7 @@ export default function OrderFrequencyChart() {
     });
 
     const data = {
-        labels: chartData.map(item => item.month),
+        labels: chartData.map(item => item.orders_count),
         datasets: [
             {
                 label: 'Order Frequency',

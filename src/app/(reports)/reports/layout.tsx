@@ -2,9 +2,9 @@
 import type { Metadata } from "next";
 import Sidebar from "@/components/general-components/Sidebar";
 import PageHeading from "@/components/general-components/PageHeading";
-import InputSection from "@/components/report-maker/InputSection";
+import InputSection from "@/components/reports/InputSection";
 import { ReportsProvider } from "@/contexts/ReportsProvider";
-import ReportsList from "@/components/report-maker/ReportsList";
+import ReportsList from "@/components/reports/ReportsList";
 
 export const metadata: Metadata = {
     title: "Nexora",

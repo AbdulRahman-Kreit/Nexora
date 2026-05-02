@@ -51,7 +51,7 @@ export default function EmployeeReturnsChart() {
     }, []);
     
     useEffect(() => {
-        fetchFromAPI('returns-by-employee').then(data => {
+        fetchFromAPI('orders returns-by-employee').then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
@@ -148,7 +148,7 @@ export default function EmployeeReturnsChart() {
         
     return (
         <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold mb-4 uppercase tracking-wider text-sm">
+            <h2 className="text-gray-500 font-semibold mb-4 text-sm">
                 Order Returned by Employee
             </h2>
             <div className="h-full w-full pb-5">

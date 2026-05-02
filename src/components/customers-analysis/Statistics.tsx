@@ -16,10 +16,10 @@ export default function Statistics() {
     }, []);
 
     const statisData = [
-        { id: 1, title: "Customers", value: stats?.customer ?? 0, prefix: "" },
+        { id: 1, title: "Customers", value: stats?.customers ?? 0, prefix: "" },
         { id: 2, title: "AOV", value: stats?.aov ?? 0, prefix: "$" },
         { id: 3, title: "Orders", value: stats?.orders ?? 0, prefix: "" },
-        { id: 4, title: "Customer No Sales", value: stats?.customer_no_sales ?? 0, prefix: "" },
+        { id: 4, title: "Customer No Sales", value: stats?.customers_no_sales ?? 0, prefix: "" },
     ];
 
     return (
@@ -27,9 +27,9 @@ export default function Statistics() {
             {statisData.map((data) => {
                 return (
                     <div key={data.id} className={`flex flex-col justify-start 
-                    w-[150px] pl-3 border-l-3 border-[#4a7fce]`}>
+                    w-[200px] pl-3 border-l-3 border-[#4a7fce]`}>
                         
-                        <h3 className='text-md font-medium text-(--alt-text-color) opacity-80'>
+                        <h3 className='text-md font-medium text-(--alt-text-color) uppercase tracking-wider opacity-80'>
                             {data.title}
                         </h3>
 

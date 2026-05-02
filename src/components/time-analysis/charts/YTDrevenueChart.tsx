@@ -20,10 +20,6 @@ ChartJS.register(
     ChartDataLabels
 );
 
-const monthMapping: { [key: number]: string } = {
-    1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
-    7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
-};
 
 export default function YTDrevenueChart() {
     const { days } = useFilter(); 
@@ -50,11 +46,11 @@ export default function YTDrevenueChart() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const result = await fetchFromAPI('Time Analysis/getRevenueYtd Copy', { days });
+                const result = await fetchFromAPI('Time Analysis/getRevenueYtd', { days });
                 
                 if (Array.isArray(result)) {
                     const formattedData = result.map((item: any) => ({
-                        month: monthMapping[item.month] || `M${item.month}`,
+                        month: `M${item.month_name}`,
                         value: Number(item.revenue)
                     }));
                     setChartDataValues(formattedData);
@@ -74,11 +70,11 @@ export default function YTDrevenueChart() {
     }, [days]); 
 
     const data = {
-        labels: chartDataValues.map((item) => item.month),
+        labels: chartDataValues.map((item) => item.month_name),
         datasets: [
             {
                 label: 'Revenue',
-                data: chartDataValues.map((item) => item.value),
+                data: chartDataValues.map((item) => item.revenue),
                 fill: true,
                 tension: 0.4,
                 borderColor: '#006fff',

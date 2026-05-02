@@ -61,10 +61,7 @@ export default function CostAndGMChart() {
 
     useEffect(() => {
         setLoading(true);
-        
-        // التعديل هنا: تمرير المعاملات ككائن واحد (Object)
-        // ليقوم كود fetchFromAPI بوضعها في المسار أو الـ Query String بشكل صحيح
-        fetchFromAPI('Cost & GM By Category', { 
+        fetchFromAPI('costGMByPriceCategory', { 
             category, 
             region, 
             days 
@@ -75,14 +72,14 @@ export default function CostAndGMChart() {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [category, region, days]); // إضافة التبعيات اللازمة
+    }, [category, region, days]);
 
     if (loading) return <CostAndGMSkeleton />;
 
     const labelColor = isDarkMode ? '#ffffff' : '#006fff';
 
     const data = {
-        labels: chartData.map(item => item.category),
+        labels: chartData.map(item => item.price_category),
         datasets: [
             {
                 type: 'line' as const,
@@ -104,7 +101,7 @@ export default function CostAndGMChart() {
             {
                 type: 'bar' as const, 
                 label: 'Customers',
-                data: chartData.map(item => item.total_cost),
+                data: chartData.map(item => item.cost),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
                 barThickness: 25,
@@ -115,8 +112,11 @@ export default function CostAndGMChart() {
                     anchor: 'end' as const,
                     color: labelColor,
                     formatter: (value: any) => {
-                        const num = Number(value);
-                        return num >= 1000 ? (num / 1000).toFixed(1) + 'K' : num.toFixed(0);
+                        const num = parseFloat(value);
+                        if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
+                        if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';
+                        if (num >= 1e3) return (num / 1e3).toFixed(1) + 'K';
+                        return num;
                     },
                     font: { weight: 600 as const, size: 14 },
                 }

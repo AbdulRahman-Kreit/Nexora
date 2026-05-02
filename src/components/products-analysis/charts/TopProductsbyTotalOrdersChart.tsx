@@ -59,7 +59,7 @@ export default function TopProductsbyTotalOrdersChart() {
     useEffect(() => {
         setLoading(true);
         
-        fetchFromAPI('Top Products', { 
+        fetchFromAPI('Top Products order total', { 
             region, 
             days 
         }).then(data => {
@@ -77,11 +77,11 @@ export default function TopProductsbyTotalOrdersChart() {
     const labelColor = isDarkMode ? '#ffffff' : '#006fff';
 
     const data = {
-        labels: chartData.map(item => item.product),
+        labels: chartData.map(item => item.subcategory),
         datasets: [
             {
                 label: 'Top Product',
-                data: chartData.map(item => item.revenue),
+                data: chartData.map(item => item.total_orders),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
                 barThickness: 25,

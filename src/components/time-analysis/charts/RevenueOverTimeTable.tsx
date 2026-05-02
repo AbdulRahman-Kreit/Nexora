@@ -41,7 +41,7 @@ export default function RevenueOverTimeTable() {
     if (isLoading) return <RevenueOverTimeSkeleton />;
     
     return (
-        <div className="bg-[#006fff] p-6 max-h-[500px] flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
+        <div className="bg-[#006fff] p-6 max-h-[800px] flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
             <style dangerouslySetInnerHTML={{ __html: `
                 .custom-scrollbar {
                     scrollbar-width: thin !important;

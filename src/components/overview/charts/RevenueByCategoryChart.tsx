@@ -109,7 +109,9 @@ export default function RevenueByCategoryChart() {
                 font: { weight: 600 },
                 formatter: (value: any) => {
                     const num = parseFloat(value);
-                    return num >= 10000 ? `${num / 1000}K` : num;
+                    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
+                    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
+                    return Math.round(num);
                 },
                 offset: 1,
             },
@@ -123,7 +125,11 @@ export default function RevenueByCategoryChart() {
                 grid: { display: false },
                 ticks: { 
                     color: currentThemeColor, 
-                    font: { size: 10, weight: 600 } 
+                    font: { size: 10, weight: 600 },
+                    padding: 10,
+                    maxRotation: 0,
+                    autoSkip: false,
+                    autoSkipPadding: 0,
                 }
             }
         },

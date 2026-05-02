@@ -57,16 +57,19 @@ export default function ChurnAnalysisChart() {
 
     const data = {
         labels: years,
-        datasets: chartData.map((sourceYear, index) => ({
-            label: `${sourceYear.year}`, 
-            backgroundColor: colors[index % colors.length],
-            data: chartData.map(currentYear => {
-                if (currentYear.year === sourceYear.year) return sourceYear.new_customers;
-                const lostEntry = currentYear.lost?.find((l: any) => l.year === sourceYear.year);
-                const val = lostEntry ? lostEntry.count : null;
-                return val === 0 ? null : val;
-            })
-        }))
+        datasets: chartData.map((sourceYearEntry, index) => {
+            return {
+                label: sourceYearEntry.year,
+                backgroundColor: colors[index % colors.length],
+                data: chartData.map(currentYearEntry => {
+                    if (currentYearEntry.year >= sourceYearEntry.year) {
+                        return sourceYearEntry.active_customers; 
+                    }
+                    return null;
+                }),
+                stack: 'Stack 0',
+            };
+        })
     };
 
     const options = {

@@ -29,7 +29,7 @@ export default function RevenueByCountryChart() {
         barBgFiller: '#12243b'
     });
 
-    const bgMaxValue = Math.max(...chartData.map(item => parseFloat(item.revenue) || 0), 1000) * 1.2;
+    const bgMaxValue = Math.max(...chartData.map(item => parseFloat(item.revenue) || 0), 1000) * 1.5;
 
     const getCSSVariable = (variable: string) => {
         if (typeof window !== 'undefined') {
@@ -56,7 +56,7 @@ export default function RevenueByCountryChart() {
 
     useEffect(() => {
         setLoading(true); 
-        fetchFromAPI('revenue-by-region', { days }).then(data => {
+        fetchFromAPI('revenue-by-region(country)', { days }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
@@ -74,7 +74,7 @@ export default function RevenueByCountryChart() {
     if (loading) return <RevenueByCountrySkeleton />;
 
     const data = {
-        labels: chartData.map(item => item.region),
+        labels: chartData.map(item => item.country),
         datasets: [
             {
                 label: 'Revenue',
