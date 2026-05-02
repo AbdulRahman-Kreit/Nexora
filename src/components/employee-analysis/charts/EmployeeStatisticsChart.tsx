@@ -1,11 +1,14 @@
 "use client"; 
 import React, { useState, useEffect } from 'react';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function EmployeeStatisticsChart() {
     const [tableData, setTableData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const loadData = async () => {
@@ -23,6 +26,10 @@ export default function EmployeeStatisticsChart() {
         loadData();
     }, []);
 
+    const filteredData = tableData.filter((row) =>
+        row.employee.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     if (loading) {
         return <div className="p-10 text-white text-center">Loading statistics...</div>;
     }
@@ -36,7 +43,7 @@ export default function EmployeeStatisticsChart() {
     }
 
     return (
-        <div className="bg-[#006fff] p-6 max-h-[800px] flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
+        <div className="bg-[#006fff] p-6 h-[800px] flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
             <style dangerouslySetInnerHTML={{ __html: `
                 .custom-scrollbar {
                     scrollbar-width: thin !important;
@@ -54,6 +61,19 @@ export default function EmployeeStatisticsChart() {
                 }
             `}} />
 
+            <div className="mb-6 relative w-full">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-white">
+                    <FontAwesomeIcon icon={faSearch}/>
+                </span>
+                <input
+                    type="text"
+                    placeholder="Search for an employee by name..."
+                    className="w-full p-2 pl-10 bg-white/10 border border-white/30 rounded-lg text-white placeholder-white/60 focus:outline-none focus:bg-white/20 focus:border-white/50 transition-all"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+
             <div className="scroll-container custom-scrollbar overflow-x-auto w-full">
                 <table className="w-full text-center border-collapse min-w-[800px]"> 
                     <thead className="sticky top-0 z-20 bg-[#006fff]">
@@ -68,31 +88,39 @@ export default function EmployeeStatisticsChart() {
                     </thead>
 
                     <tbody className="text-[13px]">
-                        {tableData.map((row: any, index: number) => (
-                            <tr 
-                                key={index} 
-                                className={`${index % 2 === 0 ? 'bg-transparent' : 'bg-white/10'} transition-colors hover:bg-white/20`}
-                            >
-                                <td className="py-3 px-4 text-left font-medium whitespace-nowrap">
-                                    {row.employee}
-                                </td>
-                                <td className="py-3 px-4 whitespace-nowrap">
-                                    {row.total_orders}
-                                </td>
-                                <td className="py-3 px-4 whitespace-nowrap">
-                                    {Number(row.total_sales).toLocaleString('en-US')} $
-                                </td>
-                                <td className="py-3 px-4 text-red-100 whitespace-nowrap">
-                                    {Number(row.total_discount).toLocaleString('en-US')} $
-                                </td>
-                                <td className="py-3 px-4 whitespace-nowrap">
-                                    {parseFloat(row.discount_percent).toFixed(2)}%
-                                </td>
-                                <td className="py-3 px-4 font-bold text-green-100 whitespace-nowrap">
-                                    {Number(row.total_commision).toLocaleString('en-US')} $
+                        {filteredData.length > 0 ? (
+                            filteredData.map((row: any, index: number) => (
+                                <tr 
+                                    key={index} 
+                                    className={`${index % 2 === 0 ? 'bg-transparent' : 'bg-white/10'} transition-colors hover:bg-white/20`}
+                                >
+                                    <td className="py-3 px-4 text-left font-medium whitespace-nowrap">
+                                        {row.employee}
+                                    </td>
+                                    <td className="py-3 px-4 whitespace-nowrap">
+                                        {row.total_orders}
+                                    </td>
+                                    <td className="py-3 px-4 whitespace-nowrap">
+                                        {Number(row.total_sales).toLocaleString('en-US')} $
+                                    </td>
+                                    <td className="py-3 px-4 text-red-100 whitespace-nowrap">
+                                        {Number(row.total_discount).toLocaleString('en-US')} $
+                                    </td>
+                                    <td className="py-3 px-4 whitespace-nowrap">
+                                        {parseFloat(row.discount_percent).toFixed(2)}%
+                                    </td>
+                                    <td className="py-3 px-4 font-bold text-green-100 whitespace-nowrap">
+                                        {Number(row.total_commision).toLocaleString('en-US')} $
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={6} className="py-10 text-center text-white/50">
+                                    No employees match your search.
                                 </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>

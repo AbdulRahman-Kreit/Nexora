@@ -7,6 +7,11 @@ export default function ThemeSwitcher() {
 
     return (
         <div className="flex flex-col items-center gap-2 font-grotesk">
+            {/* إضافة رابط مكتبة Font Awesome برمجياً لضمان ظهور الأيقونات */}
+            <link 
+                rel="stylesheet" 
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+            />
 
             <button
                 onClick={toggleTheme}
@@ -25,12 +30,18 @@ export default function ThemeSwitcher() {
                 <span
                     aria-hidden="true"
                     className={`
-                        pointer-events-none inline-block h-6 w-6 
-                        transform rounded-full bg-white 
+                        pointer-events-none flex items-center justify-center h-6 w-6 
+                        transform rounded-full  
                         shadow-lg transition duration-300 ease-in-out
-                        ${isDarkMode ? 'translate-x-9' : 'translate-x-0'}
+                        ${isDarkMode ? 'translate-x-9 bg-white' : 'translate-x-0 bg-[#006fff]'}
                     `}
-                />
+                >
+                    {isDarkMode ? (
+                        <i className="fas fa-moon text-[#006fff] text-[12px]"></i>
+                    ) : (
+                        <i className="fas fa-sun text-white text-[12px]"></i>
+                    )}
+                </span>
             </button>
         </div>
     );

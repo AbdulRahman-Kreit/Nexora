@@ -20,11 +20,10 @@ ChartJS.register(
     ChartDataLabels
 );
 
-
 export default function YTDrevenueChart() {
     const { days } = useFilter(); 
     const chartRef = useRef<ChartJS<'line'> | null>(null);
-    const [chartDataValues, setChartDataValues] = useState<{ month: string, value: number }[]>([]);
+    const [chartDataValues, setChartDataValues] = useState<{ month_name: string, revenue: number }[]>([]);
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
@@ -50,8 +49,8 @@ export default function YTDrevenueChart() {
                 
                 if (Array.isArray(result)) {
                     const formattedData = result.map((item: any) => ({
-                        month: `M${item.month_name}`,
-                        value: Number(item.revenue)
+                        month_name: `${item.month_name}`.substr(0, 3),
+                        revenue: Number(item.revenue)
                     }));
                     setChartDataValues(formattedData);
                 }

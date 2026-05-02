@@ -20,15 +20,10 @@ ChartJS.register(
     ChartDataLabels
 );
 
-// const monthMapping: { [key: number]: string } = {
-//     1: "Jan", 2: "Feb", 3: "Mar", 4: "Apr", 5: "May", 6: "Jun",
-//     7: "Jul", 8: "Aug", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dec"
-// };
-
 export default function RevenueByMonthChart() {
     const { days } = useFilter();
     const chartRef = useRef<ChartJS<'line'> | null>(null);
-    const [chartDataValues, setChartDataValues] = useState<{ month: string, value: number }[]>([]);
+    const [chartDataValues, setChartDataValues] = useState<{ month_name: string, revenue: number }[]>([]);
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
@@ -54,8 +49,8 @@ export default function RevenueByMonthChart() {
                 
                 if (Array.isArray(result)) {
                     const formattedData = result.map((item: any) => ({
-                        month: `M${item.month}`,
-                        value: Number(item.revenue)
+                        month_name: `${item.month_name}`.substr(0, 3),
+                        revenue: Number(item.revenue)
                     }));
                     setChartDataValues(formattedData);
                 }

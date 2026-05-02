@@ -482,6 +482,59 @@
           "response": []
         },
         {
+          "name": "get Additional Statics",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "16|AyO4hyJUc8jHALh3XnLmoffMQlCXxrPJgVjjQjNP698dac65",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/getAdditionalStatics",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "getAdditionalStatics"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "500",
+                  "description": "اخر سنه مثلا ",
+                  "disabled": true
+                },
+                {
+                  "key": "region",
+                  "value": "France",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Health",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "costGMByPriceCategory",
           "request": {
             "auth": {
@@ -489,7 +542,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "value": "19|8G6fL8xwmtelVjdeygT5OsYCh7OoTnMSIQq94R0922559fea",
                   "type": "string"
                 }
               ]
@@ -515,7 +568,7 @@
               "query": [
                 {
                   "key": "days",
-                  "value": "50",
+                  "value": "360",
                   "disabled": true
                 }
               ]
@@ -558,6 +611,62 @@
                 {
                   "key": "category",
                   "value": "Health",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "revenueProfitByPriceCategory",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "19|8G6fL8xwmtelVjdeygT5OsYCh7OoTnMSIQq94R0922559fea",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/product-analysis/revenueProfitByPriceCategory?days=900&year=2023",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "product-analysis",
+                "revenueProfitByPriceCategory"
+              ],
+              "query": [
+                {
+                  "key": "days",
+                  "value": "900"
+                },
+                {
+                  "key": "year",
+                  "value": "2023"
+                },
+                {
+                  "key": "origin",
+                  "value": "Brazil",
+                  "disabled": true
+                },
+                {
+                  "key": "category",
+                  "value": "Carbs",
+                  "type": "text",
                   "disabled": true
                 }
               ]
@@ -680,7 +789,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "value": "19|8G6fL8xwmtelVjdeygT5OsYCh7OoTnMSIQq94R0922559fea",
                   "type": "string"
                 }
               ]
@@ -694,7 +803,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/product-analysis/topProductsByOrderTotal",
+              "raw": "{{base_url}}/admin/product-analysis/topProductsByOrderTotal?category=Health",
               "host": [
                 "{{base_url}}"
               ],
@@ -716,50 +825,7 @@
                 },
                 {
                   "key": "category",
-                  "value": "Health",
-                  "disabled": true
-                }
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "revenueProfitByPriceCategory",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/admin/product-analysis/revenueProfitByPriceCategory",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "admin",
-                "product-analysis",
-                "revenueProfitByPriceCategory"
-              ],
-              "query": [
-                {
-                  "key": "days",
-                  "value": "900",
-                  "disabled": true
+                  "value": "Health"
                 }
               ]
             }
@@ -821,7 +887,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "13|3i47UtHyDhKRleCTOkuv4KGF94SZVdCVVGy7P0cJ86bb3106",
+                  "value": "76|Qhpu6R1bKEI9GyZwY3zGk1PFb77dvRtcCivJ1dIs5e1b41cf",
                   "type": "string"
                 }
               ]
@@ -856,7 +922,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "14|uss2KEQD5AeQXwZFJFcvkxgHuWP6grzTSqe78vDY708bbafa",
+                  "value": "72|Nd0JaJyvJ4BC8r5MpDu4fG8x4dGPRG2iPZht7wA8fa1e09f8",
                   "type": "string"
                 }
               ]
@@ -870,7 +936,7 @@
               }
             ],
             "url": {
-              "raw": "{{base_url}}/admin/time-analysis/revenueByMonth?days=30",
+              "raw": "{{base_url}}/admin/time-analysis/revenueByMonth",
               "host": [
                 "{{base_url}}"
               ],
@@ -882,7 +948,8 @@
               "query": [
                 {
                   "key": "days",
-                  "value": "30"
+                  "value": "30",
+                  "disabled": true
                 }
               ]
             }
@@ -932,7 +999,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "14|uss2KEQD5AeQXwZFJFcvkxgHuWP6grzTSqe78vDY708bbafa",
+                  "value": "76|Qhpu6R1bKEI9GyZwY3zGk1PFb77dvRtcCivJ1dIs5e1b41cf",
                   "type": "string"
                 }
               ]
@@ -1098,7 +1165,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "18|KhGYaKrzXINHcQmxm3YzMklyUYJYLQqQkWUR3Eeae65f4235",
+                  "value": "72|Nd0JaJyvJ4BC8r5MpDu4fG8x4dGPRG2iPZht7wA8fa1e09f8",
                   "type": "string"
                 }
               ]
@@ -1124,7 +1191,7 @@
               "query": [
                 {
                   "key": "name",
-                  "value": "Ashle",
+                  "value": "Lewis",
                   "description": "search for employee",
                   "disabled": true
                 }

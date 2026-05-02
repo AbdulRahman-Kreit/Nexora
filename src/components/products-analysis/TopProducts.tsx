@@ -3,33 +3,33 @@
 import React, { useEffect, useState } from 'react';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 
-interface Product {
-    product: string;
-    revenue: string;
-    profit: string;
-    aov: string;
-    gm_percent: string;
+interface ProductStat {
+    name: string;
+    profit?: number;
+    gm?: number;
+    returns_count?: number;
+    total_cost?: number;
+}
+
+interface APIResponse {
+    most_returned_product: ProductStat;
+    top_product_by_profit: ProductStat;
+    top_product_by_cost: ProductStat;
+    top_product_by_gm: ProductStat;
 }
 
 export default function TopProducts() {
-    const [products, setProducts] = useState<Product[]>([]);
+    const [stats, setStats] = useState<APIResponse | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchFromAPI('Top Products')
+        fetchFromAPI('get Additional Statics')
             .then(data => {
-                setProducts(data);
+                setStats(data);
                 setLoading(false);
             })
             .catch(() => setLoading(false));
     }, []);
-
-    const getTopBy = (key: keyof Product) => {
-        if (products.length === 0) return null;
-        return products.reduce((prev, current) => 
-            (parseFloat(current[key] as string) > parseFloat(prev[key] as string)) ? current : prev
-        );
-    };
 
     if (loading) return (
         <div className="flex justify-center items-center h-40">
@@ -39,37 +39,43 @@ export default function TopProducts() {
         </div>
     );
 
-    const topProfit = getTopBy('profit');
-    const topGM = getTopBy('gm_percent');
-    const topRevenue = getTopBy('revenue');
-    const topAOV = getTopBy('aov');
-
-    const cardStyle = `w-[210px] h-[165px] bg-[#006fff] mb-6 mx-0 rounded-2xl text-center relative transition-all duration-300 hover:scale-105 shadow-xl shadow-black/40 overflow-hidden`;
-    const headingStyle = `w-full text-[#006fff] font-bold py-2 my-0 mx-auto rounded-t-2xl text-[12px] uppercase shadow-sm`;
-    const percentageStyle = `text-4xl text-white font-black my-4 drop-shadow-md`; 
-    const miniCardStyle = `flex items-center justify-center w-[180px] px-2 py-1.5 my-2 text-[#006fff] text-[11px] mx-auto rounded-lg shadow-inner`;
+    const cardStyle = `w-[210px] h-[130px] bg-[#006fff] mb-6 mx-0 rounded-2xl text-center relative transition-all duration-300 hover:scale-105 shadow-xl shadow-black/40 overflow-hidden`;
+    const headingStyle = `w-full text-[#006fff] font-bold py-2 my-0 mx-auto rounded-t-2xl text-[12px] uppercase shadow-sm`; 
+    const miniCardStyle = `flex items-center justify-center w-[180px] px-3 py-2 my-8 text-[#006fff] text-[24px] mx-auto rounded-lg shadow-inner`;
 
     const cards = [
-        { title: "Top Product by Profit", data: topProfit, key: 'profit', suffix: '$', bg: 'bg-white' },
-        { title: "Top product by GM%", data: topGM, key: 'gm_percent', suffix: '%', bg: 'bg-white' },
-        { title: "Top product by Revenue", data: topRevenue, key: 'revenue', suffix: '$', bg: 'bg-[#2d2d2d]' },
-        { title: "Top product by AOV", data: topAOV, key: 'aov', suffix: '$', bg: 'bg-[#2d2d2d]' },
+        { 
+            title: "Top Product by Profit", 
+            name: stats?.top_product_by_profit.name, 
+            suffix: '$', bg: 'bg-white' 
+        },
+        { 
+            title: "Top product by GM", 
+            name: stats?.top_product_by_gm.name, 
+            suffix: '%', bg: 'bg-white' 
+        },
+        { 
+            title: "Top product by Cost", 
+            name: stats?.top_product_by_cost.name, 
+            suffix: '$', bg: 'bg-[#2d2d2d]' 
+        },
+        { 
+            title: "Most Returned Product", 
+            name: stats?.most_returned_product.name,  
+            suffix: 'Qty', bg: 'bg-[#2d2d2d]' 
+        },
     ];
 
     return (
-        <div className='flex flex-col items-center py-4'>
+        <div className='flex flex-col justify-center items-center py-4'>
             {cards.map((card, index) => (
                 <div key={index} className={cardStyle}>
                     <h3 className={`${headingStyle} ${card.bg}`}>
                         {card.title}
                     </h3>
-                    <p className={percentageStyle}>
-                        {card.data ? Math.round(parseFloat(card.data[card.key as keyof Product] as string)) : 0}
-                        <span className="text-lg ml-1 opacity-80">{card.suffix}</span>
-                    </p>
                     <div className={`${miniCardStyle} ${card.bg}`}>
                         <span className='truncate font-bold text-[13px]'>
-                            {card.data?.product || 'N/A'}
+                            {card.name || 'N/A'}
                         </span>
                     </div>
                 </div>

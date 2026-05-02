@@ -5,9 +5,9 @@ import AnimatedNumbers from '../general-components/AnimatedNumbers';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
 
 interface ProductStats {
-    gm_percent: number;
-    cost_percent: number;
-    return_amount_percentage: number;
+    gm_percentage: number;
+    cost_percentage: number;
+    returns_amount_percentage: number;
     returns_orders_percentage: number;
 }
 
@@ -45,9 +45,9 @@ export default function Statistics() {
     if (!stats) return <div className="p-8 text-white text-center">Loading...</div>;
 
     const statisData = [
-        { title: 'Growth Margin', progress: stats.gm_percent }, 
-        { title: 'Cost', progress: stats.cost_percent },
-        { title: 'Returns Amount', progress: stats.return_amount_percentage }, 
+        { title: 'Growth Margin', progress: stats.gm_percentage }, 
+        { title: 'Cost', progress: stats.cost_percentage },
+        { title: 'Returns Amount', progress: stats.returns_amount_percentage }, 
         { title: 'Returns Orders', progress: stats.returns_orders_percentage },
     ];
 
