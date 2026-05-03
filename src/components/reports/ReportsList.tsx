@@ -7,7 +7,7 @@ export default function ReportsList() {
     return (
         <div className="flex flex-col gap-4 mt-8">
             {reports.map((report, index) => (
-                <ReportDisplay key={index} content={report} />
+                <ReportDisplay key={index} index={index} content={report} />
             ))}
         </div>
     );

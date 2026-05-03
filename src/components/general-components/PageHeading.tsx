@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faArrowUpFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 import ThemeSwitcher from './ThemeSwitcher';
 
@@ -22,16 +22,6 @@ export default function PageHeading() {
                 font-grotesk font-medium h-full`}>
 
                 <ThemeSwitcher />
-
-                <button className={`flex items-center justify-center p-2.5
-                    text-(--alt-text-color) hover:text-(--main-text-color) 
-                    hover:bg-(--field-bg-color) 
-                    rounded-md transition-all`}>
-                    <FontAwesomeIcon 
-                        icon={faArrowUpFromBracket} 
-                        className="text-lg" 
-                    />
-                </button>
             </div>
         </div>
     );

@@ -22,7 +22,7 @@ const Sidebar = memo(function Sidebar() {
             
             <div className="p-4 flex flex-col gap-3 flex-1 overflow-y-auto">
                 {[
-                    { href: '/reports', icon: faUser, label: 'Reports Maker' },
+                    { href: '/reports', icon: faUser, label: 'Reports' },
                     { href: '/overview', icon: faChartPie, label: 'Overview' },
                     { href: '/customers-analysis', icon: faUserClock, label: 'Customers Analysis' },
                     { href: '/returns-analysis', icon: faDollarSign, label: 'Returns Analysis' },

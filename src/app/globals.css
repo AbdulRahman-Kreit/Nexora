@@ -8,31 +8,29 @@
   --filter-buttons-bg-color: #242424;
   --field-bg-color: #9e9e9e;
   --bar-bg-filler: #d5e7fe;
-  /* Color Gradient */
   --color-grad-start: #f3f8ff;
   --color-grad-end: #ffffff;
-  --background-image-main-gradient: linear-gradient(to right, var(--color-grad-start), var(--color-grad-end));
-
-}
-
-.dark {
-  --main-bg-color: #161616;
-  --main-text-color: #ffffff;
-  --alt-text-color: #767676;
-  --side-bar-bg-color: #1e1e1e;
-  --filter-buttons-bg-color: #006fff;
-  --field-bg-color: #2d2d2d;
-  --bar-bg-filler: #12243b;
-  /* Color Gradient */
-  --color-grad-start: #151a21;
-  --color-grad-end: #161616;
   --background-image-main-gradient: linear-gradient(to right, var(--color-grad-start), var(--color-grad-end));
 }
 
 @layer base {
+  .dark {
+    --main-bg-color: #161616;
+    --main-text-color: #ffffff;
+    --alt-text-color: #767676;
+    --side-bar-bg-color: #1e1e1e;
+    --filter-buttons-bg-color: #006fff;
+    --field-bg-color: #2d2d2d;
+    --bar-bg-filler: #12243b;
+    --color-grad-start: #151a21;
+    --color-grad-end: #161616;
+  }
+
   * {
     box-sizing: border-box;
-    @apply transition-colors duration-300;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
   }
 
   body {
@@ -54,14 +52,14 @@
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  input[type='number']::-webkit-outer-spin-button,
-  input[type='number']::-webkit-inner-spin-button {
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
 
   input[type='number'] {
-    -moz-appearance: textfield !important; 
+    -moz-appearance: textfield !important;
     appearance: none;
   }
 }

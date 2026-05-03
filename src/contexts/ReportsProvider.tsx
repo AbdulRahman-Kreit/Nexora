@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 interface ReportsContextType {
     reports: string[];
     addReport: (content: string) => void;
+    deleteReport: (index: number) => void; 
 }
 
 const ReportsContext = createContext<ReportsContextType | undefined>(undefined);
@@ -24,8 +25,14 @@ export function ReportsProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('reports_history', JSON.stringify(updated));
     };
 
+    const deleteReport = (index: number) => {
+        const updated = reports.filter((_, i) => i !== index);
+        setReports(updated);
+        localStorage.setItem('reports_history', JSON.stringify(updated));
+    };
+
     return (
-        <ReportsContext.Provider value={{ reports, addReport }}>
+        <ReportsContext.Provider value={{ reports, addReport, deleteReport }}>
             {children}
         </ReportsContext.Provider>
     );
