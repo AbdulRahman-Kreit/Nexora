@@ -2,6 +2,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import LoadingSpinner from '../general-components/LoadingSpinner';
 
 interface ProductStat {
     name: string;
@@ -33,9 +34,7 @@ export default function TopProducts() {
 
     if (loading) return (
         <div className="flex justify-center items-center h-40">
-            <div className="animate-pulse text-[#006fff] font-semibold">
-                Loading Top Products...
-            </div>
+            <LoadingSpinner />
         </div>
     );
 

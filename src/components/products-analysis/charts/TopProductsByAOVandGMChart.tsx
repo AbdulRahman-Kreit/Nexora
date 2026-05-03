@@ -204,7 +204,7 @@ export default function TopProductByAOVandGMChart() {
     
     return (
         <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold text-sm">
+            <h2 className="text-gray-500 font-semibold text-lg">
                 Top 10 Products by AOV & GM%
             </h2>
             <div className="h-full w-full py-5">

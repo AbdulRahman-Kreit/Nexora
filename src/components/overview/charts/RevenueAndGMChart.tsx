@@ -200,7 +200,7 @@ export default function RevenueAndGMChart() {
 
     return (
         <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
-            <h2 className="text-(--alt-text-color) font-semibold mb-4">
+            <h2 className="text-(--alt-text-color) font-semibold mb-4 text-lg">
                 Revenue and GM% Over Time
             </h2>
             <div className="h-full w-full py-5">

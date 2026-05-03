@@ -100,7 +100,7 @@ export default function CostAndGMChart() {
             },
             {
                 type: 'bar' as const, 
-                label: 'Customers',
+                label: 'Cost',
                 data: chartData.map(item => item.cost),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
@@ -187,7 +187,7 @@ export default function CostAndGMChart() {
     
     return (
         <div className="bg-main-gradient ml-1 p-4 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold text-sm">
+            <h2 className="text-gray-500 font-semibold text-lg">
                 Cost & GM by Price Category
             </h2>
             <div className="h-full w-full py-5">

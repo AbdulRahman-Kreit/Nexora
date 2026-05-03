@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import EmployeeStatisticsSkeleton from '../skeletal-loading/EmployeeStatisticsSkeleton';
 
 export default function EmployeeStatisticsChart() {
     const [tableData, setTableData] = useState<any[]>([]);
@@ -31,7 +32,7 @@ export default function EmployeeStatisticsChart() {
     );
 
     if (loading) {
-        return <div className="p-10 text-white text-center">Loading statistics...</div>;
+        return <EmployeeStatisticsSkeleton />
     }
 
     if (error) {

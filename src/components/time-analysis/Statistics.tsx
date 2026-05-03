@@ -49,7 +49,7 @@ export default function Statistics() {
                         </h3>
 
                         <div className="flex flex-row gap-4">
-                            <p className='text-2xl font-semibold text-(--main-text-color)'>
+                            <p className='text-2xl font-medium text-(--main-text-color)'>
                                 <AnimatedNumbers value={data.value} />
                             </p>
                         </div>

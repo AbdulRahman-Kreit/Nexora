@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedNumbers from '../general-components/AnimatedNumbers';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import LoadingSpinner from '../general-components/LoadingSpinner';
 
 interface ProductStats {
     gm_percentage: number;
@@ -24,7 +25,6 @@ export default function Statistics() {
     useEffect(() => {
         fetchFromAPI('Product Analysis/Summary') 
             .then(data => {
-                console.log("Data to be set in state:", data);
                 const statsData = data?.data || data;
                 setStats(statsData);
             })
@@ -42,13 +42,15 @@ export default function Statistics() {
         return () => observer.disconnect();
     }, []);
 
-    if (!stats) return <div className="p-8 text-white text-center">Loading...</div>;
+    if (!stats) return <div className="p-8 text-white text-center">
+        <LoadingSpinner />
+    </div>;
 
     const statisData = [
-        { title: 'Growth Margin', progress: stats.gm_percentage }, 
-        { title: 'Cost', progress: stats.cost_percentage },
-        { title: 'Returns Amount', progress: stats.returns_amount_percentage }, 
-        { title: 'Returns Orders', progress: stats.returns_orders_percentage },
+        { title: 'Growth Margin', progress: stats.gm_percentage, color: '#006fff' }, 
+        { title: 'Cost', progress: stats.cost_percentage, color: '#E7000B' },
+        { title: 'Returns Amount', progress: stats.returns_amount_percentage, color: '#E7000B' }, 
+        { title: 'Returns Orders', progress: stats.returns_orders_percentage, color: '#E7000B' },
     ];
 
     return (
@@ -80,7 +82,7 @@ export default function Statistics() {
                                     style={{ transform: 'rotate(-180deg)', transformOrigin: '50% 100%' }}
                                 />
                                 <motion.circle
-                                    stroke="#006fff"
+                                    stroke={data.color} 
                                     fill="transparent"
                                     strokeWidth={stroke}
                                     strokeDasharray={`${arcLength} ${circumference}`}
@@ -97,14 +99,20 @@ export default function Statistics() {
                             </svg>
 
                             <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center">
-                                <span className="text-[#006fff] text-2xl font-medium [text-shadow:_0_0_20px_#006fff]">
+                                <span 
+                                    className="text-2xl font-medium"
+                                    style={{ 
+                                        color: data.color,
+                                        textShadow: `0 0 20px ${data.color}` 
+                                    }}
+                                >
                                     <AnimatedNumbers value={progressValue.toFixed(1)} />%
                                 </span>
                             </div>
                         </div>
                         <span 
                             className="text-lg font-semibold mt-4 transition-colors duration-500"
-                            style={{ color: isDarkMode ? '#ffffff' : '#006fff' }}
+                            style={{ color: isDarkMode ? '#ffffff' : data.color }}
                         >
                             {data.title}
                         </span>

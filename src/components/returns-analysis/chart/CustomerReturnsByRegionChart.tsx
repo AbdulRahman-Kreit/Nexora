@@ -126,7 +126,7 @@ export default function CustomerReturnsByRegionChart() {
 
     return (
         <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold text-sm">
+            <h2 className="text-gray-500 font-semibold text-lg">
                 Customer Returns by Region
             </h2>
             <div className="h-[320px] w-full pt-8 pb-5">

@@ -143,7 +143,12 @@ export default function RevenueByCountryChart() {
                 grid: { display: false },
                 ticks: { 
                     color: themeColors.mainText, 
-                    font: { weight: 600 } 
+                    font: { weight: 600 },
+                    callback: function(this: any, value: any) {
+                        const label = this.getLabelForValue(value);
+                        return label.length > 8 ? label.substr(0, 8) + '..' : label; 
+                    },
+                    autoSkip: false,
                 },
                 border: { display: false }
             }
@@ -155,7 +160,7 @@ export default function RevenueByCountryChart() {
 
     return (
         <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500`}>
-            <h2 className="text-(--alt-text-color) font-semibold mb-4">
+            <h2 className="text-(--alt-text-color) font-semibold mb-4 text-lg">
                 Revenue by Country
             </h2>
             <div className="h-full w-full py-5">

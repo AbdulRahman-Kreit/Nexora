@@ -119,7 +119,7 @@ export default function RevenueByBusinessChart() {
 
     return (
         <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] rounded-r-lg transition-all duration-500`}>
-            <h2 className="text-(--alt-text-color) font-semibold mb-4">
+            <h2 className="text-(--alt-text-color) font-semibold mb-4 text-lg">
                 Revenue by Business Type
             </h2>
             <div className="h-[280px] w-full">

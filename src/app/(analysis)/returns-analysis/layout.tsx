@@ -30,10 +30,10 @@ export default function ReturnsAnalysisLayout(props: {
         {children}
         
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full py-4 pl-4">
-          <div className="min-h-[400px] col-span-2">{customerReturnsByRegion}</div>
           <div className="min-h-[400px] col-span-2">{orderReturnsBySubcategory}</div>
           <div className="min-h-[400px]">{customerReturnsByMonth}</div>
           <div className="min-h-[400px]">{OrderReturnsByMonth}</div>
+          <div className="min-h-[400px]">{customerReturnsByRegion}</div>
         </section>
       </div>
     

@@ -147,7 +147,9 @@ export default function YTDrevenueChart() {
 
     return (
         <div className="bg-main-gradient p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold mb-4">YTD Revenue</h2>
+            <h2 className="text-gray-500 font-semibold mb-4 text-lg">
+                YTD Revenue
+            </h2>
             <div className="min-h-[300px] w-full">
                 <Line 
                     ref={chartRef} 

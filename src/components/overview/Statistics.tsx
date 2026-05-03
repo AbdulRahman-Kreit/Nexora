@@ -31,7 +31,7 @@ export default function Statistics() {
                             {data.title}
                         </h3>
 
-                        <div className='text-2xl font-semibold text-(--main-text-color) flex items-center'>
+                        <div className='text-2xl font-medium text-(--main-text-color) flex items-center'>
                             <span>{data.prefix}</span>
                             <AnimatedNumbers value={data.value} />
                         </div>

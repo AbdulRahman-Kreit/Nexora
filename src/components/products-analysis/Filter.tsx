@@ -19,6 +19,7 @@ export default function Filter({ onCategoryChange, onRegionChange }: FilterProps
         { id: 'carbs', label: 'Carbs', value: 'Carbs' },
         { id: 'protein', label: 'Protein', value: 'Protein' },
         { id: 'clothing', label: 'Clothing', value: 'Clothing' },
+        { id: 'vitamins', label: 'Vitamins', value: 'Vitamins' },
     ];
 
     const regionsInputs = [
@@ -26,9 +27,12 @@ export default function Filter({ onCategoryChange, onRegionChange }: FilterProps
         { id: 'brazil', label: 'Brazil', value: 'Brazil' },
         { id: 'canada', label: 'Canada', value: 'Canada' },
         { id: 'france', label: 'France', value: 'France' },
-        { id: 'northeast', label: 'Saudi Arabia', value: 'Saudi Arabia' },
-        { id: 'northwest', label: 'Australia', value: 'Australia' },
-        { id: 'southeast', label: 'Japan', value: 'Japan' },
+        { id: 'northeast', label: 'Northeast', value: 'Northeast' },
+        { id: 'northwest', label: 'Northwest', value: 'Northwest' },
+        { id: 'southeast', label: 'Southeast', value: 'Southeast' },
+        { id: 'southwest', label: 'Southwest', value: 'Southwest' },
+        { id: 'central', label: 'Central', value: 'Central' },
+        { id: 'united kingdom', label: 'United Kingdom', value: 'United Kingdom' },
     ];
 
     const cardStyle = `flex flex-col w-[230px] bg-[#006fff] mb-5 mx-0 

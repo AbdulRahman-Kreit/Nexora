@@ -132,7 +132,7 @@ export default function OrderReturnsBySubcategoryChart() {
 
     return (
         <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold">
+            <h2 className="text-gray-500 font-semibold text-lg">
                 Order Returns by Subcategory
             </h2>
             <div className="min-h-[300px] w-full py-5">

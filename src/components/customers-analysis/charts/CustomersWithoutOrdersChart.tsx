@@ -131,7 +131,7 @@ export default function CustomersWithoutOrdersChart() {
                     font: { weight: 600, size: 11 }, 
                     callback: function(this: any, value: any) {
                         const label = this.getLabelForValue(value);
-                        return label.length > 8 ? label.substr(0, 8) + '..' : label; 
+                        return label.length > 8 ? label.substr(0, 6) + '..' : label; 
                     },
                     maxRotation: 0,
                     minRotation: 0,
@@ -145,7 +145,7 @@ export default function CustomersWithoutOrdersChart() {
     return (
         <div className={`bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] 
         transition-all duration-500`}>
-            <h2 className="text-(--alt-text-color) font-semibold">
+            <h2 className="text-(--alt-text-color) font-semibold text-lg">
                 Customers without Orders by Region
             </h2>
             <div className="h-full w-full py-5">

@@ -80,7 +80,7 @@ export default function TopProductsbyTotalOrdersChart() {
         labels: chartData.map(item => item.subcategory),
         datasets: [
             {
-                label: 'Top Product',
+                label: 'Total Orders',
                 data: chartData.map(item => item.total_orders),
                 backgroundColor: '#006fff',
                 borderRadius: 5,
@@ -164,7 +164,7 @@ export default function TopProductsbyTotalOrdersChart() {
     
     return (
         <div className="bg-main-gradient ml-1 p-6 h-2/3 border-l-3 border-[#4a7fce] transition-all duration-500">
-            <h2 className="text-gray-500 font-semibold mb-0 text-sm">
+            <h2 className="text-gray-500 font-semibold mb-0 text-lg">
                 Top 10 Products by Total Orders
             </h2>
             <div className="h-[calc(100%-40px)] w-full mt-0">
