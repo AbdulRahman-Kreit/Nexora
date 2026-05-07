@@ -2,18 +2,21 @@
 import React, { useState, useEffect } from "react";
 import AnimatedNumbers from '@/components/general-components/AnimatedNumbers'
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider";
 
 
 export default function Statistics() {
     const [stats, setStats] = useState<any>({});
+    const { days } = useFilter();
     
     useEffect(() => {
-        fetchFromAPI('Customer Analysis/Summary').then(data => {
-            setStats(data || {});
+        fetchFromAPI('Customer Analysis/Summary', { days }).then(data => {
+            const statsData = data?.data || data; 
+            setStats(statsData || {});
         }).catch(error => {
             console.error(`API Error: ${error}`);
         })
-    }, []);
+    }, [days]);
 
     const statisData = [
         { id: 1, title: "Customers", value: stats?.customers ?? 0, prefix: "" },

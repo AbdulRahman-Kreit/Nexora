@@ -60,7 +60,7 @@ export default function TopProductsbyTotalOrdersChart() {
         setLoading(true);
         
         fetchFromAPI('Top Products order total', { 
-            region, 
+            origin: region, 
             days 
         }).then(data => {
             setchartData(data);
@@ -150,7 +150,10 @@ export default function TopProductsbyTotalOrdersChart() {
                     }, 
                     callback: function(this: any, value: any) {
                         const label = this.getLabelForValue(value);
-                        return label.length > 8 ? label.substr(0, 8) + '..' : label; 
+                        if (label) {
+                            return label.length > 8 ? label.substr(0, 8) + '..' : label; 
+                        }
+                        return '';
                     },
                     autoSkip: false,
                 },

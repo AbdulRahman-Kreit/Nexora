@@ -6,6 +6,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import TopEmployeesSkeleton from '../skeletal-loading/TopEmployeeSkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from '@/contexts/FilterProvider'; 
 
 ChartJS.register(
     CategoryScale, 
@@ -18,6 +19,7 @@ ChartJS.register(
 );
 
 export default function EmployeeReturnsChart() {
+    const { days } = useFilter(); 
     const bgMaxValue = 100;
         
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
@@ -51,14 +53,15 @@ export default function EmployeeReturnsChart() {
     }, []);
     
     useEffect(() => {
-        fetchFromAPI('orders returns-by-employee').then(data => {
+        setLoading(true); 
+        fetchFromAPI('orders returns-by-employee', { days }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, []);
+    }, [days]); 
     
     if (loading) return <TopEmployeesSkeleton />;
 
@@ -154,7 +157,7 @@ export default function EmployeeReturnsChart() {
             <div className="h-full w-full pb-5">
                 <Bar 
                     ref={chartRef}
-                    key={isDarkMode ? 'dark-chart' : 'light-chart'} 
+                    key={`employee-returns-${days}-${isDarkMode}`} 
                     data={data} 
                     options={options as any} 
                 />

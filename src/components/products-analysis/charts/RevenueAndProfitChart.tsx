@@ -23,7 +23,7 @@ ChartJS.register(
     ChartDataLabels
 );
 
-export default function CostAndGMChart() {
+export default function RevenueAndProfitChart() {
     const { days } = useFilter(); 
     const searchParams = useSearchParams();
     const category = searchParams.get('category') || '';
@@ -63,7 +63,7 @@ export default function CostAndGMChart() {
         setLoading(true);
         fetchFromAPI('revenueProfitByPriceCategory', { 
             category, 
-            region, 
+            origin: region, 
             days 
         }).then(data => {
             setchartData(data);
@@ -192,7 +192,7 @@ export default function CostAndGMChart() {
             </h2>
             <div className="h-full w-full py-5">
                 <Bar 
-                    key={`cost-gm-chart-${category}-${region}-${days}-${isDarkMode}`} 
+                    key={`revenue-profit-chart-${category}-${region}-${days}-${isDarkMode}`} 
                     data={data} 
                     options={options as any} 
                 />

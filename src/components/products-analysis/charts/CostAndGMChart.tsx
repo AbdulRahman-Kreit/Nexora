@@ -24,7 +24,7 @@ ChartJS.register(
 );
 
 export default function CostAndGMChart() {
-    const { days } = useFilter(); // إضافة فلتر الأيام لضمان التحديث
+    const { days } = useFilter(); 
     const searchParams = useSearchParams();
     const category = searchParams.get('category') || '';
     const region = searchParams.get('region') || '';
@@ -63,7 +63,7 @@ export default function CostAndGMChart() {
         setLoading(true);
         fetchFromAPI('costGMByPriceCategory', { 
             category, 
-            region, 
+            origin: region, 
             days 
         }).then(data => {
             setchartData(data);

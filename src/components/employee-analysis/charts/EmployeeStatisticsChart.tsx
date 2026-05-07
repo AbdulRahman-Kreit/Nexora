@@ -4,8 +4,10 @@ import { fetchFromAPI } from '@/data/fetchFromAPI';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EmployeeStatisticsSkeleton from '../skeletal-loading/EmployeeStatisticsSkeleton';
+import { useFilter } from '@/contexts/FilterProvider';
 
 export default function EmployeeStatisticsChart() {
+    const { days } = useFilter(); 
     const [tableData, setTableData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -13,8 +15,9 @@ export default function EmployeeStatisticsChart() {
 
     useEffect(() => {
         const loadData = async () => {
+            setLoading(true); 
             try {
-                const data = await fetchFromAPI('Employee Analysis/table');
+                const data = await fetchFromAPI('Employee Analysis/table', { days }); 
                 setTableData(data || []);
             } catch (err) {
                 console.error(`API Error: ${err}`);
@@ -25,7 +28,7 @@ export default function EmployeeStatisticsChart() {
         };
 
         loadData();
-    }, []);
+    }, [days]);
 
     const filteredData = tableData.filter((row) =>
         row.employee.toLowerCase().includes(searchTerm.toLowerCase())

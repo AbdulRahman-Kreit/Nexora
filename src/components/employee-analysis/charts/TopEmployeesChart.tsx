@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
@@ -6,6 +7,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import TopEmployeesSkeleton from '../skeletal-loading/TopEmployeeSkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from '@/contexts/FilterProvider';
 
 ChartJS.register(
     CategoryScale, 
@@ -18,6 +20,7 @@ ChartJS.register(
 );
 
 export default function TopEmployeesChart() {
+    const { days } = useFilter(); 
     const bgMaxValue = 10000000;
     
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
@@ -51,14 +54,15 @@ export default function TopEmployeesChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('Top Employees').then(data => {
+        setLoading(true);
+        fetchFromAPI('Top Employees', { days }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, []);
+    }, [days]); 
 
     if (loading) return <TopEmployeesSkeleton />;
 
@@ -88,7 +92,7 @@ export default function TopEmployeesChart() {
                             return undefined;
                         }
                     }
-                },
+                }
             },
             {
                 label: 'Total Sales',
@@ -154,7 +158,7 @@ export default function TopEmployeesChart() {
             <div className="h-full w-full pb-5">
                 <Bar 
                     ref={chartRef}
-                    key={isDarkMode ? 'dark-top-emp' : 'light-top-emp'} 
+                    key={`top-emp-${days}-${isDarkMode}`} 
                     data={data} 
                     options={options as any} 
                 />

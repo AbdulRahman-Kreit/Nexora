@@ -2,40 +2,25 @@
 import React, { useState, useEffect } from "react";
 import AnimatedNumbers from '@/components/general-components/AnimatedNumbers'
 import { fetchFromAPI } from "@/data/fetchFromAPI";
+import { useFilter } from "@/contexts/FilterProvider"; 
 
 export default function Statistics() {
     const [stats, setStats] = useState<any>({});
-    const [isDarkMode, setIsDarkMode] = useState(true);
-
-    useEffect(() => {
-        const checkTheme = () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            setIsDarkMode(isDark);
-        };
-
-        checkTheme();
-        const observer = new MutationObserver(checkTheme);
-        observer.observe(document.documentElement, { 
-            attributes: true, 
-            attributeFilter: ['class'] 
-        });
-
-        return () => observer.disconnect();
-    }, []);
+    const { days } = useFilter();
         
     useEffect(() => {
-        fetchFromAPI('Employee Analysis/Summary').then(data => {
+        fetchFromAPI('Employee Analysis/Summary', { days }).then(data => {
             setStats(data || {});
         }).catch(error => {
             console.error(`API Error: ${error}`);
         })
-    }, []);
+    }, [days]);
     
     const statisData = [
-        { id: 1, title: "Employees", value: stats.employees },
-        { id: 2, title: "Customers", value: stats.customers  },
-        { id: 3, title: "Orders", value: stats.orders },
-        { id: 4, title: "Total Commission", value: stats.total_commision },
+        { id: 1, title: "Employees", value: stats.employees, prefix: "" },
+        { id: 2, title: "Customers", value: stats.customers, prefix: ""  },
+        { id: 3, title: "Orders", value: stats.orders, prefix: "" },
+        { id: 4, title: "Total Commission", value: stats.total_commision, prefix: "$" },
     ];
     
 
@@ -52,6 +37,7 @@ export default function Statistics() {
 
                         <div className="flex flex-row gap-4">
                             <p className='text-2xl font-medium text-(--main-text-color)'>
+                                <span>{data.prefix}</span>
                                 <AnimatedNumbers value={data.value} />
                             </p>
                         </div>

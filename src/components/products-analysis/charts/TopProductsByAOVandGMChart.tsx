@@ -63,7 +63,7 @@ export default function TopProductByAOVandGMChart() {
     useEffect(() => {
         setLoading(true);
         fetchFromAPI('topProductsAovGm', { 
-            region, 
+            origin: region, 
             days 
         }).then(data => {
             setchartData(data);

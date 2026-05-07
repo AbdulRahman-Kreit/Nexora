@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import AnimatedNumbers from '../general-components/AnimatedNumbers';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
 import LoadingSpinner from '../general-components/LoadingSpinner';
+import { useFilter } from "@/contexts/FilterProvider"; 
 
 interface ProductStats {
     gm_percentage: number;
@@ -21,15 +22,16 @@ export default function Statistics() {
 
     const [stats, setStats] = useState<ProductStats | null>(null);
     const [isDarkMode, setIsDarkMode] = useState(true);
+    const { days } = useFilter();
         
     useEffect(() => {
-        fetchFromAPI('Product Analysis/Summary') 
+        fetchFromAPI('Product Analysis/Summary', { days }) 
             .then(data => {
                 const statsData = data?.data || data;
                 setStats(statsData);
             })
             .catch(err => console.error("Final Error Catch:", err));
-    }, []);
+    }, [days]); 
 
     useEffect(() => {
         const checkTheme = () => {
