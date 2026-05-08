@@ -1,14 +1,14 @@
-"use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import ChurnAnalysisSkeleton from '@/components/customers-analysis/skeletal-loading/ChurnAnalysisSkeleton';
 
-const ChurnAnalysisChart = dynamic(() => import('@/components/customers-analysis/charts/ChurnAnalysisChart'), {
-    loading: () => <ChurnAnalysisSkeleton />,
-    ssr: false,
-});
+const ChurnAnalysisChart = lazy(() => import('@/components/customers-analysis/charts/ChurnAnalysisChart'));
+
+export const runtime = 'edge';
 
 export default function ChurnAnalysis() {
     return (
-        <ChurnAnalysisChart />
+        <Suspense fallback={<ChurnAnalysisSkeleton />}>
+            <ChurnAnalysisChart />
+        </Suspense>
     )
 }

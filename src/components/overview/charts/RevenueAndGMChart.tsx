@@ -24,6 +24,7 @@ export default function RevenueAndGMChart() {
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+    const [isMounted, setIsMounted] = useState(false);
 
     const getCSSVariable = (variable: string) => {
         if (typeof window !== 'undefined') {
@@ -33,6 +34,7 @@ export default function RevenueAndGMChart() {
     };
 
     useEffect(() => {
+        setIsMounted(true);
         const updateTheme = () => {
             const color = getCSSVariable('--main-text-color') || '#006fff';
             setCurrentThemeColor(color);
@@ -47,6 +49,8 @@ export default function RevenueAndGMChart() {
     }, []);
 
     useEffect(() => {
+        if (!isMounted) return; 
+
         setLoading(true);
         Promise.all([
             fetchFromAPI('Revenue Over Time', { days }),
@@ -56,13 +60,11 @@ export default function RevenueAndGMChart() {
 
             revenueRaw.forEach((yearEntry: any) => {
                 const year = yearEntry.year;
-                
                 const gmYearEntry = gmRaw.find((item: any) => item.year === year);
 
                 [1, 2, 3, 4].forEach(qNum => {
                     const qKey = `q${qNum}`;
                     const revenueValue = parseFloat(yearEntry[qKey]);
-                    
                     const gmValue = gmYearEntry ? parseFloat(gmYearEntry[qKey]) : 0;
 
                     if (revenueValue > 0) {
@@ -86,10 +88,12 @@ export default function RevenueAndGMChart() {
         return () => {
             if (chartRef.current) {
                 chartRef.current.destroy();
+                chartRef.current = null;
             }
         };
-    }, [days]);
-    if (loading) return <RevenueAndGMSkeleton />;
+    }, [days, isMounted]);
+
+    if (!isMounted || loading) return <RevenueAndGMSkeleton />;
 
     const data = {
         labels: chartData.map(item => [`Q${item.quarter}`, item.year]),
@@ -164,7 +168,7 @@ export default function RevenueAndGMChart() {
                     color: '#006fff',
                     font: { weight: 600 },
                     padding: 10,
-                    callback: function(value: string) {
+                    callback: function(value: any) {
                         const num = parseFloat(value);
                         if (num >= 1e9) return (num / 1e9).toFixed(1) + 'B';
                         if (num >= 1e6) return (num / 1e6).toFixed(1) + 'M';

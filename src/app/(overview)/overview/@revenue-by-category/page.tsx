@@ -1,16 +1,16 @@
-"use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import RevenueByCategorySkeleton from '@/components/overview/skeletal-loading/RevenueByCategorySkeleton';
 
-const RevenueByCategoryChart = dynamic(() => import('@/components/overview/charts/RevenueByCategoryChart'), {
-    loading: () => <RevenueByCategorySkeleton />,
-    ssr: false,
-});
+const RevenueByCategoryChart = lazy(() => import('@/components/overview/charts/RevenueByCategoryChart'));
+
+export const runtime = 'edge';
 
 export default function RevenueByCategory() {
     return (
         <div>
-            <RevenueByCategoryChart />
+            <Suspense fallback={<RevenueByCategorySkeleton />}>
+                <RevenueByCategoryChart />
+            </Suspense>
         </div>
     )
 }

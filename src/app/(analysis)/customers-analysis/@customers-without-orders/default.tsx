@@ -1,14 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import CustomersWithoutOrdersSkeleton from '@/components/customers-analysis/skeletal-loading/CustomersWithoutOrdersSkeleton';
 
-const CustomersWithoutOrdersChart = dynamic(() => import('@/components/customers-analysis/charts/CustomersWithoutOrdersChart'), {
-    loading: () => <CustomersWithoutOrdersSkeleton />,
-    ssr: false,
-});
+export const runtime = 'edge';
+
+const CustomersWithoutOrdersChart = lazy(() => import('@/components/customers-analysis/charts/CustomersWithoutOrdersChart'));
 
 export default function Default() {
     return (
-        <CustomersWithoutOrdersChart />
+        <Suspense fallback={<CustomersWithoutOrdersSkeleton />}>
+            <CustomersWithoutOrdersChart />
+        </Suspense>
     )
 }

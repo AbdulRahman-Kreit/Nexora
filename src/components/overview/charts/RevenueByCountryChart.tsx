@@ -23,6 +23,7 @@ export default function RevenueByCountryChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [isMounted, setIsMounted] = useState(false);
     
     const [themeColors, setThemeColors] = useState({
         mainText: '#006fff',
@@ -39,6 +40,7 @@ export default function RevenueByCountryChart() {
     };
 
     useEffect(() => {
+        setIsMounted(true);
         const updateTheme = () => {
             setThemeColors({
                 mainText: getCSSVariable('--main-text-color') || '#006fff',
@@ -55,6 +57,8 @@ export default function RevenueByCountryChart() {
     }, []);
 
     useEffect(() => {
+        if (!isMounted) return;
+
         setLoading(true); 
         fetchFromAPI('revenue-by-region(country)', { days }).then(data => {
             setchartData(data);
@@ -67,11 +71,12 @@ export default function RevenueByCountryChart() {
         return () => {
             if (chartRef.current) {
                 chartRef.current.destroy();
+                chartRef.current = null;
             }
         };
-    }, [days]); 
+    }, [days, isMounted]); 
 
-    if (loading) return <RevenueByCountrySkeleton />;
+    if (!isMounted || loading) return <RevenueByCountrySkeleton />;
 
     const data = {
         labels: chartData.map(item => item.country),

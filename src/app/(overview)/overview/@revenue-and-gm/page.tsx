@@ -1,15 +1,14 @@
-"use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import RevenueAndGMSkeleton from '@/components/overview/skeletal-loading/RevenueAndGMSkeleton';
 
-const RevenueAndGMChart = dynamic(() => import('@/components/overview/charts/RevenueAndGMChart'), {
-    loading: () => <RevenueAndGMSkeleton />,
-    ssr: false,
-});
+const RevenueAndGMChart = lazy(() => import('@/components/overview/charts/RevenueAndGMChart'));
+
+export const runtime = 'edge'; 
 
 export default function RevenueAndGM() {
     return (
-        <RevenueAndGMChart />
-    )
+        <Suspense fallback={<RevenueAndGMSkeleton />}>
+            <RevenueAndGMChart />
+        </Suspense>
+    );
 }
-

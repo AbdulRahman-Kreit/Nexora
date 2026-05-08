@@ -16,6 +16,7 @@ export default function RevenueByBusinessChart() {
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+    const [isMounted, setIsMounted] = useState(false);
 
     const getCSSVariable = (variable: string) => {
         if (typeof window !== 'undefined') {
@@ -25,6 +26,7 @@ export default function RevenueByBusinessChart() {
     };
 
     useEffect(() => {
+        setIsMounted(true);
         const updateTheme = () => {
             const color = getCSSVariable('--main-text-color') || '#006fff';
             setCurrentThemeColor(color);
@@ -39,6 +41,8 @@ export default function RevenueByBusinessChart() {
     }, []);
 
     useEffect(() => {
+        if (!isMounted) return;
+
         setLoading(true); 
         fetchFromAPI('GM By Business Type', { days }).then(data => { 
             const result = Array.isArray(data) ? data : (data?.data || []);
@@ -48,18 +52,18 @@ export default function RevenueByBusinessChart() {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [days]); 
+    }, [days, isMounted]); 
 
     useEffect(() => {
-        const chart = chartRef.current;
         return () => {
-            if (chart) {
-                chart.destroy();
+            if (chartRef.current) {
+                chartRef.current.destroy();
+                chartRef.current = null; 
             }
         };
     }, []);
 
-    if (loading) return <RevenueByBusinessSkeleton />;
+    if (!isMounted || loading) return <RevenueByBusinessSkeleton />;
 
     const data = {
         labels: chartData.map(item => item.business_type),

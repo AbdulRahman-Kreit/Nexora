@@ -2,6 +2,8 @@ import React from 'react';
 import Statistics from '@/components/overview/Statistics';
 import RealTimeDate from '@/components/general-components/RealTimeDate';
 
+export const runtime = 'edge';
+
 export default function Overview() {
     return (
         <div className={`flex flex-col px-5`}>

@@ -1,14 +1,14 @@
-"use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import RevenueByCountrySkeleton from '@/components/overview/skeletal-loading/RevenueByCountrySkeleton';
 
-const RevenueByCountryChart = dynamic(() => import('@/components/overview/charts/RevenueByCountryChart'), {
-    loading: () => <RevenueByCountrySkeleton />,
-    ssr: false,
-});
+const RevenueByCountryChart = lazy(() => import('@/components/overview/charts/RevenueByCountryChart'));
+
+export const runtime = 'edge';
 
 export default function RevenueByCountry() {
     return (
-        <RevenueByCountryChart />
+        <Suspense fallback={<RevenueByCountrySkeleton />}>
+            <RevenueByCountryChart />
+        </Suspense>
     )
 }

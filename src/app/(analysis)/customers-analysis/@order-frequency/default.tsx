@@ -1,16 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import OrderFrequencySkeleton from '@/components/customers-analysis/skeletal-loading/OrderFrequencySkeleton';
 
-const OrderFrequencyChart = dynamic(() => import('@/components/customers-analysis/charts/OrderFrequencyChart'), {
-    loading: () => <OrderFrequencySkeleton />,
-    ssr: false
-});
+export const runtime = 'edge';
+
+const OrderFrequencyChart = lazy(() => import('@/components/customers-analysis/charts/OrderFrequencyChart'));
 
 export default function Default() {
     return (
-        <div>
-        
-        </div>
+        <Suspense fallback={<OrderFrequencySkeleton />}>
+            <OrderFrequencyChart />
+        </Suspense>
     )
 }

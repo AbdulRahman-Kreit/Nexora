@@ -25,6 +25,7 @@ export default function RevenueByCategoryChart() {
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+    const [isMounted, setIsMounted] = useState(false);
 
     const getCSSVariable = (variable: string) => {
         if (typeof window !== 'undefined') {
@@ -34,6 +35,7 @@ export default function RevenueByCategoryChart() {
     };
 
     useEffect(() => {
+        setIsMounted(true);
         const updateTheme = () => {
             const color = getCSSVariable('--main-text-color') || '#006fff';
             setCurrentThemeColor(color);
@@ -48,6 +50,8 @@ export default function RevenueByCategoryChart() {
     }, []);
 
     useEffect(() => {
+        if (!isMounted) return;
+
         setLoading(true); 
         fetchFromAPI('Revenue By Category', { days }).then(data => { 
             setchartData(data);
@@ -60,11 +64,12 @@ export default function RevenueByCategoryChart() {
         return () => {
             if (chartRef.current) {
                 chartRef.current.destroy();
+                chartRef.current = null;
             }
         };
-    }, [days]); 
+    }, [days, isMounted]); 
 
-    if (loading) return <RevenueByCategorySkeleton />;
+    if (!isMounted || loading) return <RevenueByCategorySkeleton />;
     
     const data = {
         labels: chartData.map(item => item.category),

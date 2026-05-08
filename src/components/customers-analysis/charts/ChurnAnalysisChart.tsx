@@ -15,6 +15,7 @@ export default function ChurnAnalysisChart() {
     const [chartData, setChartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [currentThemeColor, setCurrentThemeColor] = useState('#006fff');
+    const [isMounted, setIsMounted] = useState(false);
 
     const getCSSVariable = (variable: string) => {
         if (typeof window !== 'undefined') {
@@ -24,6 +25,7 @@ export default function ChurnAnalysisChart() {
     };
 
     useEffect(() => {
+        setIsMounted(true);
         const updateTheme = () => {
             const color = getCSSVariable('--main-text-color') || '#006fff';
             setCurrentThemeColor(color);
@@ -38,6 +40,8 @@ export default function ChurnAnalysisChart() {
     }, []);
 
     useEffect(() => {
+        if (!isMounted) return;
+
         setLoading(true);
         fetchFromAPI('Churn Analysis', { days })
             .then(data => {
@@ -48,9 +52,9 @@ export default function ChurnAnalysisChart() {
                 console.error(`API Error: ${error}`);
                 setLoading(false);
             });
-    }, [days]); 
+    }, [days, isMounted]); 
 
-    if (loading) return <ChurnAnalysisSkeleton />;
+    if (!isMounted || loading) return <ChurnAnalysisSkeleton />;
 
     const years = chartData.map(item => item.year);
     const colors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
