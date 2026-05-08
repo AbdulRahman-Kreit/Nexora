@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
@@ -30,7 +30,7 @@ const faqData = [
     }
 ];
 
-export default function FAQaccordion() {
+const FAQaccordion = memo(function FAQaccordion() {
     const [openIndices, setOpenIndices] = useState<number[]>([0]); 
 
     const toggleAccordion = (index: number) => {
@@ -42,7 +42,7 @@ export default function FAQaccordion() {
     };
 
     return (
-        <div className="bg-main-gradient p-8 w-full border-l-4 border-[#4a7fce] relative shadow-2xl max-h-[500px] flex flex-col rounded-r-xl transition-all duration-500">
+        <div className="bg-main-gradient p-8 w-full border-l-4 border-[#4a7fce] relative shadow-2xl max-h-125 flex flex-col rounded-r-xl transition-all duration-500">
             
             <style dangerouslySetInnerHTML={{ __html: `
                 .faq-scrollbar {
@@ -58,7 +58,7 @@ export default function FAQaccordion() {
                 }
             `}} />
 
-            <h2 className="text-[var(--alt-text-color)] opacity-50 text-xs font-bold mb-6 uppercase tracking-[0.2em] shrink-0">
+            <h2 className="text-(--alt-text-color) opacity-50 text-xs font-bold mb-6 uppercase tracking-[0.2em] shrink-0">
                 Frequently Asked Questions
             </h2>
 
@@ -66,7 +66,7 @@ export default function FAQaccordion() {
                 {faqData.map((item, index) => {
                     const isOpen = openIndices.includes(index);
                     return (
-                        <div key={index} className="border-b border-[var(--field-bg-color)] opacity-80 last:border-0">
+                        <div key={index} className="border-b border-(--field-bg-color) opacity-80 last:border-0">
                             <button
                                 onClick={() => toggleAccordion(index)}
                                 className="w-full flex justify-between items-center text-left py-5 transition-all duration-300 group"
@@ -82,7 +82,7 @@ export default function FAQaccordion() {
                                 </span>
                                 <FontAwesomeIcon 
                                     icon={isOpen ? faChevronUp : faChevronDown} 
-                                    className={`text-[10px] transition-all duration-300 ${isOpen ? 'text-[#4a7fce] scale-125' : 'text-[var(--alt-text-color)] opacity-40'}`}
+                                    className={`text-[10px] transition-all duration-300 ${isOpen ? 'text-[#4a7fce] scale-125' : 'text-(--alt-text-color) opacity-40'}`}
                                 />
                             </button>
                             
@@ -101,7 +101,9 @@ export default function FAQaccordion() {
                 })}
             </div>
 
-            <div className="absolute right-2 top-10 bottom-10 w-[2px] bg-[#4a7fce] opacity-20 blur-[1px]"></div>
+            <div className="absolute right-2 top-10 bottom-10 w-0.5 bg-[#4a7fce] opacity-20 blur-[1px]"></div>
         </div>
     );
-}
+})
+
+export default FAQaccordion;

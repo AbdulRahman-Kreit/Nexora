@@ -2,14 +2,19 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
 
+  useEffect(() => {
+    router.prefetch("/login");
+  }, [router]);
+
   const handleAnimationComplete = () => {
     setTimeout(() => {
       router.push("/login");
-    }, 2000); 
+    }, 1000); 
   }
 
   return (
@@ -33,6 +38,8 @@ export default function Home() {
               width={300}
               height={300}
               priority
+              fetchPriority="high" 
+              loading="eager"
               className="h-auto"
             />
           </motion.div>
@@ -53,6 +60,8 @@ export default function Home() {
               width={260}
               height={50}
               priority
+              fetchPriority="high" 
+              loading="eager"
               className="h-auto"
             />
           </motion.div>
@@ -71,6 +80,8 @@ export default function Home() {
             width={280}
             height={300}
             priority
+            fetchPriority="high"
+            loading="eager"
             className="h-auto"
           />
         </motion.div>

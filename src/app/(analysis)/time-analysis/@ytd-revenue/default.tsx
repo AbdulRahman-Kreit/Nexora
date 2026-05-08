@@ -1,15 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import YTDrevenueSkeleton from '@/components/time-analysis/skeletal-loading/YTDrevenueSkeleton';
 
-const YTDrevenueChart = dynamic(() => import('@/components/time-analysis/charts/YTDrevenueChart'), {
-    loading: () => <YTDrevenueSkeleton />,
-    ssr: false,
-});
+export const runtime = 'edge';
 
+const YTDrevenueChart = lazy(() => import('@/components/time-analysis/charts/YTDrevenueChart'));
 
 export default function Default() {
     return (
-        <YTDrevenueChart />
+        <Suspense fallback={<YTDrevenueSkeleton />}>
+            <YTDrevenueChart />
+        </Suspense>
     )
 }

@@ -1,14 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import TopProductsbyAOVandGMSkeleton from '@/components/products-analysis/skeletal-loading/TopProductsbyAOVandGMSkeleton';
 
-const TopProductsByAOVandGMChart = dynamic(() => import('@/components/products-analysis/charts/TopProductsByAOVandGMChart'), {
-    loading: () => <TopProductsbyAOVandGMSkeleton />,
-    ssr: false,
-});
+export const runtime = 'edge';
 
-export default function page() {
+const TopProductsByAOVandGMChart = lazy(() => import('@/components/products-analysis/charts/TopProductsByAOVandGMChart'));
+
+export default function TopProductsByAOVandGM() {
     return (
-        <TopProductsByAOVandGMChart />
+        <Suspense fallback={<TopProductsbyAOVandGMSkeleton />}>
+            <TopProductsByAOVandGMChart />
+        </Suspense>
     )
 }

@@ -10,6 +10,8 @@ import CostAndGMSkeleton from '../skeletal-loading/CostAndGMSkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 import { useFilter } from '@/contexts/FilterProvider';
 
+export const runtime = 'edge';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,

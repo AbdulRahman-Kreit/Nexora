@@ -3,6 +3,8 @@ import Statistics from '@/components/time-analysis/Statistics';
 import RealTimeDate from '@/components/general-components/RealTimeDate';
 import YearsFilter from '@/components/time-analysis/YearsFilter';
 
+export const runtime = 'edge';
+
 export default function TimeAnalysis() {
     return (
         <div className={`flex flex-col px-5`}>

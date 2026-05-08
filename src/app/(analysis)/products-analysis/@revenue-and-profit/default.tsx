@@ -1,14 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import RevenueAndProfitSkeleton from '@/components/products-analysis/skeletal-loading/RevenueAndProfitSkeleton';
 
-const RevenueAndProfitChart = dynamic(() => import('@/components/products-analysis/charts/RevenueAndProfitChart'), {
-    loading: () => <RevenueAndProfitSkeleton />,
-    ssr: false,
-});
+export const runtime = 'edge';
+
+const RevenueAndProfitChart = lazy(() => import('@/components/products-analysis/charts/RevenueAndProfitChart'));
 
 export default function Default() {
     return (
-        <RevenueAndProfitChart />
+        <Suspense fallback={<RevenueAndProfitSkeleton />}>
+            <RevenueAndProfitChart />
+        </Suspense>
     )
 }

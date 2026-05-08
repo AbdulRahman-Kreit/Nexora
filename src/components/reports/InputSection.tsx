@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from 'react';
-import { faAngleRight, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons/faAngleRight';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons/faSpinner';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 import { useReports } from '@/contexts/ReportsProvider';
-
 
 export default function InputSection() {
     const [days, setDays] = useState<number>(7);
@@ -36,12 +36,16 @@ export default function InputSection() {
                     value={days}
                     min={7}
                     onChange={(e) => setDays(Number(e.target.value))}
-                    className="bg-(--field-bg-color) text-(--main-text-color) border-2 border-(--main-text-color) rounded-md p-2 w-[80px] text-center outline-none" 
+                    className="bg-(--field-bg-color) text-(--main-text-color) border-2 border-(--main-text-color) rounded-md p-2 w-20 text-center outline-none" 
                 />
                 <span className="text-(--main-text-color)">days</span>
             </div>
-            <button onClick={handleGenerate} disabled={loading} className="bg-[#006fff] text-white rounded-full w-10 h-10 hover:bg-[#0056c7] transition-colors">
-                <FontAwesomeIcon icon={loading ? faSpinner : faAngleRight} className={loading ? 'animate-spin' : ''} />
+            <button onClick={handleGenerate} disabled={loading} className="bg-[#006fff] text-white rounded-full w-10 h-10 hover:bg-[#0056c7] transition-colors flex items-center justify-center">
+                {loading ? (
+                    <FontAwesomeIcon icon={faSpinner} spin />
+                ) : (
+                    <FontAwesomeIcon icon={faAngleRight} />
+                )}
             </button>
         </div>
     );

@@ -1,14 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import TopEmployeesSkeleton from '@/components/employee-analysis/skeletal-loading/TopEmployeeSkeleton';
 
-const TopEmployeesChart = dynamic(() => import('@/components/employee-analysis/charts/TopEmployeesChart'), { 
-    loading: () => <TopEmployeesSkeleton />,
-    ssr: false
-});
+export const runtime = 'edge';
+
+const TopEmployeesChart = lazy(() => import('@/components/employee-analysis/charts/TopEmployeesChart'));
 
 export default function Default() {
     return (
-        <TopEmployeesChart/>
-    )
+        <Suspense fallback={<TopEmployeesSkeleton />}>
+            <TopEmployeesChart />
+        </Suspense>
+    );
 }

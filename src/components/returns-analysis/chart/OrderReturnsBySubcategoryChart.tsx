@@ -7,6 +7,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import OrderReturnsBySubcategorySkeleton from '../skeletal-loading/OrderReturnsBySubcategorySkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from "@/contexts/FilterProvider";
+
+export const runtime = 'edge';
 
 ChartJS.register(
     CategoryScale,
@@ -21,6 +24,7 @@ ChartJS.register(
 const barColors = ['#0085ff', '#69b4ff', '#e0ffff', '#006fff'];
 
 export default function OrderReturnsBySubcategoryChart() {
+    const { days } = useFilter();
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -52,14 +56,15 @@ export default function OrderReturnsBySubcategoryChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('By Subcategory').then(data => {
+        setLoading(true);
+        fetchFromAPI('By Subcategory', { days }).then(data => {
             setchartData(data);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         });
-    }, []);
+    }, [days]);
 
     const handleChageBarColors = useMemo(() => {
         return chartData.map(() => barColors[Math.floor(Math.random() * barColors.length)]);
@@ -138,7 +143,7 @@ export default function OrderReturnsBySubcategoryChart() {
             <div className="min-h-[300px] w-full py-5">
                 <Bar 
                     ref={chartRef}
-                    key={isDarkMode ? 'dark-sub' : 'light-sub'} 
+                    key={`${isDarkMode ? 'dark-sub' : 'light-sub'}-${days}`} 
                     data={data} 
                     options={options as any} 
                 />

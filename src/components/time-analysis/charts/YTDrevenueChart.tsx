@@ -8,6 +8,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 import { useFilter } from '@/contexts/FilterProvider'; 
 
+export const runtime = 'edge';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -21,7 +23,6 @@ ChartJS.register(
 );
 
 export default function YTDrevenueChart() {
-    // تم استبدال days بـ year لاستخدام فلتر السنوات حصراً
     const { year } = useFilter(); 
     const chartRef = useRef<ChartJS<'line'> | null>(null);
     const [chartDataValues, setChartDataValues] = useState<{ month_name: string, revenue: number }[]>([]);
@@ -46,7 +47,6 @@ export default function YTDrevenueChart() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                // استخدام قيمة year في طلب الـ API
                 const result = await fetchFromAPI('Time Analysis/getRevenueYtd', { year });
                 
                 if (Array.isArray(result)) {

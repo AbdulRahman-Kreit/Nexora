@@ -7,6 +7,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import CustomerReturnsByMonthSkeleton from '../skeletal-loading/CustomerReturnsByMonthSkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from "@/contexts/FilterProvider";
+
+export const runtime = 'edge';
 
 ChartJS.register(
     CategoryScale,
@@ -21,6 +24,7 @@ ChartJS.register(
 );
 
 export default function CustomerReturnsByMonthChart() {
+    const { days } = useFilter();
     const chartRef = useRef<ChartJS<"line">>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -53,14 +57,15 @@ export default function CustomerReturnsByMonthChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('getCustomersByMonth').then(data => {
+        setLoading(true);
+        fetchFromAPI('getCustomersByMonth', { days }).then(data => {
             setchartData(data|| []);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         });
-    }, []);
+    }, [days]);
 
     if (loading) return <CustomerReturnsByMonthSkeleton />;
 
@@ -159,7 +164,7 @@ export default function CustomerReturnsByMonthChart() {
             <div className="min-h-[300px] w-full py-5">
                 <Line 
                     ref={chartRef} 
-                    key={isDarkMode ? 'dark' : 'light'} 
+                    key={`${isDarkMode ? 'dark' : 'light'}-${days}`} 
                     data={data} 
                     options={options as any} 
                 />

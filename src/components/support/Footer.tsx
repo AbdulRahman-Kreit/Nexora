@@ -1,4 +1,3 @@
-"use client";
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone, faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
@@ -6,7 +5,7 @@ import { faPhone, faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg
 export default function Footer() {
     return (
         <footer 
-            className="w-full bg-main-gradient py-8 px-4 border-t border-[var(--field-bg-color)] font-medium font-grotesk transition-all duration-500"
+            className="w-full bg-main-gradient py-8 px-4 border-t border-(--field-bg-color) font-medium font-grotesk transition-all duration-500"
             style={{ color: 'var(--main-text-color)' }}
         >
             <div className="max-w-7xl mx-auto flex flex-col items-center gap-8">
@@ -24,7 +23,7 @@ export default function Footer() {
                     {/* Phone */}
                     <div className="flex items-center gap-3 group">
                         <div 
-                            className="p-2 bg-[var(--field-bg-color)] opacity-80 rounded-full group-hover:bg-[#006fff] transition-colors w-10 h-10 flex items-center justify-center"
+                            className="p-2 bg-(--field-bg-color) opacity-80 rounded-full group-hover:bg-[#006fff] transition-colors w-10 h-10 flex items-center justify-center"
                         >
                             <FontAwesomeIcon 
                                 icon={faPhone} 
@@ -42,7 +41,7 @@ export default function Footer() {
                     {/* Email */}
                     <div className="flex items-center gap-3 group">
                         <div 
-                            className="p-2 bg-[var(--field-bg-color)] opacity-80 rounded-full group-hover:bg-[#006fff] transition-colors w-10 h-10 flex items-center justify-center"
+                            className="p-2 bg-(--field-bg-color) opacity-80 rounded-full group-hover:bg-[#006fff] transition-colors w-10 h-10 flex items-center justify-center"
                         >
                             <FontAwesomeIcon 
                                 icon={faEnvelope} 
@@ -60,7 +59,7 @@ export default function Footer() {
                     {/* Address */}
                     <div className="flex items-center gap-3 group">
                         <div 
-                            className="p-2 bg-[var(--field-bg-color)] opacity-80 rounded-full group-hover:bg-[#006fff] transition-colors w-10 h-10 flex items-center justify-center"
+                            className="p-2 bg-(--field-bg-color) opacity-80 rounded-full group-hover:bg-[#006fff] transition-colors w-10 h-10 flex items-center justify-center"
                         >
                             <FontAwesomeIcon 
                                 icon={faMapMarkerAlt} 

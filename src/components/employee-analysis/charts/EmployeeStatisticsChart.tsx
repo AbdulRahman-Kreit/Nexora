@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import EmployeeStatisticsSkeleton from '../skeletal-loading/EmployeeStatisticsSkeleton';
 import { useFilter } from '@/contexts/FilterProvider';
 
+export const runtime = 'edge';
+
 export default function EmployeeStatisticsChart() {
     const { days } = useFilter(); 
     const [tableData, setTableData] = useState<any[]>([]);

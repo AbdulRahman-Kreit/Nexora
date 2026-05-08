@@ -1,14 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import CustomerReturnsByRegionSkeleton from '@/components/returns-analysis/skeletal-loading/CustomerReturnsByRegionSkeleton';
 
-const CustomerReturnsByRegionChart = dynamic(() => import('@/components/returns-analysis/chart/CustomerReturnsByRegionChart'), {
-    loading: () => <CustomerReturnsByRegionSkeleton />,
-    ssr: false,
-})
+export const runtime = 'edge';
+
+const CustomerReturnsByRegionChart = lazy(() => import('@/components/returns-analysis/chart/CustomerReturnsByRegionChart'));
 
 export default function CustomerReturnsByRegion() {
     return (
-        <CustomerReturnsByRegionChart />
+        <Suspense fallback={<CustomerReturnsByRegionSkeleton />}>
+            <CustomerReturnsByRegionChart />
+        </Suspense>
     )
 }

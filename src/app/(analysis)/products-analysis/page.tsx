@@ -1,6 +1,8 @@
 import React from 'react'
 import RealTimeDate from '@/components/general-components/RealTimeDate';
 
+export const runtime = 'edge';
+
 export default function ProductsAnalysis() {
     return (
         <div className={`flex flex-col px-5`}>

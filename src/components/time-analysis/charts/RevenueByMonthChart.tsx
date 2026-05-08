@@ -8,6 +8,8 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 import { useFilter } from '@/contexts/FilterProvider'; 
 
+export const runtime = 'edge';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,

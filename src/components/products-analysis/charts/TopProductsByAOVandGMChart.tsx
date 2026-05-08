@@ -10,6 +10,8 @@ import TopProductsbyAOVandGMSkeleton from '../skeletal-loading/TopProductsbyAOVa
 import { fetchFromAPI } from '@/data/fetchFromAPI';
 import { useFilter } from '@/contexts/FilterProvider';
 
+export const runtime = 'edge';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -33,7 +35,7 @@ export default function TopProductByAOVandGMChart() {
     const chartRef = useRef<ChartJS<'bar'> | null>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [isDarkMode, setIsDarkMode] = useState(true);
+    const [isDarkMode, setIsDarkMode] = useState(true); 
         
     useEffect(() => {
         const chart = chartRef.current;
@@ -72,8 +74,8 @@ export default function TopProductByAOVandGMChart() {
             console.error(`API Error: ${error}`);
             setLoading(false);
         })
-    }, [region, days]); 
-    
+    }, [region, days]);
+
     if (loading) return <TopProductsbyAOVandGMSkeleton />;
 
     const handleChageBarColors = chartData.map(() => {
@@ -94,7 +96,7 @@ export default function TopProductByAOVandGMChart() {
                     }
                     return 0;
                 }),
-                borderColor: labelColor,
+                borderColor: labelColor, 
                 borderWidth: 2,
                 pointRadius: 4, 
                 pointBackgroundColor: labelColor, 
@@ -136,71 +138,71 @@ export default function TopProductByAOVandGMChart() {
     };
 
     const options = {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 2000,
+            easing: 'easeOutQuart' as const,
+        },
+        animations: {
+            y: {
                 duration: 2000,
                 easing: 'easeOutQuart' as const,
-            },
-            animations: {
-                y: {
-                    duration: 2000,
-                    easing: 'easeOutQuart' as const,
-                    type: 'number' as const,
-                    from: (context: any) => {
-                        if (context.type === 'data') {
-                            return context.chart.scales.y.getPixelForValue(0);
-                        }
+                type: 'number' as const,
+                from: (context: any) => {
+                    if (context.type === 'data') {
+                        return context.chart.scales.y.getPixelForValue(0);
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    usePointStyle: true,
+                    font: {
+                        weight: 600 as const,
+                        size: 14
                     },
+                    color: '#006fff'
                 }
             },
-            plugins: {
-                legend: {
-                    labels: {
-                        usePointStyle: true,
-                        font: {
-                            weight: 600 as const,
-                            size: 14
-                        },
-                        color: '#006fff'
-                    }
-                },
-                datalabels: {
-                    display: true
+            datalabels: {
+                display: true
+            }
+        },
+        scales: {
+            y: {
+                display: false,
+                beginAtZero: true,
+            },
+            y1: {
+                display: false,
+                beginAtZero: true,
+                ticks: {
+                    callback: (value: any) => (value / 1000000) + 'M'
                 }
             },
-            scales: {
-                y: {
-                    display: false,
-                    beginAtZero: true,
-                },
-                y1: {
-                    display: false,
-                    beginAtZero: true,
-                    ticks: {
-                        callback: (value: any) => (value / 1000000) + 'M'
-                    }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: {
-                        color: '#006fff',
-                        font: {
-                            weight: 600 as const,
-                            size: 12
-                        }, 
-                        callback: function(this: any, value: any) {
-                            const label = this.getLabelForValue(value);
-                            return label.length > 8 ? label.substr(0, 8) + '..' : label; 
-                        },
-                        maxRotation: 0,
-                        minRotation: 0,
-                        padding: 10,
-                        autoSkip: false,
-                    }
+            x: {
+                grid: { display: false },
+                ticks: {
+                    color: '#006fff',
+                    font: {
+                        weight: 600 as const,
+                        size: 12
+                    }, 
+                    callback: function(this: any, value: any) {
+                        const label = this.getLabelForValue(value);
+                        return label.length > 8 ? label.substr(0, 8) + '..' : label; 
+                    },
+                    maxRotation: 0,
+                    minRotation: 0,
+                    padding: 10,
+                    autoSkip: false,
                 }
-            },
-        };
+            }
+        },
+    };
     
     return (
         <div className="bg-main-gradient ml-1 p-6 h-96 border-l-3 border-[#4a7fce] transition-all duration-500">

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/purity */
 "use client";
 import React, { useState, useEffect } from 'react';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons/faChevronDown';
@@ -5,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { fetchFromAPI } from '@/data/fetchFromAPI'; 
 import RevenueOverTimeSkeleton from '../skeletal-loading/RevenueOverTimeSkeleton';
+
+export const runtime = 'edge';
 
 export default function RevenueOverTimeTable() {
     const [tableData, setTableData] = useState([]);
@@ -20,7 +23,7 @@ export default function RevenueOverTimeTable() {
                 
                 setTableData(result);
 
-                const uniqueYears = [...new Set(result.map(item => item.year.toString()))];
+                const uniqueYears = [...new Set(result.map((item: any) => item.year.toString()))];
                 setOpenYears(uniqueYears);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -32,7 +35,7 @@ export default function RevenueOverTimeTable() {
         fetchData();
     }, []);
 
-    const toggleYear = (year: any) => {
+    const toggleYear = (year: string) => {
         setOpenYears(prev => 
             prev.includes(year) ? prev.filter(y => y !== year) : [...prev, year]
         );
@@ -72,7 +75,7 @@ export default function RevenueOverTimeTable() {
 
                     <tbody className="text-[13px]">
                         {
-                            tableData.map((row, index) => {
+                            tableData.map((row: any, index: number) => {
                                 const yearStr = row.year.toString();
                                 const isOpen = openYears.includes(yearStr);
                                 

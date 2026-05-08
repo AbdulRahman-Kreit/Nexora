@@ -1,14 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import RevenueOverTimeSkeleton from '@/components/time-analysis/skeletal-loading/RevenueOverTimeSkeleton';
 
-const RevenueOverTimeTable = dynamic(() => import('@/components/time-analysis/charts/RevenueOverTimeTable'), {
-    loading: () => <RevenueOverTimeSkeleton />,
-    ssr: false,
-});
+export const runtime = 'edge';
+
+const RevenueOverTimeTable = lazy(() => import('@/components/time-analysis/charts/RevenueOverTimeTable'));
 
 export default function RevenueOverTime() {
     return (
-        <RevenueOverTimeTable />
+        <Suspense fallback={<RevenueOverTimeSkeleton />}>
+            <RevenueOverTimeTable />
+        </Suspense>
     )
 }

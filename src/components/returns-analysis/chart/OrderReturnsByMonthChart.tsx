@@ -7,6 +7,9 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import OrderReturnsByMonthSkeleton from '../skeletal-loading/OrderReturnsByMonthSkeleton';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
+import { useFilter } from "@/contexts/FilterProvider";
+
+export const runtime = 'edge';
 
 ChartJS.register(
     CategoryScale,
@@ -21,6 +24,7 @@ ChartJS.register(
 );
 
 export default function OrderReturnsByMonthChart() {
+    const { days } = useFilter();
     const chartRef = useRef<ChartJS<"line">>(null);
     const [chartData, setchartData] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -52,14 +56,15 @@ export default function OrderReturnsByMonthChart() {
     }, []);
 
     useEffect(() => {
-        fetchFromAPI('get-order-returns-by-month').then(data => {
+        setLoading(true);
+        fetchFromAPI('get-order-returns-by-month', { days }).then(data => {
             setchartData(data || []);
             setLoading(false);
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
         });
-    }, []);
+    }, [days]);
 
     if (loading) return <OrderReturnsByMonthSkeleton />;
 
@@ -158,7 +163,7 @@ export default function OrderReturnsByMonthChart() {
             <div className="min-h-[300px] w-full py-5">
                 <Line 
                     ref={chartRef}
-                    key={isDarkMode ? 'dark-orders' : 'light-orders'} 
+                    key={`${isDarkMode ? 'dark-orders' : 'light-orders'}-${days}`} 
                     data={data} 
                     options={options as any} 
                 />

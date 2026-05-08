@@ -1,14 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import CostAndGMSkeleton from '@/components/products-analysis/skeletal-loading/CostAndGMSkeleton';
 
-const CostAndGMChart = dynamic(() => import('@/components/products-analysis/charts/CostAndGMChart'), {
-    loading: () => <CostAndGMSkeleton />,
-    ssr: false,
-});
+export const runtime = 'edge';
 
-export default function page() {
+const CostAndGMChart = lazy(() => import('@/components/products-analysis/charts/CostAndGMChart'));
+
+export default function CostAndGm() {
     return (
-        <CostAndGMChart />
+        <Suspense fallback={<CostAndGMSkeleton />}>
+            <CostAndGMChart />
+        </Suspense>
     )
 }

@@ -1,15 +1,15 @@
 "use client";
-import dynamic from "next/dynamic";
+import React, { Suspense, lazy } from 'react';
 import TopProductsbyTotalOrdersSkeleton from "@/components/products-analysis/skeletal-loading/TopProductsbyTotalOrdersSkeleton";
 
-const TopProductsbyTotalOrdersChart = dynamic(() => import('@/components/products-analysis/charts/TopProductsbyTotalOrdersChart'), {
-    loading: () => <TopProductsbyTotalOrdersSkeleton />,
-    ssr: false,
-});
+export const runtime = 'edge';
 
+const TopProductsbyTotalOrdersChart = lazy(() => import('@/components/products-analysis/charts/TopProductsbyTotalOrdersChart'));
 
-export default function page() {
+export default function TopProductsbyTotalOrders() {
     return (
-        <TopProductsbyTotalOrdersChart />
+        <Suspense fallback={<TopProductsbyTotalOrdersSkeleton />}>
+            <TopProductsbyTotalOrdersChart />
+        </Suspense>
     )
 }

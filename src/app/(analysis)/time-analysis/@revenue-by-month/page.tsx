@@ -1,14 +1,15 @@
 "use client";
-import dynamic from 'next/dynamic';
+import React, { Suspense, lazy } from 'react';
 import RevenueByMonthSkeleton from '@/components/time-analysis/skeletal-loading/RevenueByMonthSkeleton';
 
-const RevenueByMonthChart = dynamic(() => import('@/components/time-analysis/charts/RevenueByMonthChart'), {
-    loading: () => <RevenueByMonthSkeleton />,
-    ssr: false,
-});
+export const runtime = 'edge';
+
+const RevenueByMonthChart = lazy(() => import('@/components/time-analysis/charts/RevenueByMonthChart'));
 
 export default function RevenueByMonth() {
     return (
-        <RevenueByMonthChart />
+        <Suspense fallback={<RevenueByMonthSkeleton />}>
+            <RevenueByMonthChart />
+        </Suspense>
     )
 }

@@ -8,6 +8,8 @@ import TopEmployeesSkeleton from '../skeletal-loading/TopEmployeeSkeleton';
 import { fetchFromAPI } from "@/data/fetchFromAPI";
 import { useFilter } from '@/contexts/FilterProvider'; 
 
+export const runtime = 'edge';
+
 ChartJS.register(
     CategoryScale, 
     LinearScale, 
@@ -86,10 +88,10 @@ export default function EmployeeReturnsChart() {
                         type: 'number' as const,
                         from: (context: any) => {
                             if (context.type === 'data' && context.datasetIndex === 0) {
-                                    return context.chart.scales.x.getPixelForValue(0);
-                                }
-                                return undefined;
+                                return context.chart.scales.x.getPixelForValue(0);
                             }
+                            return undefined;
+                        }
                     }
                 },
             },
@@ -99,28 +101,26 @@ export default function EmployeeReturnsChart() {
                 backgroundColor: barFillerColor,
                 borderRadius: 5,
                 barThickness: 20,
-                order: 2, 
-                datalabels: { display: false } 
+                order: 2,
+                datalabels: { display: false }
             }
         ]
     };
-    
+
     const options = {
-    indexAxis: 'y' as const,
-    responsive: true,
-    maintainAspectRatio: false,
-    grouped: false, 
-    animation: {
-        duration: 2000,
-        easing: 'easeOutQuart' as const,
-        },
+        indexAxis: 'y' as const,
+        responsive: true,
+        maintainAspectRatio: false,
+        grouped: false,
         plugins: {
             legend: { display: false },
+            tooltip: { enabled: false },
             datalabels: {
+                display: true,
                 anchor: 'end' as const,
                 align: 'right' as const,
                 color: '#006fff',
-                font: { weight: 600 },
+                font: { weight: 600 as const },
                 formatter: (value: number) => {
                     if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
                     if (value >= 1000) return `${(value / 1000).toFixed(1)}K`;
@@ -157,11 +157,11 @@ export default function EmployeeReturnsChart() {
             <div className="h-full w-full pb-5">
                 <Bar 
                     ref={chartRef}
-                    key={`employee-returns-${days}-${isDarkMode}`} 
+                    key={`employee-returns-${days}-${isDarkMode}`}
                     data={data} 
                     options={options as any} 
                 />
             </div>
         </div>
-    )
+    );
 }
