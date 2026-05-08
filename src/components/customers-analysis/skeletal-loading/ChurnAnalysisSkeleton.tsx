@@ -17,7 +17,7 @@ export default function ChurnAnalysisSkeleton() {
                 {[1, 2, 3, 4].map((i) => (
                     <div key={i} className="flex flex-col flex-1 items-center gap-2">
                         
-                        <div className="w-full max-w-[40px] flex flex-col-reverse gap-1 h-48 bg-(--field-bg-color) opacity-20 rounded-t-sm overflow-hidden">
+                        <div className="w-full max-w-10 flex flex-col-reverse gap-1 h-48 bg-(--field-bg-color) opacity-20 rounded-t-sm overflow-hidden">
 
                             <div className="h-[30%] w-full bg-(--field-bg-color) opacity-60"></div>
                             <div className="h-[40%] w-full bg-(--field-bg-color) opacity-40"></div>

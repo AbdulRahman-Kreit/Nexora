@@ -36,7 +36,7 @@ export default function OrderReturnsBySubcategorySkeleton() {
                             <div className={`h-3 w-6 ${skeletonElementColor} rounded-xs`}></div>
                             
                             <div 
-                                className={`w-full max-w-[20px] ${skeletonElementColor} rounded-t-[5px] opacity-70`} 
+                                className={`w-full max-w-5 ${skeletonElementColor} rounded-t-[5px] opacity-70`} 
                                 style={{ height: heights[i] }}
                             ></div>
                             

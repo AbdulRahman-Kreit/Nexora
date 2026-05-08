@@ -131,7 +131,7 @@ export default function CustomerReturnsByRegionChart() {
             <h2 className="text-gray-500 font-semibold text-lg">
                 Customer Returns by Region
             </h2>
-            <div className="h-[320px] w-full pt-8 pb-5">
+            <div className="h-80 w-full pt-8 pb-5">
                 <Bar 
                     ref={chartRef}
                     key={`${isDarkMode ? 'dark-region' : 'light-region'}-${days}`} 

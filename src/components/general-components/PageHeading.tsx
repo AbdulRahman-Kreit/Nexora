@@ -10,7 +10,7 @@ export default function PageHeading() {
     const router = useRouter();
 
     return (
-        <div className={`w-full sticky top-0 z-10 h-[57px] flex items-center 
+        <div className={`w-full sticky top-0 z-10 h-14.25 flex items-center 
             justify-between px-5 bg-(--main-bg-color) transition-colors duration-300`}>
             
             <button onClick={() => router.back()}

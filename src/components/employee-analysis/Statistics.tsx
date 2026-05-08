@@ -29,7 +29,7 @@ export default function Statistics() {
             {statisData.map((data) => {
                 return (
                     <div key={data.id} className={`flex flex-col justify-start 
-                    w-[200px] pl-3 mr-8 border-l-3 border-[#4a7fce]`}>
+                    w-50 pl-3 mr-8 border-l-3 border-[#4a7fce]`}>
                         
                         <h3 className='text-sm font-medium text-(--alt-text-color) uppercase tracking-wider mb-2'>
                             {data.title}

@@ -14,9 +14,9 @@ export default function RevenueByBusinessSkeleton() {
             
             <div className="flex flex-col items-center justify-center">
                 <div 
-                    className="relative w-[180px] h-[180px] rounded-full border-[25px] border-(--field-bg-color) opacity-30 flex items-center justify-center"
+                    className="relative w-45 h-45 rounded-full border-25 border-(--field-bg-color) opacity-30 flex items-center justify-center"
                 >
-                    <div className="w-full h-full rounded-full border-[1px] border-(--field-bg-color) opacity-10"></div>
+                    <div className="w-full h-full rounded-full border border-(--field-bg-color) opacity-10"></div>
                 </div>
 
                 <div className="flex justify-center gap-4 mt-10 w-full">

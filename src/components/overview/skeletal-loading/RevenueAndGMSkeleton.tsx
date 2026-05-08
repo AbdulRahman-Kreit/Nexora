@@ -7,7 +7,7 @@ export default function RevenueAndGMSkeleton() {
             
             <div className="h-5 w-60 bg-(--field-bg-color) opacity-50 rounded mb-10"></div>
             
-            <div className="flex items-end justify-between h-[240px] w-full gap-2 px-2">
+            <div className="flex items-end justify-between h-60 w-full gap-2 px-2">
                 {[
                     "h-24", "h-40", "h-48", "h-56", 
                     "h-20", "h-36", "h-44", "h-52", 

@@ -44,7 +44,7 @@ export default function RevenueOverTimeTable() {
     if (isLoading) return <RevenueOverTimeSkeleton />;
     
     return (
-        <div className="bg-[#006fff] p-6 h-[800px] flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
+        <div className="bg-[#006fff] p-6 h-200 flex flex-col shadow-2xl text-white rounded-xl relative overflow-hidden">
             <style dangerouslySetInnerHTML={{ __html: `
                 .custom-scrollbar {
                     scrollbar-width: thin !important;
@@ -63,7 +63,7 @@ export default function RevenueOverTimeTable() {
             `}} />
 
             <div className="scroll-container custom-scrollbar overflow-x-auto w-full">
-                <table className="w-full text-center border-collapse min-w-[800px]">
+                <table className="w-full text-center border-collapse min-w-200">
                     <thead className="sticky top-0 z-20 bg-[#006fff]">
                         <tr className="text-sm font-bold">
                             <th className="pb-4 px-4 w-[25%] border-b-2 border-white/30 text-left bg-[#006fff]">Year</th>

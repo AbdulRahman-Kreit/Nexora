@@ -19,7 +19,7 @@ export default function SupportLayout({ children }: { children: React.ReactNode 
       <div className="flex flex-col h-full bg-(--main-bg-color) overflow-hidden relative">
         <PageHeading />
         
-        <section className="flex-1 flex flex-col overflow-y-auto pb-[200px]">
+        <section className="flex-1 flex flex-col overflow-y-auto pb-50">
           {children}
           <div className="px-16 py-8 flex justify-center items-center w-full">
             <FAQaccordion /> 

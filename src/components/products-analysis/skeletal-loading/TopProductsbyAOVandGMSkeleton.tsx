@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 "use client";
 import React, { useState, useEffect } from 'react';
 
@@ -71,7 +72,7 @@ export default function TopProductsbyAOVandGMSkeleton() {
                         <div key={i} className="flex flex-col items-center flex-1 gap-2">
                             <div 
                                 style={barFillerColor}
-                                className="w-full max-w-[20px] rounded-t-sm" 
+                                className="w-full max-w-5 rounded-t-sm" 
                                 style={{ ...barFillerColor, height: `${height}%` }}
                             ></div>
                             <div style={shapeColor} className="h-2 w-8 rounded-sm"></div>

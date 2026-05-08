@@ -26,7 +26,10 @@ export default function RevenueByBusinessChart() {
     };
 
     useEffect(() => {
-        setIsMounted(true);
+        const frame = requestAnimationFrame(() => {
+            setIsMounted(true);
+        });
+
         const updateTheme = () => {
             const color = getCSSVariable('--main-text-color') || '#006fff';
             setCurrentThemeColor(color);
@@ -37,13 +40,19 @@ export default function RevenueByBusinessChart() {
         const observer = new MutationObserver(updateTheme);
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-        return () => observer.disconnect();
+        return () => {
+            cancelAnimationFrame(frame);
+            observer.disconnect();
+        };
     }, []);
 
     useEffect(() => {
         if (!isMounted) return;
 
-        setLoading(true); 
+        const frame = requestAnimationFrame(() => {
+            setLoading(true);
+        });
+
         fetchFromAPI('GM By Business Type', { days }).then(data => { 
             const result = Array.isArray(data) ? data : (data?.data || []);
             setchartData(result);
@@ -51,7 +60,9 @@ export default function RevenueByBusinessChart() {
         }).catch(error => {
             console.error(`API Error: ${error}`);
             setLoading(false);
-        })
+        });
+
+        return () => cancelAnimationFrame(frame);
     }, [days, isMounted]); 
 
     useEffect(() => {

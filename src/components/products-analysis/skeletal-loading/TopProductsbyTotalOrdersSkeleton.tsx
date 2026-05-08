@@ -44,7 +44,7 @@ export default function TopProductsbyTotalOrdersSkeleton() {
                         ></div>
                         
                         {/* Horizontal Bar Placeholder */}
-                        <div className="relative flex-1 h-[18px]"> 
+                        <div className="relative flex-1 h-4.5"> 
                             {/* Background Bar (Total Capacity) */}
                             <div 
                                 style={bgBarPlaceholderStyle}

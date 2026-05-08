@@ -7,7 +7,6 @@ export default function ThemeSwitcher() {
 
     return (
         <div className="flex flex-col items-center gap-2 font-grotesk">
-            {/* إضافة رابط مكتبة Font Awesome برمجياً لضمان ظهور الأيقونات */}
             <link 
                 rel="stylesheet" 
                 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
@@ -16,7 +15,7 @@ export default function ThemeSwitcher() {
             <button
                 onClick={toggleTheme}
                 className={`
-                    relative inline-flex h-7 w-16 flex-shrink-0 cursor-pointer 
+                    relative inline-flex h-7 w-16 shrink-0 cursor-pointer 
                     rounded-full border-2 border-transparent 
                     transition-colors duration-300 ease-in-out 
                     outline-none 

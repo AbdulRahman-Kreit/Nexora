@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-hooks/purity */
 "use client";
 import React, { useState, useEffect } from 'react';
@@ -37,10 +38,7 @@ export default function SectionSwitcher() {
 
     if (!isMounted) return null;
 
-    // تحديث الأنماط لاستخدام المتغيرات البرمجية بدلاً من الألوان الثابتة
     const baseStyle = `p-4 mx-5 mb-5 border-2 rounded-xl duration-200 transition-all`;
-    
-    // استخدام var(--field-bg-color) و var(--main-text-color)
     const inactiveStyle = `border-[var(--field-bg-color)] hover:border-[var(--main-text-color)] hover:bg-[var(--bar-bg-filler)] hover:text-[var(--main-text-color)]`;
     const activeStyle = `border-[var(--main-text-color)] bg-[var(--bar-bg-filler)] text-[var(--main-text-color)]`;
 
@@ -62,7 +60,7 @@ export default function SectionSwitcher() {
 
             <button 
                 onClick={() => setShowContent(!showContent)}
-                className="p-3 bg-[var(--main-text-color)] text-[var(--main-bg-color)] rounded-full shadow-lg hover:scale-110 transition-transform mb-4"
+                className="p-3 bg-(--main-text-color) text-(--main-bg-color) rounded-full shadow-lg hover:scale-110 transition-transform mb-4"
             >
                 <FontAwesomeIcon icon={showContent ? faRankingStar : faFilter} />
             </button>
@@ -70,7 +68,7 @@ export default function SectionSwitcher() {
             {showContent && (
                 <div 
                     style={{ backgroundImage: 'var(--background-image-main-gradient)' }}
-                    className={`p-8 rounded-2xl border border-[var(--field-bg-color)] 
+                    className={`p-8 rounded-2xl border border-(--field-bg-color) 
                     shadow-2xl animate-in fade-in zoom-in duration-300`}
                 >
                     <div className="flex gap-2 mb-6 justify-center">
@@ -84,7 +82,7 @@ export default function SectionSwitcher() {
                         </button>
                     </div>
 
-                    <div className="max-h-[500px] overflow-y-auto w-64 custom-scrollbar">
+                    <div className="max-h-125 overflow-y-auto w-64 custom-scrollbar">
                         {isFilter ? (
                             <Filter 
                                 onCategoryChange={handleCategoryChange} 

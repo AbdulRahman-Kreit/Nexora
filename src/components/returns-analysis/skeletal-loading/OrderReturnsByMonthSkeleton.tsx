@@ -27,7 +27,7 @@ export default function OrderReturnsByMonthSkeleton() {
         <div className="bg-main-gradient p-6 h-96 border-l-3 border-[#4a7fce] animate-pulse transition-all duration-500">
             <div className={`h-4 w-48 ${labelColor} rounded mb-8`}></div>
 
-            <div className="relative h-[250px] w-full flex items-end justify-between px-2">
+            <div className="relative h-62.5 w-full flex items-end justify-between px-2">
                 <div className="absolute left-0 h-full flex flex-col justify-between py-2">
                 {[1, 2, 3, 4].map((i) => (
                     <div key={i} className={`h-3 w-6 ${barColor} rounded`}></div>

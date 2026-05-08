@@ -140,7 +140,7 @@ export default function OrderReturnsBySubcategoryChart() {
             <h2 className="text-gray-500 font-semibold text-lg">
                 Order Returns by Subcategory
             </h2>
-            <div className="min-h-[300px] w-full py-5">
+            <div className="min-h-75 w-full py-5">
                 <Bar 
                     ref={chartRef}
                     key={`${isDarkMode ? 'dark-sub' : 'light-sub'}-${days}`} 

@@ -12,7 +12,7 @@ export default function RevenueByCountrySkeleton() {
         >
             <div className="h-5 w-48 bg-(--field-bg-color) opacity-50 rounded mb-8"></div>
             
-            <div className="flex flex-col justify-between h-[260px] w-full pr-10">
+            <div className="flex flex-col justify-between h-65 w-full pr-10">
                 {[
                     { labelWidth: 'w-20', barWidth: 'w-[65%]' }, 
                     { labelWidth: 'w-16', barWidth: 'w-[30%]' }, 
@@ -25,7 +25,7 @@ export default function RevenueByCountrySkeleton() {
 
                         <div className={`h-3 ${item.labelWidth} bg-(--field-bg-color) opacity-40 rounded`}></div>
                         
-                        <div className="relative flex-1 h-[25px]">
+                        <div className="relative flex-1 h-6.25">
                             
                             <div className="absolute inset-0 bg-(--bar-bg-filler) opacity-50 rounded-[5px]"></div>
                             

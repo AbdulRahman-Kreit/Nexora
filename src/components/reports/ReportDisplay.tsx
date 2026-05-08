@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faCopy } from '@fortawesome/free-solid-svg-icons/faCopy';
@@ -19,7 +19,12 @@ export default function ReportDisplay({
 }: ReportDisplayProps) {
     const { deleteReport } = useReports();
 
-    const displayDate = createdAt || `${new Date().toLocaleDateString()} - ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    const [displayDate] = useState(() => {
+        if (createdAt) return createdAt;
+        
+        const now = new Date();
+        return `${now.toLocaleDateString()} - ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    });
 
     const handleCopy = () => {
         navigator.clipboard.writeText(content);

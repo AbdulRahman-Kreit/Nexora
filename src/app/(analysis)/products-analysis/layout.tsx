@@ -40,10 +40,10 @@ export default function ProductsAnalysisLayout(props: {
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              <div className="p-4 min-h-[400px]">
+              <div className="p-4 min-h-100">
                 {costAndGM}
               </div>
-              <div className="py-4 min-h-[400px]">
+              <div className="py-4 min-h-100">
                 {revenueAndProfit}
               </div>
               
@@ -51,7 +51,7 @@ export default function ProductsAnalysisLayout(props: {
                 {topProductsByTotalOrders}
               </div>
 
-              <div className="p-4 col-span-2 min-h-[400px]"> 
+              <div className="p-4 col-span-2 min-h-100"> 
                 {topProductsByAOVandGM}
               </div>
             </div>

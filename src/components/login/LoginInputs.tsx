@@ -6,8 +6,8 @@ const EmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function LoginInputs() {
     const router = useRouter();
-    const [formData, setFormData] = useState({ email: '', password: '' });
-    const [errors, setErrors] = useState<{ email?: string; password?: string; api?: string }>({});
+    const [formData, setFormData] = useState<{ email: string, password: string }>({ email: '', password: '' });
+    const [errors, setErrors] = useState<{ email?: string; password?: string; api?: string; error?: unknown }>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,7 +59,7 @@ export default function LoginInputs() {
                 setErrors({ api: data.message || "Invalid Email or Password" });
             }
         } catch (error) {
-            setErrors({ api: "Server connection failed" });
+            setErrors({ api: "Server connection failed", error: error });
         } finally {
             setIsSubmitting(false);
         }
@@ -84,7 +84,7 @@ export default function LoginInputs() {
                 </div>
 
                 <button type='submit' disabled={isSubmitting}
-                    className="bg-[#006fff] hover:bg-[#0085ff] text-white px-8 py-3.5 rounded-md font-semibold text-sm transition w-[200px]">
+                    className="bg-[#006fff] hover:bg-[#0085ff] text-white px-8 py-3.5 rounded-md font-semibold text-sm transition w-50">
                     {isSubmitting ? 'Logging in...' : 'Log In'}
                 </button>
             </form>

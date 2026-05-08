@@ -40,7 +40,7 @@ export default function ProfitAndCustomersSkeleton() {
                     return (
                         <div key={i} className="flex flex-col items-center flex-1 gap-2">
                             <div 
-                                className="w-full max-w-[20px] bg-(--field-bg-color) opacity-40 rounded-t-sm" 
+                                className="w-full max-w-5 bg-(--field-bg-color) opacity-40 rounded-t-sm" 
                                 style={{ height: `${height}%` }}
                             ></div>
                             <div className="h-2 w-8 bg-(--field-bg-color) opacity-20 rounded-sm"></div>

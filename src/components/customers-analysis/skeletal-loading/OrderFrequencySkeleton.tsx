@@ -22,7 +22,7 @@ export default function OrderFrequencySkeleton() {
                 
                 <div className="absolute -left-2 top-1/2 -rotate-90 origin-left w-20 h-3 bg-(--field-bg-color) opacity-20 rounded"></div>
 
-                <div className="flex items-end justify-between w-full h-[240px] px-2 gap-1 border-b border-(--field-bg-color) border-opacity-20">
+                <div className="flex items-end justify-between w-full h-60 px-2 gap-1 border-b border-(--field-bg-color) border-opacity-20">
                     {skeletonBars.map((barHeight, index) => (
                         <div key={index} className="flex flex-col items-center flex-1 group">
                             
@@ -31,7 +31,7 @@ export default function OrderFrequencySkeleton() {
                             <div 
                                 className={`
                                     bg-(--field-bg-color) opacity-40 rounded-t-sm 
-                                    w-[20px] sm:w-[28px]
+                                    w-5 sm:w-7
                                     ${barHeight} 
                                 `}
                             ></div>

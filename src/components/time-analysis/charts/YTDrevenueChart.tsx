@@ -152,7 +152,7 @@ export default function YTDrevenueChart() {
             <h2 className="text-gray-500 font-semibold mb-4 text-lg">
                 YTD Revenue
             </h2>
-            <div className="min-h-[300px] w-full">
+            <div className="min-h-75 w-full">
                 <Line 
                     ref={chartRef} 
                     key={`${isDarkMode}-${year}-${chartDataValues.length}`} 

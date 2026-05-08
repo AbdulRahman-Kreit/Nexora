@@ -25,7 +25,11 @@ export default function ChurnAnalysisChart() {
     };
 
     useEffect(() => {
-        setIsMounted(true);
+
+        const frame = requestAnimationFrame(() => {
+            setIsMounted(true);
+        });
+
         const updateTheme = () => {
             const color = getCSSVariable('--main-text-color') || '#006fff';
             setCurrentThemeColor(color);
@@ -36,13 +40,19 @@ export default function ChurnAnalysisChart() {
         const observer = new MutationObserver(updateTheme);
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-        return () => observer.disconnect();
+        return () => {
+            cancelAnimationFrame(frame);
+            observer.disconnect();
+        };
     }, []);
 
     useEffect(() => {
         if (!isMounted) return;
 
-        setLoading(true);
+        const frame = requestAnimationFrame(() => {
+            setLoading(true);
+        });
+
         fetchFromAPI('Churn Analysis', { days })
             .then(data => {
                 setChartData(data);
@@ -52,6 +62,8 @@ export default function ChurnAnalysisChart() {
                 console.error(`API Error: ${error}`);
                 setLoading(false);
             });
+
+        return () => cancelAnimationFrame(frame);
     }, [days, isMounted]); 
 
     if (!isMounted || loading) return <ChurnAnalysisSkeleton />;
@@ -139,7 +151,7 @@ export default function ChurnAnalysisChart() {
             <h2 className="text-(--alt-text-color) font-semibold mb-4 text-lg">
                 Churn Analysis
             </h2>
-            <div className="h-[280px] w-full py-5">
+            <div className="h-70 w-full py-5">
                 <Bar key={`${currentThemeColor}-${days}`} data={data} options={options as any} />
             </div>
         </div>

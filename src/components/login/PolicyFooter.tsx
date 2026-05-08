@@ -11,7 +11,7 @@ export default function PolicyFooter() {
 
     return (
         <div className="mt-6">
-            <p className="text-sm text-center font-grotesk opacity-50 text-[var(--alt-text-color)]">
+            <p className="text-sm text-center font-grotesk opacity-50 text-(--alt-text-color)">
                 By continuing, you agree to our{" "}
                 <button onClick={() => setActiveModal('terms')} className={LinkStyle}>Terms of Service</button>,{" "}
                 <button onClick={() => setActiveModal('privacy')} className={LinkStyle}>Privacy Policy</button> and{" "}
@@ -26,10 +26,10 @@ export default function PolicyFooter() {
             >
                 <div className="space-y-4">
                     <p>Welcome to our platform. By accessing our services, you agree to be bound by these terms.</p>
-                    <h4 className="font-bold text-[var(--main-text-color)]">1. Usage License</h4>
+                    <h4 className="font-bold text-(--main-text-color)">1. Usage License</h4>
                     <p>Permission is granted to temporarily use our dashboard for personal, non-commercial viewing only.</p>
-                    <h4 className="font-bold text-[var(--main-text-color)]">2. Disclaimer</h4>
-                    <p>The materials on this website are provided on an 'as is' basis.</p>
+                    <h4 className="font-bold text-(--main-text-color)">2. Disclaimer</h4>
+                    <p>The materials on this website are provided on an &apos;as is&apos; basis.</p>
                 </div>
             </Modal>
 

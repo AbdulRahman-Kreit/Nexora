@@ -37,7 +37,7 @@ export default function CustomerReturnsByRegionSkeleton() {
                             <div className={`h-3 w-6 ${skeletonElementColor} rounded-xs`}></div>
                             
                             <div 
-                                className={`w-full max-w-[45px] ${skeletonElementColor} rounded-t-[5px] opacity-70`} 
+                                className={`w-full max-w-11.25 ${skeletonElementColor} rounded-t-[5px] opacity-70`} 
                                 style={{ height: heights[i] }}
                             ></div>
                             

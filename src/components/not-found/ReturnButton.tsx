@@ -11,7 +11,7 @@ export default function ReturnButton() {
         <button onClick={() => router.back()}
         className={`px-6 py-5 bg-[#006fff] text-white rounded-md group`}>
             <FontAwesomeIcon icon={faArrowRotateRight}
-            className="transition-transform duration-700 ease-in-out group-hover:rotate-[360deg]" />
+            className="transition-transform duration-700 ease-in-out group-hover:rotate-360" />
             <span className='ml-3 font-semibold'>Return to the page</span>
         </button>
     )

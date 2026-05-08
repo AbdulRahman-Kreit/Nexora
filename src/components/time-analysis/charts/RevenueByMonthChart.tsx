@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/purity */
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
@@ -152,7 +153,7 @@ export default function RevenueByMonthChart() {
             <h2 className="text-gray-500 font-semibold mb-4 text-lg">
                 Revenue By Month
             </h2>
-            <div className="min-h-[300px] w-full">
+            <div className="min-h-75 w-full">
                 <Line 
                     ref={chartRef} 
                     key={`${isDarkMode}-${year}-${chartDataValues.length}`} 

@@ -47,7 +47,7 @@ export default function TimelineFilter() {
                 </button>
             </div>
             
-            <div className="flex flex-row min-w-[210px] my-2 font-semibold h-10 shadow-sm">
+            <div className="flex flex-row min-w-52.5 my-2 font-semibold h-10 shadow-sm">
                 
                 <button 
                     onClick={() => handleManualChange(Math.max(30, days - 7))} 

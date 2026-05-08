@@ -25,7 +25,7 @@ export default function Home() {
         transition={{ duration: 0.5 }}
         className="flex flex-col items-center w-fit"
       >
-        <div className="flex flex-row relative pr-[230px]">
+        <div className="flex flex-row relative pr-57.5">
           <motion.div
             initial={{ x: -30, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -52,7 +52,7 @@ export default function Home() {
               duration: 0.8, 
               ease: "circOut" 
             }}
-            className="absolute bottom-1 left-[270px] z-0"
+            className="absolute bottom-1 left-67.5 z-0"
           >
             <Image 
               src='/assits/Asset_7.svg'
@@ -72,7 +72,7 @@ export default function Home() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.5 }}
           onAnimationComplete={handleAnimationComplete}
-          className="mt-4 ml-[250px]"
+          className="mt-4 ml-62.5"
         >
           <Image 
             src='/assits/Asset_6.svg'

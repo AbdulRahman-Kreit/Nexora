@@ -34,7 +34,10 @@ export default function RevenueAndGMChart() {
     };
 
     useEffect(() => {
-        setIsMounted(true);
+        const frame = requestAnimationFrame(() => {
+            setIsMounted(true);
+        });
+        
         const updateTheme = () => {
             const color = getCSSVariable('--main-text-color') || '#006fff';
             setCurrentThemeColor(color);
@@ -45,13 +48,19 @@ export default function RevenueAndGMChart() {
         const observer = new MutationObserver(updateTheme);
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-        return () => observer.disconnect();
+        return () => {
+            cancelAnimationFrame(frame);
+            observer.disconnect();
+        };
     }, []);
 
     useEffect(() => {
         if (!isMounted) return; 
 
-        setLoading(true);
+        const frame = requestAnimationFrame(() => {
+            setLoading(true);
+        });
+
         Promise.all([
             fetchFromAPI('Revenue Over Time', { days }),
             fetchFromAPI('gmOverTime', { days })
@@ -86,6 +95,7 @@ export default function RevenueAndGMChart() {
         });
 
         return () => {
+            cancelAnimationFrame(frame);
             if (chartRef.current) {
                 chartRef.current.destroy();
                 chartRef.current = null;

@@ -13,7 +13,7 @@ export default function RevenueByCategorySkeleton() {
         >
             <div className="h-5 w-48 bg-(--field-bg-color) opacity-50 rounded mb-10"></div>
 
-            <div className="flex items-end justify-between h-[280px] w-full gap-4 px-4">
+            <div className="flex items-end justify-between h-70 w-full gap-4 px-4">
                 {[
                     { h: 'h-[80%]', w: 'w-10' }, 
                     { h: 'h-[35%]', w: 'w-10' }, 

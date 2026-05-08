@@ -20,7 +20,7 @@ export default function CustomersWithoutOrdersSkeleton() {
                         <div className="h-3 w-6 bg-(--field-bg-color) opacity-30 rounded-xs"></div>
                         
                         <div 
-                            className="w-full max-w-[25px] bg-(--field-bg-color) opacity-40 rounded-t-[5px]" 
+                            className="w-full max-w-6.25 bg-(--field-bg-color) opacity-40 rounded-t-[5px]" 
                             style={{ height: heights[i] }}
                         ></div>
                         

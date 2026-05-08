@@ -2,10 +2,22 @@
 import React, { useState, useEffect } from "react";
 import AnimatedNumbers from '@/components/general-components/AnimatedNumbers';
 import { fetchFromAPI } from '@/data/fetchFromAPI';
-import { useFilter } from "@/contexts/FilterProvider"; 
+import { useFilter } from "@/contexts/FilterProvider";
+
+interface StatsData {
+    revenue: number;
+    cost: number;
+    profit: number;
+    quantity: number;
+}
 
 export default function Statistics() {
-    const [stats, setStats] = useState<any>({});
+    const [stats, setStats] = useState<StatsData>({
+        revenue: 0,
+        cost: 0,
+        profit: 0,
+        quantity: 0
+    });
     const { days } = useFilter();
 
     useEffect(() => {
@@ -27,7 +39,7 @@ export default function Statistics() {
         <div className={`flex flex-row justify-between font-grotesk max-w-2/3 h-fit gap-6 transition-colors duration-300`}>
             {statisData.map((data) => {
                 return (
-                    <div key={data.id} className={`flex flex-col justify-start min-w-[110px] pl-4 border-l-3 border-[#4a7fce]`}>
+                    <div key={data.id} className={`flex flex-col justify-start min-w-27.5 pl-4 border-l-3 border-[#4a7fce]`}>
 
                         <h3 className='text-sm font-medium text-(--alt-text-color) uppercase tracking-wider'>
                             {data.title}

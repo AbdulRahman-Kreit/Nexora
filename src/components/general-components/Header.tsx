@@ -11,7 +11,10 @@ export default function Header() {
         if (storedUser) {
             try {
                 const user = JSON.parse(storedUser);
-                setUserName(user.name); 
+                const frame = requestAnimationFrame(() => {
+                    setUserName(user.name); 
+                });
+                return () => cancelAnimationFrame(frame);
             } catch (error) {
                 console.error("Error parsing user data", error);
             }
@@ -20,7 +23,7 @@ export default function Header() {
 
     return (
         <div className={`flex flex-row items-stretch border-b border-(--field-bg-color) 
-            w-full h-[57px] transition-colors duration-300`}> 
+            w-full h-14.25 transition-colors duration-300`}> 
             
             <div className="flex items-center px-3">
                 <div className={`p-1.5 bg-(--main-text-color) rounded-lg w-8 h-8 flex 
@@ -32,7 +35,7 @@ export default function Header() {
             <div className={`flex flex-row items-center flex-1 px-2 
                 hover:bg-(--field-bg-color) transition-colors group cursor-default`}>
                 <span className={`font-semibold text-sm text-(--main-text-color) 
-                    truncate max-w-[120px] font-grotesk`}>
+                    truncate max-w-30 font-grotesk`}>
                     {userName || 'Guest'} 
                 </span>
             </div>

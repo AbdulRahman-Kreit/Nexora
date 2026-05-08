@@ -30,12 +30,12 @@ export default function TimeAnalysisLayout(props: {
         <section className="grid grid-cols-2 gap-4 w-full py-4 pl-4">
           
           <div className="flex flex-col gap-4">
-            <div className="min-h-[400px]">{topEmployees}</div>
-            <div className="min-h-[400px]">{employeeReturns}</div>
+            <div className="min-h-100">{topEmployees}</div>
+            <div className="min-h-100">{employeeReturns}</div>
           </div>
           
           <div className="h-full mx-4 pr-4">
-            <div className="h-full min-h-[816px]">{employeeStatistics}</div>
+            <div className="h-full min-h-204">{employeeStatistics}</div>
           </div>
 
         </section>
