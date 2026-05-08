@@ -436,7 +436,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "16|AyO4hyJUc8jHALh3XnLmoffMQlCXxrPJgVjjQjNP698dac65",
+                  "value": "96|bj96oxm53x57VgFVcoc9pf9Z60hPiIraUg3VB6th66abfeca",
                   "type": "string"
                 }
               ]
@@ -922,7 +922,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "72|Nd0JaJyvJ4BC8r5MpDu4fG8x4dGPRG2iPZht7wA8fa1e09f8",
+                  "value": "126|9Da4LAnS0VN4iaHAvKtlMqcSSGixyy6JKSbr56N7c9712d7a",
                   "type": "string"
                 }
               ]
@@ -947,8 +947,8 @@
               ],
               "query": [
                 {
-                  "key": "days",
-                  "value": "30",
+                  "key": "yaer",
+                  "value": "2023",
                   "disabled": true
                 }
               ]
@@ -999,7 +999,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "76|Qhpu6R1bKEI9GyZwY3zGk1PFb77dvRtcCivJ1dIs5e1b41cf",
+                  "value": "132|GEFpdO3k3RSgXipadHmRHrcRY4lesHslICo8wVGG6e304d9e",
                   "type": "string"
                 }
               ]
@@ -1024,8 +1024,8 @@
               ],
               "query": [
                 {
-                  "key": "days",
-                  "value": "5000",
+                  "key": "year",
+                  "value": "2025",
                   "disabled": true
                 }
               ]

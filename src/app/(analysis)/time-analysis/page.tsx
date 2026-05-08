@@ -1,6 +1,7 @@
 import React from 'react';
 import Statistics from '@/components/time-analysis/Statistics';
 import RealTimeDate from '@/components/general-components/RealTimeDate';
+import YearsFilter from '@/components/time-analysis/YearsFilter';
 
 export default function TimeAnalysis() {
     return (
@@ -9,7 +10,10 @@ export default function TimeAnalysis() {
                 Time Analysis
             </h2>
             <RealTimeDate />
-            <Statistics />
+            <div className="flex justify-between">
+                <Statistics />
+                <YearsFilter />
+            </div>
         </div>
     )
 }

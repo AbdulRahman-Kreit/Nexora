@@ -21,7 +21,7 @@ ChartJS.register(
 );
 
 export default function RevenueByMonthChart() {
-    const { days } = useFilter();
+    const { year } = useFilter();
     const chartRef = useRef<ChartJS<'line'> | null>(null);
     const [chartDataValues, setChartDataValues] = useState<{ month_name: string, revenue: number }[]>([]);
     const [isDarkMode, setIsDarkMode] = useState(true);
@@ -45,7 +45,7 @@ export default function RevenueByMonthChart() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const result = await fetchFromAPI('Time Analysis/Revenues By Month', { days });
+                const result = await fetchFromAPI('Time Analysis/Revenues By Month', { year });
                 
                 if (Array.isArray(result)) {
                     const formattedData = result.map((item: any) => ({
@@ -66,7 +66,7 @@ export default function RevenueByMonthChart() {
                 chartRef.current.destroy();
             }
         };
-    }, [days]); 
+    }, [year]);
 
     const data = {
         labels: chartDataValues.map((item) => item.month_name),
@@ -153,7 +153,7 @@ export default function RevenueByMonthChart() {
             <div className="min-h-[300px] w-full">
                 <Line 
                     ref={chartRef} 
-                    key={`${isDarkMode}-${days}-${chartDataValues.length}`} 
+                    key={`${isDarkMode}-${year}-${chartDataValues.length}`} 
                     data={data} 
                     options={options as any} 
                 />

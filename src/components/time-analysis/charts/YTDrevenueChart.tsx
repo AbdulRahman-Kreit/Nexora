@@ -21,7 +21,8 @@ ChartJS.register(
 );
 
 export default function YTDrevenueChart() {
-    const { days } = useFilter(); 
+    // تم استبدال days بـ year لاستخدام فلتر السنوات حصراً
+    const { year } = useFilter(); 
     const chartRef = useRef<ChartJS<'line'> | null>(null);
     const [chartDataValues, setChartDataValues] = useState<{ month_name: string, revenue: number }[]>([]);
     const [isDarkMode, setIsDarkMode] = useState(true);
@@ -45,7 +46,8 @@ export default function YTDrevenueChart() {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const result = await fetchFromAPI('Time Analysis/getRevenueYtd', { days });
+                // استخدام قيمة year في طلب الـ API
+                const result = await fetchFromAPI('Time Analysis/getRevenueYtd', { year });
                 
                 if (Array.isArray(result)) {
                     const formattedData = result.map((item: any) => ({
@@ -66,7 +68,7 @@ export default function YTDrevenueChart() {
                 chartRef.current.destroy();
             }
         };
-    }, [days]); 
+    }, [year]);
 
     const data = {
         labels: chartDataValues.map((item) => item.month_name),
@@ -153,7 +155,7 @@ export default function YTDrevenueChart() {
             <div className="min-h-[300px] w-full">
                 <Line 
                     ref={chartRef} 
-                    key={`${isDarkMode}-${days}-${chartDataValues.length}`} 
+                    key={`${isDarkMode}-${year}-${chartDataValues.length}`} 
                     data={data} 
                     options={options as any} 
                 />
