@@ -137,7 +137,7 @@ export default function RevenueByBusinessChart() {
             <h2 className="text-(--alt-text-color) font-semibold mb-4 text-lg">
                 Revenue by Business Type
             </h2>
-            <div className="h-[280px] w-full">
+            <div className="h-70 w-full">
                 <Doughnut 
                     ref={chartRef}
                     key={`${currentThemeColor}-${days}`} 

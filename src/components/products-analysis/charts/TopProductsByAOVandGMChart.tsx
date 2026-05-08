@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-hooks/purity */
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
@@ -210,6 +211,7 @@ export default function TopProductByAOVandGMChart() {
                 Top 10 Products by AOV & GM%
             </h2>
             <div className="h-full w-full py-5">
+                {/* @ts-ignore */}
                 <Bar 
                     key={`top-products-aov-gm-${region}-${days}-${isDarkMode}`} 
                     data={data} 

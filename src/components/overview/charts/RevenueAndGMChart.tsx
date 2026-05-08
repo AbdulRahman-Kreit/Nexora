@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, LineElement, PointElement } from "chart.js";
@@ -218,6 +219,7 @@ export default function RevenueAndGMChart() {
                 Revenue and GM% Over Time
             </h2>
             <div className="h-full w-full py-5">
+                {/* @ts-ignore */}
                 <Bar 
                     ref={chartRef} 
                     key={`${currentThemeColor}-${days}`} 

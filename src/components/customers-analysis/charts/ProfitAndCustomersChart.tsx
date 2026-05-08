@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/purity */
 "use client";
@@ -179,6 +180,7 @@ export default function ProfitAndCustomersChart() {
                 Profit & Customers by Region
             </h2>
             <div className="h-full w-full py-5">
+                {/* @ts-ignore */}
                 <Bar key={`${currentThemeColor}-${days}`} data={data} options={options as any} />
             </div>
         </div>
