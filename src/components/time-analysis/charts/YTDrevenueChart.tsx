@@ -25,7 +25,7 @@ ChartJS.register(
 export default function YTDrevenueChart() {
     const { year } = useFilter(); 
     const chartRef = useRef<ChartJS<'line'> | null>(null);
-    const [chartDataValues, setChartDataValues] = useState<{ month_name: string, revenue: number }[]>([]);
+    const [chartDataValues, setChartDataValues] = useState<{ month_name: string, revenue_ytd: number }[]>([]);
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
@@ -48,11 +48,11 @@ export default function YTDrevenueChart() {
         const loadData = async () => {
             try {
                 const result = await fetchFromAPI('Time Analysis/getRevenueYtd', { year });
-                
+
                 if (Array.isArray(result)) {
                     const formattedData = result.map((item: any) => ({
                         month_name: `${item.month_name}`.substr(0, 3),
-                        revenue: Number(item.revenue)
+                        revenue_ytd: Number(item.revenue_ytd)
                     }));
                     setChartDataValues(formattedData);
                 }
@@ -75,7 +75,7 @@ export default function YTDrevenueChart() {
         datasets: [
             {
                 label: 'Revenue',
-                data: chartDataValues.map((item) => item.revenue),
+                data: chartDataValues.map((item) => item.revenue_ytd),
                 fill: true,
                 tension: 0.4,
                 borderColor: '#006fff',
