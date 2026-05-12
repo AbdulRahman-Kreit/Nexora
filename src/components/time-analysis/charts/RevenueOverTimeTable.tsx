@@ -14,6 +14,12 @@ export default function RevenueOverTimeTable() {
     const [isLoading, setIsLoading] = useState(true);
     const [openYears, setOpenYears] = useState([]);
 
+    const getMonthName = (monthNumber: number) => {
+        const date = new Date();
+        date.setMonth(monthNumber - 1);
+        return date.toLocaleString('en-US', { month: 'long' });
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -66,10 +72,9 @@ export default function RevenueOverTimeTable() {
                 <table className="w-full text-center border-collapse min-w-200">
                     <thead className="sticky top-0 z-20 bg-[#006fff]">
                         <tr className="text-sm font-bold">
-                            <th className="pb-4 px-4 w-[25%] border-b-2 border-white/30 text-left bg-[#006fff]">Year</th>
-                            <th className="pb-4 px-4 text-center w-[25%] border-b-2 border-white/30 bg-[#006fff]">Revenue</th>
-                            <th className="pb-4 px-4 text-center w-[25%] border-b-2 border-white/30 bg-[#006fff]">MOM</th>
-                            <th className="pb-4 px-4 text-center w-[25%] border-b-2 border-white/30 bg-[#006fff]">Var from the same time</th>
+                            <th className="pb-4 px-4 w-[33%] border-b-2 border-white/30 text-left bg-[#006fff]">Year / Month</th>
+                            <th className="pb-4 px-4 text-center w-[33%] border-b-2 border-white/30 bg-[#006fff]">Revenue</th>
+                            <th className="pb-4 px-4 text-center w-[33%] border-b-2 border-white/30 bg-[#006fff]">MOM %</th>
                         </tr>
                     </thead>
 
@@ -99,23 +104,19 @@ export default function RevenueOverTimeTable() {
                                                 </td>
                                                 <td className="py-3 px-4 text-center">-</td>
                                                 <td className="py-3 px-4 text-center">-</td>
-                                                <td className="py-3 px-4 text-center">-</td>
                                             </tr>
                                         )}
 
                                         {isOpen && (
                                             <tr className={`${index % 2 === 0 ? 'transparent' : 'bg-[#3f8ef4]'} transition-colors hover:bg-white/20`}>
                                                 <td className="py-3 px-4 text-left pl-10">
-                                                    {row.month}
+                                                    {getMonthName(row.month)}
                                                 </td>
                                                 <td className="py-3 px-4 text-center font-medium">
                                                     {Number(row.revenue).toLocaleString('en-US')} $
                                                 </td>
                                                 <td className="py-3 px-4 text-center">
-                                                    {row.mom}
-                                                </td>
-                                                <td className="py-3 px-4 text-center">
-                                                    {row.var_from_same || '-'}
+                                                    {row.mom_pct_revenue !== null ? `${row.mom_pct_revenue}%` : '-'}
                                                 </td>
                                             </tr>
                                         )}
