@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { fetchFromAPI, warmUpBackend } from '@/data/fetchFromAPI'; 
 
 const EmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -9,6 +10,10 @@ export default function LoginInputs() {
     const [formData, setFormData] = useState<{ email: string, password: string }>({ email: '', password: '' });
     const [errors, setErrors] = useState<{ email?: string; password?: string; api?: string; error?: unknown }>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        warmUpBackend();
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -37,29 +42,17 @@ export default function LoginInputs() {
 
         setIsSubmitting(true);
         try {
-            const response = await fetch('https://analysis.gproject.space/api/auth/login', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json', 
-                },
-                body: JSON.stringify({
-                    email: formData.email, 
-                    password: formData.password 
-                }),
+            const data = await fetchFromAPI('Login', {
+                email: formData.email, 
+                password: formData.password 
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', data.accessToken); 
-                localStorage.setItem('user', JSON.stringify(data.user)); 
-                router.push('/overview'); 
-            } else {
-                setErrors({ api: data.message || "Invalid Email or Password" });
-            }
-        } catch (error) {
-            setErrors({ api: "Server connection failed", error: error });
+            localStorage.setItem('token', data.accessToken); 
+            localStorage.setItem('user', JSON.stringify(data.user)); 
+            router.push('/overview'); 
+            
+        } catch (error: any) {
+            setErrors({ api: error.message || "Invalid Email or Password", error: error });
         } finally {
             setIsSubmitting(false);
         }
