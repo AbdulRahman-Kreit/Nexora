@@ -33,7 +33,7 @@ export default function Header() {
             </div>
 
             <div className={`flex flex-row items-center flex-1 px-2 
-                hover:bg-(--field-bg-color) transition-colors group cursor-default`}>
+                transition-colors group cursor-default`}>
                 <span className={`font-semibold text-sm text-(--main-text-color) 
                     truncate max-w-30 font-grotesk`}>
                     {userName || 'Guest'} 

@@ -33,7 +33,6 @@ export default function Statistics() {
         { id: 1, title: "Customers", value: stats?.customers ?? 0, prefix: "" },
         { id: 2, title: "AOV", value: stats?.aov ?? 0, prefix: "$" },
         { id: 3, title: "Orders", value: stats?.orders ?? 0, prefix: "" },
-        { id: 4, title: "Customer No Sales", value: stats?.customers_no_sales ?? 0, prefix: "" },
     ];
 
     return (
