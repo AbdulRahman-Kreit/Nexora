@@ -19,7 +19,7 @@ export default function InputSection() {
             if (data?.content) {
                 addReport(data.content);
             }
-        } catch (error: unknown) {
+        } catch (error: any) {
             alert(error.message);
         } finally {
             setLoading(false);

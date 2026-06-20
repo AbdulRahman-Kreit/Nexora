@@ -2,6 +2,12 @@ import postmanData from './Ananlysis Admin API.postman_collection.json';
 
 const BASE_URL = "https://analysis.gproject.space/api";
 
+export function warmUpBackend(): void {
+    fetch(`${BASE_URL}`, { method: 'HEAD' })
+        .then(() => console.log('Backend warm-up triggered successfully.'))
+        .catch((err) => console.warn('Warm-up ping failed (Backend might still be waking up):', err));
+}
+
 function findRequestRecursive(items: any[], targetName: string): any {
     for (const item of items) {
         if (item.request && item.name.toLowerCase() === targetName.toLowerCase()) {
