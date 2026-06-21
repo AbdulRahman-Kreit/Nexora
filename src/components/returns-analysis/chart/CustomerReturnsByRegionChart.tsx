@@ -69,7 +69,7 @@ export default function CustomerReturnsByRegionChart() {
         labels: chartData.map(item => item.region),
         datasets: [
             {
-                label: 'Order Frequency',
+                label: 'Customers',
                 data: chartData.map(item => item.customers_count),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
