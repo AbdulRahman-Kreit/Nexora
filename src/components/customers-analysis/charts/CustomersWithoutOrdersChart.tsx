@@ -117,7 +117,7 @@ export default function CustomersWithoutOrdersChart() {
                 align: 'top' as const,
                 color: currentThemeColor, 
                 font: { weight: 600, size: 14 },
-                offset: 1,
+                offset: 4,
             },
         },
         scales: {
@@ -143,6 +143,11 @@ export default function CustomersWithoutOrdersChart() {
                 }
             }
         },
+        layout: {
+            padding: {
+                top: 25
+            }
+        }
     };
 
     return (

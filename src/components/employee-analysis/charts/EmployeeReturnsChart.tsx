@@ -115,7 +115,18 @@ export default function EmployeeReturnsChart() {
         grouped: false,
         plugins: {
             legend: { display: false },
-            tooltip: { enabled: false },
+            tooltip: { 
+                enabled: true,
+                callbacks: {
+                    label: function(context: any) {
+                        if (context.datasetIndex === 1) return '';
+                        const value = context.raw;
+                        if (value >= 1000000) return ` Returned Orders: ${(value / 1000000).toFixed(1)}M`;
+                        if (value >= 1000) return ` Returned Orders: ${(value / 1000).toFixed(1)}K`;
+                        return ` Returned Orders: ${value}`;
+                    }
+                }
+            },
             datalabels: {
                 display: true,
                 anchor: 'end' as const,

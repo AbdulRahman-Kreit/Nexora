@@ -70,12 +70,15 @@ export default function RevenueAndGMChart() {
 
             revenueRaw.forEach((yearEntry: any) => {
                 const year = yearEntry.year;
-                const gmYearEntry = gmRaw.find((item: any) => item.year === year);
 
                 [1, 2, 3, 4].forEach(qNum => {
                     const qKey = `q${qNum}`;
                     const revenueValue = parseFloat(yearEntry[qKey]);
-                    const gmValue = gmYearEntry ? parseFloat(gmYearEntry[qKey]) : 0;
+                    const gmMatch = gmRaw.find((item: any) => 
+                        item.year === year && 
+                        item.quarter.toLowerCase() === `q${qNum}`
+                    );
+                    const gmValue = gmMatch ? parseFloat(gmMatch.gm_percent) : 0;
 
                     if (revenueValue > 0) {
                         formattedData.push({
@@ -189,6 +192,8 @@ export default function RevenueAndGMChart() {
                 },
             },
             y2: {
+                display: true,
+                position: 'right',
                 ticks: { display: false },
                 grid: { display: false },
             },
@@ -222,7 +227,7 @@ export default function RevenueAndGMChart() {
                 {/* @ts-ignore */}
                 <Bar 
                     ref={chartRef} 
-                    key={`${currentThemeColor}-${days}`} 
+                    key={`${currentThemeColor}-${days}-${chartData.length}`} 
                     data={data} 
                     options={options as any} 
                 />

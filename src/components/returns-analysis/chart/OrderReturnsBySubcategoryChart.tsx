@@ -78,7 +78,7 @@ export default function OrderReturnsBySubcategoryChart() {
         labels: chartData.map(item => item.subcategory),
         datasets: [
             {
-                label: 'Order Frequency',
+                label: 'Order Returns',
                 data: chartData.map(item => item.returns),
                 backgroundColor: handleChageBarColors,
                 borderRadius: 5,
@@ -108,7 +108,7 @@ export default function OrderReturnsBySubcategoryChart() {
                 align: 'top' as const,
                 color: labelTextColor,
                 font: { weight: 600, size: 12 },
-                offset: 1,
+                offset: 4,
             },
         },
         scales: {
@@ -133,6 +133,11 @@ export default function OrderReturnsBySubcategoryChart() {
                 }
             }
         },
+        layout: {
+            padding: {
+                top: 25
+            }
+        }
     };
 
     return (
