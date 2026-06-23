@@ -24,7 +24,7 @@ export function FilterProvider({ children }: { children: React.ReactNode }) {
             timeLabel, setTimeLabel,
             year, setYear 
         }}>
-        {children}
+            {children}
         </FilterContext.Provider>
     );
 }

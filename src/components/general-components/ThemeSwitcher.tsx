@@ -1,6 +1,8 @@
 "use client";
 import React from 'react';
 import { useTheme } from '@/contexts/ThemeProvider';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 
 export default function ThemeSwitcher() {
     const { isDarkMode, toggleTheme } = useTheme();
@@ -24,7 +26,6 @@ export default function ThemeSwitcher() {
                 role="switch"
                 aria-checked={isDarkMode}
             >
-                <span className="sr-only">Toggle theme</span>
                 
                 <span
                     aria-hidden="true"
@@ -36,9 +37,9 @@ export default function ThemeSwitcher() {
                     `}
                 >
                     {isDarkMode ? (
-                        <i className="fas fa-moon text-[#006fff] text-[12px]"></i>
+                        <FontAwesomeIcon icon={faMoon} className="text-[#006fff] text-[12px]"></FontAwesomeIcon>
                     ) : (
-                        <i className="fas fa-sun text-white text-[12px]"></i>
+                        <FontAwesomeIcon icon={faSun} className="text-white text-[12px]"></FontAwesomeIcon>
                     )}
                 </span>
             </button>

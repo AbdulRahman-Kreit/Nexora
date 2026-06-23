@@ -15,20 +15,20 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        setIsDarkMode(true);
-        document.documentElement.classList.add('dark');
+            setIsDarkMode(true);
+            document.documentElement.classList.add('dark');
         }
     }, []);
 
     const toggleTheme = () => {
         if (isDarkMode) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-        setIsDarkMode(false);
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+            setIsDarkMode(false);
         } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        setIsDarkMode(true);
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+            setIsDarkMode(true);
         }
     };
 
