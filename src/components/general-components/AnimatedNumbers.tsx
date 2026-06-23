@@ -14,9 +14,10 @@ export default function AnimatedNumbers({ value }: { value: string | number }) {
     const count = useMotionValue(0);
 
     const formatNumber = (num: number) => {
+        if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
         if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
         if (num >= 1000) return (num / 1000).toFixed(1) + "K";
-        return num.toLocaleString(undefined, { maximumFractionDigits: 0 });
+        return num.toLocaleString();
     };
 
     const displayValue = useTransform(count, (latest) => {
