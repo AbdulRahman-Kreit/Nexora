@@ -22,7 +22,7 @@ export default function Statistics() {
 
     const [stats, setStats] = useState<ProductStats | null>(null);
     const [isDarkMode, setIsDarkMode] = useState(true);
-    const { days } = useFilter();
+    const { days } = useFilter(); 
         
     useEffect(() => {
         fetchFromAPI('Product Analysis/Summary', { days }) 
@@ -31,7 +31,7 @@ export default function Statistics() {
                 setStats(statsData);
             })
             .catch(err => console.error("Final Error Catch:", err));
-    }, [days]); 
+    }, [days]);
 
     useEffect(() => {
         const checkTheme = () => {
